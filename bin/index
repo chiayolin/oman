@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+def scan_info(man_path)
+  File.open("#{man_path}", "r") do |infile|
+    # read the file line by line
+    while(line = infile.gets)
+      # if it's in the NAME section 
+      if(line.include?("NAME\n"))
+        # read the second line
+        while(line = infile.gets)
+          # split the first "-" only (idk why it's 2)
+          # e.g. bash - GNU Bourne-Again SHell
+          # #=> GNU Bourne-Again SHell
+          $name = line.split("-", 2).last.lstrip
+          break
+        end
+      end
+      # it it's in the DESCRIPTION section
+      if(line.include?("DESCRIPTION\n"))
+        # read until there's an empty line
+        while(line << infile.gets)
+          break line if(line["\n\n"])
+        end 
+        line = line.split("DESCRIPTION").last.lstrip
+        # if line is less than 25 words
+        if(line.split.size <= 25)
+          $discription = line
+          break
+        # else cut it so it's 25 words
+        else
+          # join the array
+          $discription = line.split[0..24].join(" "). + "..."
+          break
+        end
+      end
+    end
+  end
+  # remove multiple spaces/tab and new lines inside of strings
+  $discription = $discription.gsub(/["\n","\t"]/, ' ').squeeze(' ')
+  $name = $name.gsub(/["\n","\t"]/, ' ').squeeze(' ')
+end
+
+$output = File.new("index.html", "w")
+$list = Dir["../man/**/*.txt"]
+$discription = ""
+$name = ""
+$i = 0
+
+begin
+  scan_info($list[$i])
+  $title = File.basename("#{$list[$i]}", ".*" )
+  $output.print("<div class=\"section\">" +
+               "<div class=\"title\"><a href=\"#{$list[$i]}\">#{$title}" +
+               "</a></div><p class=\"name\">: #{$name}</p>" +
+               "<div class=\"discription\">#{$discription}</p>" + 
+               "</div></div>") 
+  $i = $i + 1
+end until($i > $list.size - 1)
