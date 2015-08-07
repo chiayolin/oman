@@ -1,0 +1,49 @@
+MYSQLBUG(1)		     MySQL Database System		   MYSQLBUG(1)
+
+
+
+NAME
+       mysqlbug - generate bug report
+
+SYNOPSIS
+       mysqlbug
+
+DESCRIPTION
+       This program is obsolete. It is deprecated as of MySQL 5.6.19 and is
+       removed in MySQL 5.7.
+
+       The normal way to report bugs is to visit http://bugs.mysql.com/, which
+       is the address for our bugs database. This database is public and can
+       be browsed and searched by anyone. If you log in to the system, you can
+       enter new reports.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			   MYSQLBUG(1)

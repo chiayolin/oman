@@ -1,0 +1,288 @@
+MYSQLSHOW(1)		     MySQL Database System		  MYSQLSHOW(1)
+
+
+
+NAME
+       mysqlshow - display database, table, and column information
+
+SYNOPSIS
+       mysqlshow [options] [db_name [tbl_name [col_name]]]
+
+DESCRIPTION
+       The mysqlshow client can be used to quickly see which databases exist,
+       their tables, or a table's columns or indexes.
+
+       mysqlshow provides a command-line interface to several SQL SHOW
+       statements. See Section 13.7.5, "SHOW Syntax". The same information can
+       be obtained by using those statements directly. For example, you can
+       issue them from the mysql client program.
+
+       Invoke mysqlshow like this:
+
+	   shell> mysqlshow [options] [db_name [tbl_name [col_name]]]
+
+       o   If no database is given, a list of database names is shown.
+
+       o   If no table is given, all matching tables in the database are
+	   shown.
+
+       o   If no column is given, all matching columns and column types in the
+	   table are shown.
+
+       The output displays only the names of those databases, tables, or
+       columns for which you have some privileges.
+
+       If the last argument contains shell or SQL wildcard characters ("*",
+       "?", "%", or "_"), only those names that are matched by the wildcard
+       are shown. If a database name contains any underscores, those should be
+       escaped with a backslash (some Unix shells require two) to get a list
+       of the proper tables or columns.  "*" and "?"  characters are converted
+       into SQL "%" and "_" wildcard characters. This might cause some
+       confusion when you try to display the columns for a table with a "_" in
+       the name, because in this case, mysqlshow shows you only the table
+       names that match the pattern. This is easily fixed by adding an extra
+       "%" last on the command line as a separate argument.
+
+       mysqlshow supports the following options, which can be specified on the
+       command line or in the [mysqlshow] and [client] groups of an option
+       file. For information about option files used by MySQL programs, see
+       Section 4.2.6, "Using Option Files".
+
+       o   --help, -?
+
+	   Display a help message and exit.
+
+       o   --bind-address=ip_address
+
+	   On a computer having multiple network interfaces, use this option
+	   to select which interface to use for connecting to the MySQL
+	   server.
+
+	   This option is supported beginning with MySQL 5.6.1.
+
+       o   --character-sets-dir=path
+
+	   The directory where character sets are installed. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --compress, -C
+
+	   Compress all information sent between the client and the server if
+	   both support compression.
+
+       o   --count
+
+	   Show the number of rows per table. This can be slow for non-MyISAM
+	   tables.
+
+       o   --debug[=debug_options], -# [debug_options]
+
+	   Write a debugging log. A typical debug_options string is
+	   d:t:o,file_name. The default is d:t:o.
+
+       o   --debug-check
+
+	   Print some debugging information when the program exits.
+
+       o   --debug-info
+
+	   Print debugging information and memory and CPU usage statistics
+	   when the program exits.
+
+       o   --default-character-set=charset_name
+
+	   Use charset_name as the default character set. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --default-auth=plugin
+
+	   A hint about the client-side authentication plugin to use. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --defaults-extra-file=file_name
+
+	   Read this option file after the global option file but (on Unix)
+	   before the user option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-file=file_name
+
+	   Use only the given option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-group-suffix=str
+
+	   Read not only the usual option groups, but also groups with the
+	   usual names and a suffix of str. For example, mysqlshow normally
+	   reads the [client] and [mysqlshow] groups. If the
+	   --defaults-group-suffix=_other option is given, mysqlshow also
+	   reads the [client_other] and [mysqlshow_other] groups.
+
+       o   --host=host_name, -h host_name
+
+	   Connect to the MySQL server on the given host.
+
+       o   --keys, -k
+
+	   Show table indexes.
+
+       o   --login-path=name
+
+	   Read options from the named login path in the .mylogin.cnf login
+	   path file. A "login path" is an option group that permits only a
+	   limited set of options: host, user, and password. Think of a login
+	   path as a set of values that indicate the server host and the
+	   credentials for authenticating with the server. To create the login
+	   path file, use the mysql_config_editor utility. See
+	   mysql_config_editor(1). This option was added in MySQL 5.6.6.
+
+       o   --no-defaults
+
+	   Do not read any option files. If program startup fails due to
+	   reading unknown options from an option file, --no-defaults can be
+	   used to prevent them from being read.
+
+	   The exception is that the .mylogin.cnf file, if it exists, is read
+	   in all cases. This permits passwords to be specified in a safer way
+	   than on the command line even when --no-defaults is used.
+	   (.mylogin.cnf is created by the mysql_config_editor utility. See
+	   mysql_config_editor(1).)
+
+       o   --password[=password], -p[password]
+
+	   The password to use when connecting to the server. If you use the
+	   short option form (-p), you cannot have a space between the option
+	   and the password. If you omit the password value following the
+	   --password or -p option on the command line, mysqlshow prompts for
+	   one.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security". You can use an option file to avoid giving the password
+	   on the command line.
+
+       o   --pipe, -W
+
+	   On Windows, connect to the server using a named pipe. This option
+	   applies only if the server supports named-pipe connections.
+
+       o   --plugin-dir=path
+
+	   The directory in which to look for plugins. It may be necessary to
+	   specify this option if the --default-auth option is used to specify
+	   an authentication plugin but mysqlshow does not find it. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --port=port_num, -P port_num
+
+	   The TCP/IP port number to use for the connection.
+
+       o   --print-defaults
+
+	   Print the program name and all options that it gets from option
+	   files.
+
+       o   --protocol={TCP|SOCKET|PIPE|MEMORY}
+
+	   The connection protocol to use for connecting to the server. It is
+	   useful when the other connection parameters normally would cause a
+	   protocol to be used other than the one you want. For details on the
+	   permissible values, see Section 4.2.2, "Connecting to the MySQL
+	   Server".
+
+       o   --secure-auth
+
+	   Do not send passwords to the server in old (pre-4.1) format. This
+	   prevents connections except for servers that use the newer password
+	   format. This option is enabled by default; use --skip-secure-auth
+	   to disable it. This option was added in MySQL 5.6.17.
+
+	       Note
+	       Passwords that use the pre-4.1 hashing method are less secure
+	       than passwords that use the native password hashing method and
+	       should be avoided. Pre-4.1 passwords are deprecated and support
+	       for them will be removed in a future MySQL release. For account
+	       upgrade instructions, see Section 6.3.8.3, "Migrating Away from
+	       Pre-4.1 Password Hashing and the mysql_old_password Plugin".
+
+       o   --shared-memory-base-name=name
+
+	   On Windows, the shared-memory name to use, for connections made
+	   using shared memory to a local server. The default value is MYSQL.
+	   The shared-memory name is case sensitive.
+
+	   The server must be started with the --shared-memory option to
+	   enable shared-memory connections.
+
+       o   --show-table-type, -t
+
+	   Show a column indicating the table type, as in SHOW FULL TABLES.
+	   The type is BASE TABLE or VIEW.
+
+       o   --socket=path, -S path
+
+	   For connections to localhost, the Unix socket file to use, or, on
+	   Windows, the name of the named pipe to use.
+
+       o   --ssl*
+
+	   Options that begin with --ssl specify whether to connect to the
+	   server using SSL and indicate where to find SSL keys and
+	   certificates. See Section 6.3.10.4, "SSL Command Options".
+
+       o   --status, -i
+
+	   Display extra information about each table.
+
+       o   --user=user_name, -u user_name
+
+	   The MySQL user name to use when connecting to the server.
+
+       o   --verbose, -v
+
+	   Verbose mode. Print more information about what the program does.
+	   This option can be used multiple times to increase the amount of
+	   information.
+
+       o   --version, -V
+
+	   Display version information and exit.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			  MYSQLSHOW(1)

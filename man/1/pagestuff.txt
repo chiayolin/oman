@@ -1,0 +1,40 @@
+PAGESTUFF(1)							  PAGESTUFF(1)
+
+
+
+NAME
+       pagestuff - Mach-O file page analysis tool
+
+SYNOPSIS
+       pagestuff file [-arch arch_flag] [-a] [-p] [pagenumber...]
+
+DESCRIPTION
+       pagestuff  displays  information about the specified logical pages of a
+       file conforming to the Mach-O executable format.   For  each  specified
+       page  of  code,	symbols (function and static data structure names) are
+       displayed.  If no pages are specified, symbols for  all	pages  in  the
+       __TEXT, __text section are displayed.
+
+       The options to pagestuff(1) are:
+
+       -arch arch_type
+	      Specifies   the	architecture,	arch_type,  of	the  file  for
+	      pagestuff(1) to operate on when the file is  a  universal  file.
+	      (See  arch(3)  for  the  currently  know arch_types.)  When this
+	      option is used the page numbers are  the	logical  page  numbers
+	      starting	at  zero  for the offset that architecture starts in a
+	      universal file.
+
+       -a     Displays all pages.  All other arguments are ignored.
+
+       -p     Print a list of the sections of the specified Mach-O file,  with
+	      offsets  and  lengths.   All  other arguments are ignored.  Note
+	      that the size(1) tool given arguments "-m -l -x" displays a much
+	      more concise listing.
+
+SEE ALSO
+       Mach-O(5), size(1)
+
+
+
+Apple, Inc.		       November 2, 2010 		  PAGESTUFF(1)

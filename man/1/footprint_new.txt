@@ -1,0 +1,41 @@
+
+FOOTPRINT_NEW(1)	  BSD General Commands Manual	      FOOTPRINT_NEW(1)
+
+NAME
+     footprint_new -- gathers memory information about one or more processes
+
+SYNOPSIS
+     footprint_new [-j] [-t] [-s] [-v] ( -a | <process name | pid> [ ... ] )
+     footprint_new -h
+
+DESCRIPTION
+     The footprint_new utility gathers and displays memory consumption infor-
+     mation for the specified processes.
+
+     footprint_new will display all addressable memory used by the specified
+     processes, but it emphasizes anonymous and wired memory.  If multiple
+     processes are specified, footprint_new will de-duplicate multiply mapped
+     objects and will display shared objects separately from private ones.
+
+     Because it is inspecting the address space of other processes,
+     footprint_new must be run as root.
+
+OPTIONS
+     -a      target all processes (will take much longer)
+
+     -j      format output in JSON instead of structured text
+
+     -t      in addition to the supplied processes, target their children,
+	     grandchildren, etc.
+
+     -s      skip processes that are dirty tracked and have no outstanding XPC
+	     transactions (i.e., are "clean")
+
+     -v      display vmmap-like output of address space layout
+
+     -h      display help and exit
+
+SAMPLE USAGE
+     footprint_new Mail WindowServer
+
+OS X			       January 24, 1984 			  OS X

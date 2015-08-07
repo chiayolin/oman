@@ -1,0 +1,29 @@
+
+XML2MAN(1)		  BSD General Commands Manual		    XML2MAN(1)
+
+NAME
+     xml2man -- MPGL to mdoc (man page) translator
+
+SYNOPSIS
+     xml2man [-f] filename [output_filename]
+
+OPTIONS
+     The available options are as follows:
+
+     -f 	       Force destination file to be overwritten if it exists.
+
+     filename	       the file to be processed
+
+     output_filename   the destination file
+
+ENVIRONMENT
+     This program was designed to convert Man Page Generation Language (MPGL)
+     XML files into mdoc-based manual pages.  The MPGL is a fairly direct
+     translation of mdoc to XML.
+
+SEE ALSO
+     For more information on hdxml2manxml, see
+
+     hdxml2manxml(1),
+
+Darwin				August 28, 2002 			Darwin

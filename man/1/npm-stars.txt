@@ -1,0 +1,32 @@
+NPM-STARS(1)							  NPM-STARS(1)
+
+
+
+NAME
+       npm-stars - View packages marked as favorites
+
+SYNOPSIS
+	 npm stars
+	 npm stars [username]
+
+DESCRIPTION
+       If  you	have  starred a lot of neat things and want to find them again
+       quickly this command lets you do just that.
+
+       You may also want to see your friend's favorite packages, in this  case
+       you will most certainly enjoy this command.
+
+SEE ALSO
+       o npm help star
+
+       o npm help view
+
+       o npm help whoami
+
+       o npm help adduser
+
+
+
+
+
+				   June 2015			  NPM-STARS(1)

@@ -1,0 +1,39 @@
+
+TRACE(1)		  BSD General Commands Manual		      TRACE(1)
+
+NAME
+     trace -- configure and record kernel trace events
+
+SYNOPSIS
+     trace -h
+
+     trace -i [-b numbufs]
+
+     trace -g
+
+     trace -d [-a pid | -x pid]
+
+     trace -r
+
+     trace -n
+
+     trace -e [-c class [-p class] [-s subclass]] [-a pid | -x pid]
+	   [-k code | -k code | -k code | -k code]
+
+     trace -E [-c class [-p class] [-s subclass]] [-a pid | -x pid]
+	   [-k code | -k code | -k code | -k code] executable_path
+	   [optional args to executable]
+
+     trace -t [-R rawfile] [-o OutputFilename] [-N]
+	   [ExtraCodeFilename1 ExtraCodeFilename2 ...]
+
+DESCRIPTION
+     The trace command allows developers to initialize and configure the ker-
+     nel trace subsystem. Trace events can be recorded to an in-memory buffer,
+     or logged directly to a file. Raw data files can later be decoded to a
+     plaintext format.
+
+SEE ALSO
+     fs_usage(1), sc_usage(1), latency(1), top(1)
+
+Mac OS X		       October 28, 2010 		      Mac OS X

@@ -1,0 +1,55 @@
+sane-config(1)		 SANE Scanner Access Now Easy		sane-config(1)
+
+
+
+NAME
+       sane-config - get information about the installed version of libsane
+
+SYNOPSIS
+       sane-config  [--prefix] [--exec-prefix] [--libs] [--cflags] [--ldflags]
+       [--version] [--help [OPTION]]
+
+DESCRIPTION
+       sane-config is a tool that is used to determine the compiler and linker
+       flags  that should be used to compile and link SANE frontends to a SANE
+       backend library (libsane).
+
+OPTIONS
+       sane-config accepts the following options (you can't use more than  one
+       option at the same time):
+
+       --version
+	       Print  the  currently installed version of libsane on the stan-
+	       dard output.
+
+       --help OPTION
+	       Print a short usage message. If OPTION is specified,  help  for
+	       that option (e.g. --libs) is printed (if available).
+
+       --libs  Print  the  additional  libraries  that are necessary to link a
+	       SANE frontend to libsane.
+
+       --ldflags
+	       Print the linker flags that are necessary to link a SANE  fron-
+	       tend to libsane.
+
+       --cflags
+	       Print  the  compiler flags that are necessary to compile a SANE
+	       frontend.
+
+       --prefix
+	       Print the prefix used during compilation of libsane.
+
+       --exec-prefix
+	       Print the exec-prefix used during compilation of libsane.
+
+SEE ALSO
+       sane(7)
+
+AUTHOR
+       This manual page was written by Julien BLACHE <jblache@debian.org>, for
+       the Debian GNU/Linux system (but may be used by others).
+
+
+
+				  10 Jul 2008			sane-config(1)

@@ -1,0 +1,104 @@
+SPEEXENC(1)			 User Commands			   SPEEXENC(1)
+
+
+
+NAME
+       speexenc - The reference implementation speex encoder.
+
+SYNOPSIS
+       speexenc [options] input_file output_file
+
+DESCRIPTION
+       Encodes input_file using Speex. It can read the WAV or raw files.
+
+   input_file can be:
+       filename.wav
+	      wav file
+
+       filename.*
+	      Raw PCM file (any extension other than .wav)
+
+       -      stdin
+
+   output_file can be:
+       filename.spx
+	      Speex file
+
+       -      stdout
+
+OPTIONS
+       -n, --narrowband
+	      Narrowband (8 kHz) input file
+
+       -w, --wideband
+	      Wideband (16 kHz) input file
+
+       -u, --ultra-wideband "Ultra-wideband" (32 kHz) input file
+
+       --quality n
+	      Encoding quality (0-10), default 8
+
+       --bitrate n
+	      Encoding bit-rate (use bit-rate n or lower)
+
+       --vbr  Enable variable bit-rate (VBR)
+
+       --abr rate
+	      Enable average bit-rate (ABR) at rate bps
+
+       --vad  Enable voice activity detection (VAD)
+
+       --dtx  Enable file-based discontinuous transmission (DTX)
+
+       --comp n
+	      Set encoding complexity (0-10), default 3
+
+       --nframes n
+	      Number of frames per Ogg packet (1-10), default 1
+
+       --comment
+	      Add  the given string as an extra comment. This may be used mul-
+	      tiple times
+
+       --author
+	      Author of this track
+
+       --title
+	      Title for this track
+
+       -h, --help
+	      This help
+
+       -v, --version
+	      Version information
+
+       -V     Verbose mode (show bit-rate)
+
+   Raw input options:
+       --rate n
+	      Sampling rate for raw input
+
+       --stereo
+	      Consider raw input as stereo
+
+       --le   Raw input is little-endian
+
+       --be   Raw input is big-endian
+
+       --8bit Raw input is 8-bit unsigned
+
+       --16bit
+	      Raw input is 16-bit signed
+
+       Default raw PCM input is 16-bit, little-endian, mono
+
+       More information is available from the Speex site: http://www.speex.org
+
+       Please report bugs to the mailing list `speex-dev@xiph.org'.
+
+COPYRIGHT
+       Copyright (C) 2002 Jean-Marc Valin
+
+
+
+speexenc version 1.1		September 2003			   SPEEXENC(1)

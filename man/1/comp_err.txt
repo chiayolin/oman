@@ -1,0 +1,109 @@
+COMP_ERR(1)		     MySQL Database System		   COMP_ERR(1)
+
+
+
+NAME
+       comp_err - compile MySQL error message file
+
+SYNOPSIS
+       comp_err [options]
+
+DESCRIPTION
+       comp_err creates the errmsg.sys file that is used by mysqld to
+       determine the error messages to display for different error codes.
+       comp_err normally is run automatically when MySQL is built. It compiles
+       the errmsg.sys file from the text file located at sql/share/errmsg.txt
+       in MySQL source distributions.
+
+       comp_err also generates mysqld_error.h, mysqld_ername.h, and
+       sql_state.h header files.
+
+       For more information about how error messages are defined, see the
+       MySQL Internals Manual[1].
+
+       Invoke comp_err like this:
+
+	   shell> comp_err [options]
+
+       comp_err supports the following options.
+
+       o   --help, -?
+
+	   Display a help message and exit.
+
+       o   --charset=path, -C path
+
+	   The character set directory. The default is ../sql/share/charsets.
+
+       o   --debug=debug_options, -# debug_options
+
+	   Write a debugging log. A typical debug_options string is
+	   d:t:O,file_name. The default is d:t:O,/tmp/comp_err.trace.
+
+       o   --debug-info, -T
+
+	   Print some debugging information when the program exits.
+
+       o   --header_file=file_name, -H file_name
+
+	   The name of the error header file. The default is mysqld_error.h.
+
+       o   --in_file=file_name, -F file_name
+
+	   The name of the input file. The default is ../sql/share/errmsg.txt.
+
+       o   --name_file=file_name, -N file_name
+
+	   The name of the error name file. The default is mysqld_ername.h.
+
+       o   --out_dir=path, -D path
+
+	   The name of the output base directory. The default is
+	   ../sql/share/.
+
+       o   --out_file=file_name, -O file_name
+
+	   The name of the output file. The default is errmsg.sys.
+
+       o   --statefile=file_name, -S file_name
+
+	   The name for the SQLSTATE header file. The default is sql_state.h.
+
+       o   --version, -V
+
+	   Display version information and exit.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+NOTES
+	1. MySQL Internals Manual
+	   http://dev.mysql.com/doc/internals/en
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			   COMP_ERR(1)

@@ -1,0 +1,862 @@
+MSMTP(1)							      MSMTP(1)
+
+
+
+NAME
+       msmtp - An SMTP client
+
+SYNOPSIS
+       Sendmail mode (default):
+	      msmtp [option...] [--] recipient...
+	      msmtp [option...] -t [--] [recipient...]
+
+       Server information mode:
+	      msmtp [option...] --serverinfo
+
+       Remote Message Queue Starting mode:
+	      msmtp [option...] --rmqs=host|@domain|#queue
+
+DESCRIPTION
+       In  the	default  sendmail mode, msmtp reads a mail from standard input
+       and sends it to an SMTP server for delivery.
+       In server information mode, msmtp  prints  information  about  an  SMTP
+       server.
+       In  Remote  Message  Queue  Starting mode, msmtp sends a Remote Message
+       Queue Starting request for a host, domain, or queue to an SMTP  server.
+
+EXIT STATUS
+       The  standard sendmail exit status codes are used, as defined in sysex-
+       its.h.
+
+OPTIONS
+       Options override configuration file settings.
+       They are compatible with sendmail where appropriate.
+
+       General options
+
+	      --version
+		     Print version information,  including  information  about
+		     the libraries used.
+
+	      --help Print help.
+
+	      -P, --pretend
+		     Print  the configuration settings that would be used, but
+		     do not take further action.  An asterisk  (`*')  will  be
+		     printed instead of your password.
+
+	      -v, -d, --debug
+		     Print  lots of debugging information, including the whole
+		     conversation with the SMTP server. Be careful  with  this
+		     option:  the  (potentially  dangerous) output will not be
+		     sanitized, and your password may get printed in an easily
+		     decodable format!
+
+       Changing the mode of operation
+
+	      -S, --serverinfo
+		     Print  information  about	the SMTP server and exit. This
+		     includes information about supported features (mail  size
+		     limit,  authentication,  TLS, DSN, ...) and about the TLS
+		     certificate (if TLS is active).
+
+	      --rmqs=(host|@domain|#queue)
+		     Send a Remote Message  Queue  Starting  request  for  the
+		     given host, domain, or queue to the SMTP server and exit.
+
+       Configuration options
+
+	      -C, --file=filename
+		     Use the given file instead of ~/.msmtprc as the user con-
+		     figuration file.
+
+	      -a, --account=account_name
+		     Use  the  given  account  instead	of  the  account named
+		     "default". The settings of this account  may  be  changed
+		     with  command  line  options.  This option cannot be used
+		     together with the --host option.
+
+	      --host=hostname
+		     Use this SMTP server with settings from the command line;
+		     do  not use any configuration file data. This option can-
+		     not be used together with the --account option.
+
+	      --port=number
+		     Set the port number to connect to. See the port  command.
+
+	      --timeout=(off|seconds)
+		     Set or unset a network timeout, in seconds. See the time-
+		     out command.
+
+	      --proxy-host=[IP|hostname]
+		     Set or unset a SOCKS proxy to  use.  See  the  proxy_host
+		     command.
+
+	      --proxy-port=[number]
+		     Set  or  unset  a port number for the proxy host. See the
+		     proxy_port command.
+
+	      --protocol=(smtp|lmtp)
+		     Set the protocol. See the protocol command.
+
+	      --domain=[string]
+		     Set the argument of the SMTP EHLO (or LMTP LHLO) command.
+		     See the domain command.
+
+	      --auth[=(on|off|method)]
+		     Enable  or  disable  authentication and optionally choose
+		     the method.  See the auth command.
+
+	      --user=[username]
+		     Set or unset the user name for  authentication.  See  the
+		     user command.
+
+	      --passwordeval=[eval]
+		     Evaluate  password for authentication. See the passworde-
+		     val command.
+
+	      --tls[=(on|off)]
+		     Enable or disable TLS/SSL. See the tls command.
+
+	      --tls-starttls[=(on|off)]
+		     Enable or disable STARTTLS for TLS. See the  tls_starttls
+		     command.
+
+	      --tls-trust-file=[file]
+		     Set or unset a trust file for TLS. See the tls_trust_file
+		     command.
+
+	      --tls-crl-file=[file]
+		     Set or unset a certificate revocation list (CRL) file for
+		     TLS. See the tls_crl_file command.
+
+	      --tls-fingerprint=[fingerprint]
+		     Set  ot  unset  the fingerprint of a trusted TLS certifi-
+		     cate. See the tls_fingerprint command.
+
+	      --tls-key-file=[file]
+		     Set or unset a key file for  TLS.	See  the  tls_key_file
+		     command.
+
+	      --tls-cert-file=[file]
+		     Set  or  unset a cert file for TLS. See the tls_cert_file
+		     command.
+
+	      --tls-certcheck[=(on|off)]
+		     Enable or disable server certificate checks for TLS.  See
+		     the tls_certcheck command.
+
+	      --tls-min-dh-prime-bits=[bits]
+		     Set  or unset minimum bit size of the Diffie-Hellman (DH)
+		     prime. See the tls_min_dh_prime_bits command.
+
+	      --tls-priorities=[priorities]
+		     Set or unset TLS priorities. See the tls_priorities  com-
+		     mand.
+
+       Options specific to sendmail mode
+
+	      -f, --from=address
+		     Set  the  envelope-from  address.	It  is	only used when
+		     auto_from is off.
+		     If no account was chosen yet (with --account or  --host),
+		     this  option  will  choose the first account that has the
+		     given envelope-from address (set with the from  command).
+		     If no such account is found, "default" is used.
+
+	      --auto-from[=(on|off)]
+		     Enable  or disable automatic envelope-from addresses. The
+		     default is off.  See the auto_from command.
+
+	      --maildomain=[domain]
+		     Set the domain part for the --auto-from address. See  the
+		     maildomain command.
+
+	      -N, --dsn-notify=(off|cond)
+		     Set   or  unset  DSN  notification  conditions.  See  the
+		     dsn_notify command.
+
+	      -R, --dsn-return=(off|ret)
+		     Set  or  unset  the  DSN  notification  amount.  See  the
+		     dsn_return  command.   Note  that	hdrs is accepted as an
+		     alias for headers to be compatible with sendmail.
+
+	      --add-missing-from-header[=(on|off)]
+		     Enable or disable the addition of a missing From  header.
+		     See the add_missing_from_header command.
+
+	      --add-missing-date-header[=(on|off)]
+		     Enable  or disable the addition of a missing Date header.
+		     See the add_missing_date_header command.
+
+	      --remove-bcc-headers[=(on|off)]
+		     Enable or disable the removal of  Bcc  headers.  See  the
+		     remove_bcc_headers command.
+
+	      -X, --logfile=[file]
+		     Set or unset the log file. See the logfile command.
+
+	      --syslog[=(on|off|facility)]
+		     Enable or disable syslog logging. See the syslog command.
+
+	      -t, --read-recipients
+		     Read recipient addresses from the To, Cc, and Bcc headers
+		     of  the  mail  in addition to the recipients given on the
+		     command line.  If any Resent- headers are	present,  then
+		     the  addresses from any Resent-To, Resent-Cc, and Resent-
+		     Bcc headers in the first block  of  Resent-  headers  are
+		     used instead.
+
+	      --read-envelope-from
+		     Read  the	envelope  from address from the From header of
+		     the mail.	Currently this header must be on a single line
+		     for this option to work correctly.
+
+	      --aliases=[file]
+		     Set or unset an aliases file. See the aliases command.
+
+	      -Fname Msmtp adds a From header to mails that lack it, using the
+		     envelope from address. This option allows to set  a  full
+		     name to be used in that header.
+
+	      --     This  marks  the  end of options. All following arguments
+		     will be treated as  recipient  addresses,	even  if  they
+		     start with a `-'.
+
+       The following options are accepted but ignored for sendmail compatibil-
+       ity:
+       -Btype, -bm, -G, -hN, -i, -L tag, -m, -n, -O option=value, -ox value
+
+USAGE
+       Normally, a system wide configuration file and/or a user  configuration
+       file  contain information about which SMTP server to use and how to use
+       it, but all settings can also be configured on the command line.
+       The information about SMTP  servers  is	organized  in  accounts.  Each
+       account	describes one SMTP server: host name, authentication settings,
+       TLS settings, and so on. Each configuration file  can  define  multiple
+       accounts.
+
+       The user can choose which account to use in one of three ways:
+
+       --account=id
+	      Use the given account. Command line settings override configura-
+	      tion file settings.
+
+       --host=hostname
+	      Use only the settings from the command line; do not use any con-
+	      figuration file data.
+
+       --from=address or --read-envelope-from
+	      Choose  the  first account from the system or user configuration
+	      file that has a matching envelope-from address as specified by a
+	      from  command. This works only when neither --account nor --host
+	      is used.
+
+       If none of the above options is used (or if no account has  a  matching
+       from command), then the account "default" is used.
+
+       Msmtp  transmits mails unaltered to the SMTP server, with the following
+       exceptions:
+       - The Bcc header(s) will be removed. This behavior can be changed  with
+       the remove_bcc_headers command and --remove-bcc-headers option.
+       -  A  From header will be added if the mail does not have one. This can
+       be changed with the  add_missing_from_header  command  and  --add-miss-
+       ing-from-header	option.  The header will use the envelope from address
+       and optionally a full name set with the -F option.
+       - A Date header will be added if the mail does not have one.  This  can
+       be  changed  with  the  add_missing_date_header command and --add-miss-
+       ing-date-header option.
+
+       Skip to the EXAMPLES section for a quick start.
+
+CONFIGURATION FILES
+       If it  exists  and  is  readable,  a  system  wide  configuration  file
+       SYSCONFDIR/msmtprc  will  be  loaded,  where SYSCONFDIR depends on your
+       platform.  Use --version to find out which directory is used.
+       If it exists and is readable, a user configuration file will be	loaded
+       (~/.msmtprc  by	default,  but  see --version). Accounts defined in the
+       user configuration file override accounts from the system configuration
+       file.
+       Configuration  data  from  either  file	can be changed by command line
+       options.
+
+       A configuration file is a simple text file.  Empty  lines  and  comment
+       lines (whose first non-blank character is `#') are ignored.
+       Every  other line must contain a command and may contain an argument to
+       that command.
+       The argument may be enclosed in double quotes ("), for example  if  its
+       first or last character is a blank.
+       If  a  file name starts with the tilde (~), this tilde will be replaced
+       by $HOME.  If a command accepts the argument on,  it  also  accepts  an
+       empty argument and treats that as if it was on.
+       Commands  are  organized  in  accounts.	Each  account  starts with the
+       account command and defines the settings for one SMTP account.
+
+       Skip to the EXAMPLES section for a quick start.
+
+       Commands are as follows:
+
+       defaults
+	      Set defaults. The  following  configuration  commands  will  set
+	      default values for all following account definitions in the cur-
+	      rent configuration file.
+
+       account name [:account[,...]]
+	      Start a new account definition with the given name. The  current
+	      default values are filled in.
+	      If  a  colon  and a list of previously defined accounts is given
+	      after the account name, the new  account,  with  the  filled  in
+	      default  values,	will inherit all settings from the accounts in
+	      the list.
+
+       host hostname
+	      The SMTP server to send the mail to.  The argument may be a host
+	      name  or	a network address.  Every account definition must con-
+	      tain this command.
+
+       port number
+	      The port that the SMTP server listens on.   The  default	is  25
+	      ("smtp"),  unless TLS without STARTTLS is used, in which case it
+	      is 465 ("smtps").
+
+       timeout (off|seconds)
+	      Set or unset a network timeout, in  seconds.  The  argument  off
+	      means  that no timeout will be set, which means that the operat-
+	      ing system default will be used.
+
+       proxy_host [IP|hostname]
+	      Use a SOCKS proxy. All network  traffic  will  go  through  this
+	      proxy  host,  including DNS queries, except for a DNS query that
+	      might be necessary to resolve the proxy host name  itself  (this
+	      can  be  avoided	by using an IP address as proxy host name). An
+	      empty hostname argument disables	proxy  usage.	The  supported
+	      SOCKS  protocol  version is 5. If you want to use this with Tor,
+	      see also "Using msmtp with Tor" below.
+
+       proxy_port [number]
+	      Set the port number for the proxy host. An empty number argument
+	      resets this to the default port.
+
+       protocol (smtp|lmtp)
+	      Set  the	protocol to use. Currently only SMTP and LMTP are sup-
+	      ported. SMTP is the default. See	the  port  command  above  for
+	      default ports.
+
+       domain argument
+	      Use  this  command to set the argument of the SMTP EHLO (or LMTP
+	      LHLO) command.  The default is localhost, which  is  stupid  but
+	      usually  works.  Try to change the default if mails get rejected
+	      due to anti-SPAM measures. Possible choices are the domain  part
+	      of your mail address (provider.example for joe@provider.example)
+	      or the fully qualified domain name of your host (if  available).
+
+       auth [(on|off|method)]
+	      Enable  or disable authentication and optionally choose a method
+	      to use. The argument on chooses a method automatically.
+	      Usually a user name and a password are used for  authentication.
+	      The  user  name  is specified in the configuration file with the
+	      user command. There are five different methods  to  specify  the
+	      password:
+	      1. Add the password to the system key ring.  Currently supported
+	      key rings are the Gnome key ring and the Mac OS X Keychain.  For
+	      the Gnome key ring, use the command secret-tool (part of Gnome's
+	      libsecret) to store passwords: secret-tool  store  --label=msmtp
+	      host  mail.freemail.example service smtp user joe.smith.	On Mac
+	      OS X, use the Keychain Access GUI application.  The account name
+	      is   same   as   the  user  name.  The  keychain	item  name  is
+	      smtp://<hostname> where <hostname> matches the host argument.
+	      2. Store the password in an encrypted files, and use  passworde-
+	      val to specify a command to decrypt that file, e.g. using GnuPG.
+	      See EXAMPLES.
+	      3. Store the password in the configuration file using the  pass-
+	      word  command.   (Usually  it  is  not considered a good idea to
+	      store passwords in plain text files.  If you do it  anyway,  you
+	      must make sure that the file can only be read by yourself.)
+	      4. Store the password in ~/.netrc. This method is probably obso-
+	      lete.
+	      5. Type the password into the terminal when it is required.
+	      It is recommended to use method 1 or 2.
+	      Multiple authentication methods exist. Most servers support only
+	      some  of	them.  Historically, sophisticated methods were devel-
+	      oped to protect passwords from being  sent  unencrypted  to  the
+	      server,  but  nowadays everybody needs TLS anyway, so the simple
+	      methods suffice since the whole session is protected. A suitable
+	      authentication  method  is chosen automatically, and when TLS is
+	      disabled for some reason, only methods that avoid sending  clear
+	      text passwords are considered.
+	      The  following  user  / password methods are supported: plain (a
+	      simple plain text method, with  base64  encoding,  supported  by
+	      almost  all  servers),  scram-sha-1 (a method that avoids clear-
+	      text passwords), cram-md5 (an obsolete method that avoids clear-
+	      text  passwords), digest-md5 (an overcomplicated obsolete method
+	      that avoids clear-text passwords, but is not  considered	secure
+	      anymore), login (a non-standard clear-text method similar to but
+	      worse than the plain  method),  ntlm  (an  obscure  non-standard
+	      method  that  is	now considered broken; it sometimes requires a
+	      special domain parameter passed via ntlmdomain).
+	      There are currently two  authentication  methods	that  are  not
+	      based on user / password information and have to be chosen manu-
+	      ally: external (the authentication happens outside of the proto-
+	      col,  typically  by  sending  a  TLS client certificate, and the
+	      method merely confirms that this authentication succeeded),  and
+	      gssapi  (the Kerberos framework takes care of secure authentica-
+	      tion, only a user name is required).
+	      It depends on the underlying authentication library and its ver-
+	      sion whether a particular method is supported or not. Use --ver-
+	      sion to find out which methods are supported.
+
+       user login
+	      Set the user name for authentication. An empty  argument	unsets
+	      the user name.
+
+       password secret
+	      Set  the	password  for authentication. An empty argument unsets
+	      the password.  Consider using the passwordeval command or a  key
+	      ring  instead of this command, to avoid storing plain text pass-
+	      words in the configuration file.
+
+       passwordeval [eval]
+	      Set the password for authentication to the  output  (stdout)  of
+	      the  command  eval.   This  can be used e.g. to decrypt password
+	      files on the fly or to query key rings, and thus to avoid  stor-
+	      ing plain text passwords.
+
+       ntlmdomain [domain]
+	      Set  a  domain for the ntlm authentication method. This is obso-
+	      lete.
+
+       tls [(on|off)]
+	      Enable or disable TLS (also known as SSL)  for  secured  connec-
+	      tions.  You also need tls_trust_file or tls_fingerprint, and for
+	      some servers you may need to disable tls_starttls.
+	      Transport Layer Security (TLS) "... provides communications pri-
+	      vacy  over  the  Internet.   The	protocol  allows client/server
+	      applications to communicate in a way that is designed to prevent
+	      eavesdropping,   tampering,  or  message	forgery"  (quote  from
+	      RFC2246).
+	      A server can use TLS in one of two modes: via a STARTTLS command
+	      (the session starts with the normal protocol initialization, and
+	      TLS is then started using the protocol's STARTTLS  command),  or
+	      immediately  (TLS is initialized before the normal protocol ini-
+	      tialization; this requires a separate port). The first  mode  is
+	      the  default, but you can switch to the second mode by disabling
+	      tls_starttls.
+	      When TLS is started, the server sends a certificate to  identify
+	      itself.  To  verify  the	server	identity,  a client program is
+	      expected to check that the certificate is formally  correct  and
+	      that it was issued by a Certificate Authority (CA) that the user
+	      trusts. (There can also be certificate chains with  intermediate
+	      CAs.)
+	      The  list  of  trusted CAs is specified using the tls_trust_file
+	      command.	Usually there is some system-wide default file	avail-
+	      able,  e.g.   /etc/ssl/certs/ca-certificates.crt on Debian-based
+	      systems, but you can also choose to select the trusted CAs your-
+	      self.
+	      One practical problem with this approach is that the client pro-
+	      gram should also	check  if  the	server	certificate  has  been
+	      revoked  for  some  reason,  using a Certificate Revocation List
+	      (CRL). A CRL file can be specified using the  tls_crl_file  com-
+	      mand,  but getting the relevant CRL files and keeping them up to
+	      date is not straightforward. You are basically on your own.
+	      A much more serious and fundamental problem is is that you  need
+	      to trust CAs.  Like any other organization, a CA can be incompe-
+	      tent, malicious, subverted by bad people, or forced  by  govern-
+	      ment  agencies to compromise end users without telling them. All
+	      of these things happened and continue to happen worldwide.   The
+	      idea  to	have central organizations that have to be trusted for
+	      your communication to be secure is fundamentally broken.
+	      Instead of putting trust in a CA, you can choose to trust only a
+	      single  certificate  for	the server you want to connect to. For
+	      that purpose, specify the certificate fingerprint with  tls_fin-
+	      gerprint. This makes sure that no man-in-the-middle can fake the
+	      identity of the server by presenting you a  fraudulent  certifi-
+	      cate  issued  by	some CA that happens to be in your trust list.
+	      However, you have to update the fingerprint whenever the	server
+	      certificate  changes,  and you have to make sure that the change
+	      is legitimate each time, e.g. when the old certificate  expired.
+	      This is inconvenient, but it's the price to pay.
+	      Information  about  a  server  certificate  can be obtained with
+	      --serverinfo --tls --tls-certcheck=off. This includes the issuer
+	      CA   of	the   certificate  (so	you  can  trust  that  CA  via
+	      tls_trust_file), and the fingerprint of the certificate (so  you
+	      can trust that particular certificate via tls_fingerprint).
+	      TLS also allows the server to verify the identity of the client.
+	      For this purpose, the client has to present a certificate issued
+	      by a CA that the server trusts. To present that certificate, the
+	      client also needs the matching key file. You can	set  the  cer-
+	      tificate	and  key  files  using tls_cert_file and tls_key_file.
+	      This mechanism can also be used to authenticate users,  so  that
+	      traditional user / password authentication is not necessary any-
+	      more. See the external mechanism in auth.
+
+       tls_starttls [(on|off)]
+	      Choose the TLS variant: start TLS from within the  session  (on,
+	      default), or tunnel the session through TLS (off).
+
+       tls_trust_file file
+	      Activate	server certificate verification using a list of truted
+	      Certification Authorities (CAs). The file must be in PEM format.
+	      Some   systems   provide	 a   system-wide  default  file,  e.g.
+	      /etc/ssl/certs/ca-certificates.crt on Debian-based systems  with
+	      the  ca-certificates  package.  An empty argument disables this.
+	      You should also use tls_crl_file.
+
+       tls_crl_file [file]
+	      Set a certificate revocation list (CRL) file for TLS,  to  check
+	      for revoked certificates. An empty argument disables this.
+
+       tls_fingerprint [fingerprint]
+	      Set  the	fingerprint of a single certificate to accept for TLS.
+	      This certificate will be trusted regardless of its contents. The
+	      fingerprint  can	be either an SHA1 (recommended) or an MD5 fin-
+	      gerprint in the format 01:23:45:67:.... Use  --serverinfo  --tls
+	      --tls-certcheck=off  to get the server certificate fingerprints.
+
+       tls_key_file file
+	      Send a client certificate to the server (use this together  with
+	      tls_cert_file}).	 The  file  must  contain the private key of a
+	      certificate in PEM format. An empty argument disables this  fea-
+	      ture.
+
+       tls_cert_file file
+	      Send  a client certificate to the server (use this together with
+	      tls_key_file).  The file must contain a certificate in PEM  for-
+	      mat. An empty argument disables this feature.
+
+       tls_certcheck [(on|off)]
+	      Enable  or  disable  checks of the server certificate.  WARNING:
+	      When the checks are disabled, TLS sessions will be vulnerable to
+	      man-in-the-middle attacks!
+
+       tls_min_dh_prime_bits [bits]
+	      Set  or  unset  the  minimum number of Diffie-Hellman (DH) prime
+	      bits that mpop will accept for TLS sessions.  The default is set
+	      by  the  TLS library and can be selected by using an empty argu-
+	      ment to this command.  Only lower the default  (for  example  to
+	      512  bits)  if  there  is no other way to make TLS work with the
+	      remote server.
+
+       tls_priorities [priorities]
+	      Set the priorities for TLS sessions. The default is set  by  the
+	      TLS  library  and  can be selected by using an empty argument to
+	      this command.  See the GnuTLS documentation of the gnutls_prior-
+	      ity_init function for a description of the priorities string.
+
+       from envelope_from
+	      Set  the	envelope-from  address. This address will only be used
+	      when auto_from is off.
+
+       auto_from [(on|off)]
+	      Enable or disable automatic envelope-from addresses. The default
+	      is  off.	 When  enabled,  an  envelope-from address of the form
+	      user@domain will be generated.  The local part will  be  set  to
+	      USER  or,  if  that  fails, to LOGNAME or, if that fails, to the
+	      login name of the current user.  The domain part can be set with
+	      the  maildomain  command.  If the maildomain is empty, the enve-
+	      lope-from address will only consist of the  user	name  and  not
+	      have  a  domain  part. When auto_from is disabled, the envelope-
+	      from address must be set explicitly.
+
+       maildomain [domain]
+	      Set a  domain  part  for	the  generation  of  an  envelope-from
+	      address.	This is only used when auto_from is on. The domain may
+	      be empty.
+
+       dsn_notify (off|condition)
+	      This command sets the condition(s) under which the  mail	system
+	      should  send  DSN  (Delivery  Status Notification) messages. The
+	      argument off disables explicit DSN  requests,  which  means  the
+	      mail  system  decides  when  to  send  DSN messages. This is the
+	      default.	The condition must be never, to never request  notifi-
+	      cation, or a comma separated list (no spaces!) of one or more of
+	      the following: failure, to request notification on  transmission
+	      failure, delay, to be notified of message delays, success, to be
+	      notified of successful transmission. The SMTP server  must  sup-
+	      port the DSN extension.
+
+       dsn_return (off|amount)
+	      This  command  controls how much of a mail should be returned in
+	      DSN (Delivery Status Notification) messages.  The  argument  off
+	      disables	explicit  DSN  requests,  which  means the mail system
+	      decides how much of a mail it returns in DSN messages.  This  is
+	      the  default.   The  amount  must be headers, to just return the
+	      message headers, or full, to return the  full  mail.   The  SMTP
+	      server must support the DSN extension.
+
+       add_missing_from_header [(on|off)]
+	      This  command  controls whether to add a From header if the mail
+	      does not have one.  The default is to add it.
+
+       add_missing_date_header [(on|off)]
+	      This command controls whether to add a Date header if  the  mail
+	      does not have one.  The default is to add it.
+
+       remove_bcc_headers [(on|off)]
+	      This command controls whether to remove Bcc headers. The default
+	      is to remove them.
+
+       logfile [file]
+	      An empty argument disables logging (this is the default).
+	      When logging is enabled by  choosing  a  log  file,  msmtp  will
+	      append  one  line to the log file for each mail it tries to send
+	      via the account that this log file was chosen for.
+	      The line will include the following information: date and  time,
+	      host  name  of  the  SMTP  server, whether TLS was used, whether
+	      authentication was  used,  authentication  user  name  (only  if
+	      authentication   is   used),  envelope-from  address,  recipient
+	      addresses, size of the mail as transferred to the  server  (only
+	      if the delivery succeeded), SMTP status code and SMTP error mes-
+	      sage (only in case of failure and only if available), error mes-
+	      sage  (only in case of failure and only if available), exit code
+	      (from sysexits.h; EX_OK indicates success).
+	      If the filename is a dash (-), msmtp prints the log line to  the
+	      standard output.
+
+       syslog [(on|off|facility)]
+	      Enable  or  disable  syslog  logging. The facility can be one of
+	      LOG_USER, LOG_MAIL, LOG_LOCAL0, ..., LOG_LOCAL7. The default  is
+	      LOG_USER.
+	      Each  time  msmtp tries to send a mail via the account that con-
+	      tains this syslog command, it will log one entry to  the	syslog
+	      service with the chosen facility.
+	      The  line  will  include the following information: host name of
+	      the SMTP server, whether TLS was	used,  whether	authentication
+	      was  used,  envelope-from  address, recipient addresses, size of
+	      the mail as transferred to the server (only if the delivery suc-
+	      ceeded),	SMTP  status code and SMTP error message (only in case
+	      of failure and only if available), error message (only  in  case
+	      of  failure  and only if available), exit code (from sysexits.h;
+	      EX_OK indicates success).
+
+       aliases [file]
+	      Replace local recipients with addresses  in  the	aliases  file.
+	      The  aliases  file  is  a  plain	text  file containing mappings
+	      between a local address and a list of domain addresses.  A local
+	      address  is defined as one without an `@' character and a domain
+	      address is one with an `@' character.  The mappings are  of  the
+	      form:
+		  local: someone@example.com, person@domain.example
+	      Multiple	domain	addresses are separated with commas.  Comments
+	      start with `#' and continue to the end of the line.
+	      The local  address  default  has	special  significance  and  is
+	      matched  if  the local address is not found in the aliases file.
+	      If no default alias is found, then the local address is left  as
+	      is.
+	      An  empty  argument to the aliases command disables the replace-
+	      ment of local addresses.	This is the default.
+
+EXAMPLES
+       Configuration file
+
+       # Example for a user configuration file ~/.msmtprc
+       #
+       # This file focusses on TLS and authentication. Features not used  here
+       include
+       #  logging,  timeouts,  SOCKS  proxies, TLS parameters, Delivery Status
+       Notification
+       # (DSN) settings, and more.
+
+       # Set default values for all following accounts.
+       defaults
+
+       # Use the mail submission port 587 instead of the SMTP port 25.
+       port 587
+
+       # Always use TLS.
+       tls on
+
+       # Set a list of trusted CAs for TLS. You can use a system-wide  default
+       file,
+       #  as  in this example, or download the root certificate of your CA and
+       use that.
+       tls_trust_file /etc/ssl/certs/ca-certificates.crt
+
+       # Additionally, you should use the tls_crl_file command	to  check  for
+       revoked
+       #  certificates, but unfortunately getting revocation lists and keeping
+       them
+       # up to date is not straightforward.
+       #tls_crl_file ~/.tls-crls
+
+       # A freemail service
+       account freemail
+
+       # Host name of the SMTP server
+       host smtp.freemail.example
+
+       #  As  an  alternative  to  tls_trust_file/tls_crl_file,  you  can  use
+       tls_fingerprint
+       #  to pin a single certificate. You have to update the fingerprint when
+       the
+       # server certificate changes, but an attacker  cannot  trick  you  into
+       accepting
+       # a fraudulent certificate. Get the fingerprint with
+       #      $      msmtp	--serverinfo	 --tls	   --tls-certcheck=off
+       --host=smtp.freemail.example
+       tls_fingerprint
+       00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33
+
+       # Envelope-from address
+       from joe_smith@freemail.example
+
+       #  Authentication. The password is given using one of five methods, see
+       below.
+       auth on
+       user joe.smith
+
+       # Password method 1: Add the password to the system  keyring,  and  let
+       msmtp get
+       #  it  automatically.  To set the keyring password using Gnome's libse-
+       cret:
+       # $ secret-tool store --label=msmtp \
+       #   host smtp.freemail.example \
+       #   service smtp \
+       #   user joe.smith
+
+       # Password method 2: Store the password in an encrypted file, and  tell
+       msmtp
+       #  which command to use to decrypt it. This is usually used with GnuPG,
+       as in
+       # this example. Usually gpg-agent will  ask  once  for  the  decryption
+       password.
+       passwordeval gpg2 --no-tty -q -d ~/.msmtp-password.gpg
+
+       #  Password method 3: Store the password directly in this file. Usually
+       it is not
+       # a good idea to store passwords in plain text files. If you do it any-
+       way, at
+       # least make sure that this file can only be read by yourself.
+       #password secret123
+
+       #  Password  method  4:	Store the password in ~/.netrc. This method is
+       probably not
+       # relevant anymore.
+
+       # Password method 5: Do not specify a password. Msmtp will then	prompt
+       you for
+       # it. This means you need to be able to type into a terminal when msmtp
+       runs.
+
+       # A second mail address at the same freemail service
+       account freemail2 : freemail
+       from joey@freemail.example
+
+       # The SMTP server of your ISP
+       account isp
+       host mail.isp.example
+       from smithjoe@isp.example
+       auth on
+       user 12345
+
+       # Set a default account
+       account default : freemail
+
+
+       Using msmtp with Mutt
+
+       Create a configuration file for msmtp and add the  following  lines  to
+       your Mutt configuration file:
+       set sendmail="/path/to/msmtp"
+       set use_from=yes
+       set realname="Your Name"
+       set from=you@example.com
+       set envelope_from=yes
+       The  envelope_from=yes  option  lets  Mutt  use the -f option of msmtp.
+       Therefore msmtp chooses the first account that matches the from address
+       you@example.com.
+       Alternatively, you can use the -a option:
+       set sendmail="/path/to/msmtp -a my-account"
+       Or set everything from the command line (but note that you cannot set a
+       password this way):
+       set sendmail="/path/to/msmtp  --host=mailhub  -f  me@example.com  --tls
+       --tls-trust-file=trust.crt"
+
+       If you have multiple mail accounts in your msmtp configuration file and
+       let Mutt use the -f option to choose the  right	one,  you  can	easily
+       switch accounts in Mutt with the following Mutt configuration lines:
+       macro generic "<esc>1" ":set from=you@example.com"
+       macro generic "<esc>2" ":set from=you@your-employer.example"
+       macro generic "<esc>3" ":set from=you@some-other-provider.example"
+
+
+       Using msmtp with mail
+
+       Define a default account, and put the following in your ~/.mailrc:
+       set sendmail="/path/to/msmtp"
+
+
+       Using msmtp with Tor
+
+       Use the following settings:
+       proxy_host 127.0.0.1
+       proxy_port 9050
+       tls on
+       Use an IP address as proxy host name, so that msmtp does not leak a DNS
+       query when resolving it.
+       TLS is required to prevent exit hosts from reading your	SMTP  session.
+       You  also  need	tls_trust_file	or tls_fingerprint to check the server
+       identity.
+       Do not set domain to something that you do not want to reveal  (do  not
+       set it at all if possible).
+
+
+       Aliases file
+
+       # Example aliases file
+
+       # Send root to Joe and Jane
+       root: joe_smith@example.com, jane_chang@example.com
+
+       # Send cron to Mark
+       cron: mark_jones@example.com
+
+       # Send everything else to admin
+       default: admin@domain.example
+
+
+FILES
+       SYSCONFDIR/msmtprc
+	      System  configuration  file.  Use  --version  to	find  out what
+	      SYSCONFDIR is on your platform.
+
+       ~/.msmtprc
+	      User configuration file.
+
+       ~/.netrc and SYSCONFDIR/netrc
+	      The netrc file contains login information. Before prompting  for
+	      a   password,   msmtp   will   search   it   in	~/.netrc   and
+	      SYSCONFDIR/netrc.
+
+ENVIRONMENT
+       USER, LOGNAME
+	      These variables override the user's login name when constructing
+	      an envelope-from address. LOGNAME is only used if USER is unset.
+
+       TMPDIR Directory to create temporary files in. If this is unset, a sys-
+	      tem specific default directory is used.
+	      A  temporary  file is only created when the -t/--read-recipients
+	      or --read-envelope-from option is used. The file is then used to
+	      buffer  the  headers  of the mail (but not the body, so the file
+	      won't get very large).
+
+       EMAIL, SMTPSERVER
+	      These environment variables are used only if neither --host  nor
+	      --account is used and there is no default account defined in the
+	      configuration files. In this case, the host name is  taken  from
+	      SMTPSERVER,  and	the envelope from address is taken from EMAIL,
+	      unless overridden by --from or  --read-envelope-from.  Currently
+	      SMTPSERVER  must	contain  a plain host name (no URL), and EMAIL
+	      must contain a plain address (no names  or  additional  informa-
+	      tion).
+
+AUTHORS
+       msmtp was written by Martin Lambers <marlam@marlam.de>.
+       Other  authors  are  listed in the AUTHORS file in the source distribu-
+       tion.
+
+SEE ALSO
+       sendmail(8), netrc(5) or ftp(1)
+
+
+
+				    2015-01			      MSMTP(1)

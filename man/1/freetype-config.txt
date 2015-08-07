@@ -1,0 +1,79 @@
+FREETYPE-CONFIG(1)					    FREETYPE-CONFIG(1)
+
+
+
+NAME
+       freetype-config - Get information about a libfreetype installation
+
+SYNOPSIS
+       freetype-config [options]
+
+DESCRIPTION
+       freetype-config	returns  information  needed for compiling and linking
+       programs with the FreeType library, such as linker flags  and  compila-
+       tion  parameters.   Alternatively,  it can be used to query information
+       about the FreeType library version installed on the system, such as the
+       installation (directory path) prefix or the FreeType version number.
+
+       This program is part of the FreeType package.
+
+OPTIONS
+       There  are  two types of options: output/display selection options, and
+       path override options.
+
+   Output selection options
+       Only one of the output selection options should be given at  each  pro-
+       gram invocation.
+
+       --prefix
+	      Return  the  prefix value of the installed FreeType library (the
+	      default prefix will be `/usr' in most  cases  for  distribution-
+	      installed packages).
+
+       --exec-prefix
+	      Return  the  executable  prefix  value of the installed FreeType
+	      library (will often be the same as the prefix value).
+
+       --ftversion
+	      Return the FreeType version number.
+
+       --version
+	      Return the `libtool version' of the FreeType library.
+
+       --libtool
+	      Return the library name for linking with libtool.
+
+       --libs Return compiler flags for linking with  the  installed  FreeType
+	      library.
+
+       --cflags
+	      Return  compiler	flags  for  compiling  against	the  installed
+	      FreeType library.
+
+       --static
+	      Make command line options display flags for static linking.
+
+   Path override options
+       These affect any selected output option,  except  the  libtool  version
+       returned by `--version'.
+
+       --prefix=PREFIX
+	      Override `--prefix' value with PREFIX.
+
+       --exec-prefix=EPREFIX
+	      Override `--exec-prefix' value with EPREFIX.
+
+BUGS
+       In  case  the  libraries  FreeType links to are located in non-standard
+       directories, the output from option --libs might be incomplete.	It  is
+       thus  recommended  to use the pkg-config(1) interface instead, which is
+       able to correctly resolve all dependencies.
+
+AUTHOR
+       This    manual	 page	 was	contributed    by    Nis     Martensen
+       <nis.martensen@web.de>,	with  further  refinements  from  the FreeType
+       team.
+
+
+
+FreeType 2.6			   June 2015		    FREETYPE-CONFIG(1)

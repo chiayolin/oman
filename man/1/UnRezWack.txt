@@ -1,0 +1,38 @@
+
+UNREZWACK(1)		  BSD General Commands Manual		  UNREZWACK(1)
+
+NAME
+     /usr/bin/UnRezWack -- Split a RezWack file into separate data and
+     resource files. (DEPRECATED)
+
+SYNOPSIS
+     /usr/bin/UnRezWack file -o outFileNameBase [-f]
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/UnRezWack, were
+     deprecated with Xcode 6.
+
+     The /usr/bin/UnRezWack command takes a file created by RezWack(1) as its
+     input file (it does not read Standard In) and divides it into two files,
+     one containing the data fork and one containing the resource data.
+     /usr/bin/UnRezWack takes the following flags and arguments:
+
+     file     Path to the input file.  This must be a file created with
+	      RezWack(1).
+
+     -o outFileNameBase
+	      Base path of the output files.  UnRezWack will create two files
+	      at this base path, one with the extension ".data" and one with
+	      the extension ".qtr".  The resource data will be written to the
+	      data fork of the resource data file; it is not possible to cre-
+	      ate a HFS or Extended HFS resource fork file using UnRezWack.
+
+	      If either file exists, /usr/bin/UnRezWack will exit with error 2
+	      unless the -f flag is provided.
+
+     -f       Force overwriting of output files.
+
+SEE ALSO
+     Rez(1), DeRez(1), RezWack(1), SplitForks(1)
+
+Mac OS X			April 12, 2004			      Mac OS X

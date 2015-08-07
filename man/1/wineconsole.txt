@@ -1,0 +1,35 @@
+WINECONSOLE(1)			 Wine Programs			WINECONSOLE(1)
+
+
+
+NAME
+       wineconsole - The Wine console
+
+SYNOPSIS
+       wineconsole [option] command
+
+DESCRIPTION
+       wineconsole  is	the Wine console manager, used to run console commands
+       and applications. It allows running the console either in  the  current
+       terminal (curses) or in a newly made window (user).
+
+OPTIONS
+       --backend={user|curses}
+	      If user is chosen, a new window will be created for the console.
+	      The curses option will make wineconsole try to setup the current
+	      terminal as a Wine console.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       wineconsole  is	part  of  the  Wine  distribution,  which is available
+       through WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			WINECONSOLE(1)

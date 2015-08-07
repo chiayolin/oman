@@ -1,0 +1,40 @@
+MAILSTAT(1)							   MAILSTAT(1)
+
+
+
+NAME
+       mailstat - shows mail-arrival statistics
+
+SYNOPSIS
+       mailstat [-klmots] [logfile]
+
+DESCRIPTION
+       mailstat  parses  a  procmail-generated $LOGFILE and displays a summary
+       about the messages delivered to all folders (total size, average  size,
+       nr  of messages).  The $LOGFILE is truncated to zero length, unless the
+       -k option is used.  Exit code 0 if mail arrived, 1 if no mail  arrived.
+
+OPTIONS
+       -k     keep logfile intact
+
+       -l     long display format
+
+       -m     merge any errors into one line
+
+       -o     use the old logfile
+
+       -t     terse display format
+
+       -s     silent in case of no mail
+
+NOTES
+       Customise  to  your heart's content, this program is only provided as a
+       guideline.
+
+AUTHOR
+       This manual page was written by Santiago Vila <sanvila@debian.org>  for
+       the Debian GNU/Linux distribution (but may be used by others).
+
+
+
+								   MAILSTAT(1)

@@ -1,0 +1,57 @@
+NPM-DOCS(1)							   NPM-DOCS(1)
+
+
+
+NAME
+       npm-docs - Docs for a package in a web browser maybe
+
+SYNOPSIS
+	 npm docs [<pkgname> [<pkgname> ...]]
+	 npm docs (with no args in a package dir)
+	 npm home [<pkgname> [<pkgname> ...]]
+	 npm home (with no args in a package dir)
+
+DESCRIPTION
+       This command tries to guess at the likely location of a package's docu-
+       mentation URL, and then tries to open it  using	the  --browser	config
+       param.  You can pass multiple package names at once. If no package name
+       is provided, it will search for a package.json in  the  current	folder
+       and use the name property.
+
+CONFIGURATION
+   browser
+       o Default: OS X: "open", Windows: "start", Others: "xdg-open"
+
+       o Type: String
+
+
+       The browser that is called by the npm docs command to open websites.
+
+   registry
+       o Default: https://registry.npmjs.org/
+
+       o Type: url
+
+
+       The base URL of the npm package registry.
+
+SEE ALSO
+       o npm help view
+
+       o npm help publish
+
+       o npm help 7 registry
+
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+       o npm help 5 package.json
+
+
+
+
+
+				   June 2015			   NPM-DOCS(1)

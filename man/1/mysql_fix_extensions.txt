@@ -1,0 +1,57 @@
+MYSQL_FIX_EXTENSI(1)	     MySQL Database System	  MYSQL_FIX_EXTENSI(1)
+
+
+
+NAME
+       mysql_fix_extensions - normalize table file name extensions
+
+SYNOPSIS
+       mysql_fix_extensions data_dir
+
+DESCRIPTION
+	   Note
+	   This utility is deprecated in MySQL 5.6.17 and removed in MySQL 5.7
+
+       mysql_fix_extensions converts the extensions for MyISAM (or ISAM) table
+       files to their canonical forms. It looks for files with extensions
+       matching any lettercase variant of .frm, .myd, .myi, .isd, and .ism and
+       renames them to have extensions of .frm, .MYD, .MYI, .ISD, and .ISM,
+       respectively. This can be useful after transferring the files from a
+       system with case-insensitive file names (such as Windows) to a system
+       with case-sensitive file names.
+
+       Invoke mysql_fix_extensions like this, where data_dir is the path name
+       to the MySQL data directory.
+
+	   shell> mysql_fix_extensions data_dir
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		  MYSQL_FIX_EXTENSI(1)

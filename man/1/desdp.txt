@@ -1,0 +1,31 @@
+
+DESDP(1)		  BSD General Commands Manual		      DESDP(1)
+
+NAME
+     desdp -- scripting definition generator
+
+SYNOPSIS
+     desdp application
+
+DESCRIPTION
+     desdp generates a scripting definition (``sdef'') from the specified
+     scriptable application and writes it to standard output.  The original
+     dictionary may be either an aete resource or a set of Cocoa suite defini-
+     tion files (scriptSuite/scriptTerminology pairs).
+
+     desdp is primarily useful for developers with an existing scriptable
+     application who want a shortcut to creating an sdef(5) file.  While the
+     resulting sdef will contain all the information in the original dictio-
+     nary, it will probably not be perfect, since sdef(5) is more expressive
+     than either of the older aete or suite definition formats.  For instance,
+     aete cannot specify which commands an object responds to, and suite defi-
+     nitions cannot specify the ordering of terms.
+
+SEE ALSO
+     sdef(5), sdp(1)
+
+BUGS
+     desdp does not yet correctly support Cocoa ``Synonym'' sections or syn-
+     onymous terms or codes in aete.
+
+Mac OS X			 June 6, 2002			      Mac OS X

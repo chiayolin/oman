@@ -1,0 +1,138 @@
+MSIEXEC(1)			 Wine Programs			    MSIEXEC(1)
+
+
+
+NAME
+       msiexec - Wine MSI Installer
+
+SYNOPSIS
+       msiexec command {required parameter} [optional parameter]...
+
+DESCRIPTION
+       msiexec	is  the  Wine  MSI installer, which is command line compatible
+       with its Microsoft Windows counterpart.
+
+INSTALL OPTIONS
+       /i {package|productcode} [property=foobar]
+	      Install {package|productcode} with property=foobar.
+
+       /a {package|productcode} [property=foobar]
+	      Install {package|productcode} in administrator (network) mode.
+
+       /x {package|productcode} [property=foobar]
+	      Uninstall {package|productcode} with property=foobar.
+
+       /uninstall {package|productcode} [property=foobar]
+	      Same as /x.
+
+REPAIR OPTIONS
+       /f [p|o|e|d|c|a|u|m|s|v] {package|productcode}
+	      Repair an installation. Default options are 'omus'
+
+       p      Reinstall the file if it is missing.
+
+       o      Reinstall the file if it is missing or if any older  version  is
+	      installed.
+
+       e      Reinstall the file if it is missing, or if the installed version
+	      is equal or older.
+
+       d      Reinstall the file if it is missing or a	different  version  is
+	      installed.
+
+       c      Reinstall  the  file  if	it is missing or the checksum does not
+	      match.
+
+       a      Reinstall all files.
+
+       u      Rewrite all required user registry entries.
+
+       m      Rewrite all required machine registry entries.
+
+       s      Overwrite any conflicting shortcuts.
+
+       v      Recache the local installation package from the source installa-
+	      tion package.
+
+PATCHING
+       /p {patch} [property=foobar]
+	      Apply  patch.  This  should  not	be  used with any of the above
+	      options.
+
+UI CONTROL
+       /q[n|b|r|f]
+	      These options  allow  changing  the  behavior  of  the  UI  when
+	      installing MSI packages.
+
+       /q     Show no UI.
+
+       /qn    Same as /q.
+
+       /qb    Show a basic UI.
+
+       /qr    Shows a reduced user UI.
+
+       /qf    Shows a full UI.
+
+LOGGING
+       /l[*][i|w|e|a|r|u|c|m|o|p|v][+|!] {logfile}
+	      Enable logging to logfile. Defaults are 'iwearmo'.
+
+       *      Enable all logging options except 'v' and 'x'.
+
+       i      Log status messages.
+
+       w      Log nonfatal warnings.
+
+       e      Log all error messages.
+
+       a      Log start of actions.
+
+       r      Log action specifc records.
+
+       u      Log user requests.
+
+       c      Log initial UI parameters.
+
+       m      Log out of memory errors.
+
+       o      Log out of diskspace messages.
+
+       p      Log terminal properties.
+
+       v      Verbose logging.
+
+       x      Log extra debugging messages.
+
+       +      Append logging to existing file.
+
+       !      Flush each line to log.
+
+OTHER OPTIONS
+       /h     Show help.
+
+       /j[u|m] {package|productcode} [/t transform] [/g languageid]
+	      Advertise  package  optionally  with  /t	transform  and /g lan-
+	      guageid.
+
+       /y     Register MSI service.
+
+       /z     Unregister MSI service.
+
+       /?     Same as /h.
+
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       msiexec is part of the Wine distribution, which	is  available  through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			    MSIEXEC(1)

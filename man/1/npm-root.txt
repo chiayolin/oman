@@ -1,0 +1,31 @@
+NPM-ROOT(1)							   NPM-ROOT(1)
+
+
+
+NAME
+       npm-root - Display npm root
+
+SYNOPSIS
+	 npm root
+
+DESCRIPTION
+       Print the effective node_modules folder to standard out.
+
+SEE ALSO
+       o npm help prefix
+
+       o npm help bin
+
+       o npm help 5 folders
+
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+
+
+
+
+				   June 2015			   NPM-ROOT(1)

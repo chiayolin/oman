@@ -1,0 +1,67 @@
+caca-config(1)							caca-config(1)
+
+
+
+NAME
+       caca-config  - script to get information about the installed version of
+       libcaca
+
+SYNOPSIS
+       caca-config [ --prefix= DIR] [ --exec-prefix=  DIR]  [  --version  ]  [
+       --libs ] [ --cflags ]
+
+DESCRIPTION
+       caca-config  is a tool that is used to configure and determine the com-
+       piler and linker flags that should be used to compile and link progams,
+       libraries, and plugins that use libcaca.
+
+       The  use of caca-config is deprecated. The more generic tool pkg-config
+       should be used instead.
+
+OPTIONS
+       --cflags
+	      Print the compiler flags that are necessary to compile a program
+	      or library that uses libcaca.
+
+       --exec-prefix=DIR
+	      If  specified,  use  DIR instead of the installation exec prefix
+	      that libcaca was build with when computing the  output  for  the
+	      --cflags	and  --libs  options.	This  option must be specified
+	      before any of the --cflags and --libs options.
+
+       --libs Print the linker flags that are necessary to link a  program  or
+	      library that uses libcaca.
+
+       --prefix=DIR
+	      If specified, use PREFIX instead of the installation prefix that
+	      libcaca was  built  with	when  computing  the  output  for  the
+	      --cflags	and  --libs options.  This option is also used for the
+	      exec prefix if --exec-prefix was	not  specified.   This	option
+	      must be specified before any of the --cflags and --libs options.
+
+       --version
+	      Prints the currently installed version of  libcaca  on  standard
+	      output.
+
+EXAMPLES
+       gcc -o main.o $(caca-config --cflags) -c main.c
+	      is  how you might use caca-config to compile a C source file for
+	      an executable program.
+
+       gcc -o my_app $(caca-config --libs) main.o util.o
+	      is how you might use caca-config to link compiled  objects  into
+	      an executable program.
+
+SEE ALSO
+       pkg-config(1)
+
+AUTHOR
+       The libcaca library was written by Sam Hocevar <sam@hocevar.net>.
+
+       This manual page was written for sdl-config by Branden Robinson, origi-
+       nally for Progeny Linux Systems, Inc., and the Debian Project.  It  was
+       adapted to libcaca by Sam Hocevar.
+
+
+
+libcaca 			  2003-11-22			caca-config(1)

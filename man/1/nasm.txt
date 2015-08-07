@@ -1,0 +1,271 @@
+NASM(1) 							       NASM(1)
+
+
+
+NAME
+       nasm - the Netwide Assembler, a portable 80x86 assembler
+
+SYNOPSIS
+       nasm [ -f format ] [ -o outfile ] [ options...  ] infile
+       nasm -h
+       nasm -r
+
+DESCRIPTION
+       The  nasm  command  assembles the file infile and directs output to the
+       file outfile if specified. If  outfile  is  not	specified,  nasm  will
+       derive a default output file name from the name of its input file, usu-
+       ally by appending `.o' or `.obj', or by removing all extensions	for  a
+       raw binary file. Failing that, the output file name will be `nasm.out'.
+
+   OPTIONS
+       -h     Causes nasm to exit immediately, after giving a summary  of  its
+	      invocation  options,  and  listing all its supported output file
+	      formats.
+
+       -a     Causes nasm to assemble  the  given  input  file	without  first
+	      applying the macro preprocessor.
+
+       -e     Causes  nasm  to	preprocess the given input file, and write the
+	      output to stdout (or the specified output file  name),  and  not
+	      actually assemble anything.
+
+       -M     Causes  nasm  to	output	Makefile-style dependencies to stdout;
+	      normal output is suppressed.
+
+       -E filename
+	      Causes nasm to redirect error messages to filename.  This option
+	      exists  to support operating systems on which stderr is not eas-
+	      ily redirected.
+
+       -r     Causes nasm to exit immediately, after  displaying  its  version
+	      number.  (obsolete)
+
+       -v     Causes  nasm  to	exit immediately, after displaying its version
+	      number.
+
+       -f format
+	      Specifies the output file format. Formats include bin,  to  pro-
+	      duce  flat-form  binary files, and aout and elf to produce Linux
+	      a.out and ELF object files, respectively.
+
+       -o outfile
+	      Specifies a precise name for the output file, overriding	nasm's
+	      default means of determining it.
+
+       -l listfile
+	      Causes  an assembly listing to be directed to the given file, in
+	      which the original source is displayed on the  right  hand  side
+	      (plus the source for included files and the expansions of multi-
+	      line macros) and the generated code is shown in hex on the left.
+
+       -s     Causes  nasm to send its error messages and/or help text to std-
+	      out instead of stderr.
+
+       -w[+-]foo
+	      Causes nasm to enable or disable certain classes of warning mes-
+	      sages,  for  example  -w+orphan-labels  or  -w-macro-params  to,
+	      respectively, enable warnings about labels  alone  on  lines  or
+	      disable  warnings about incorrect numbers of parameters in macro
+	      calls.
+
+       -I directory
+	      Adds a directory to the  search  path  for  include  files.  The
+	      directory  specification	must include the trailing slash, as it
+	      will be directly prepended to the name of the include file.
+
+       -i directory
+	      Same as the -I option.
+
+       -P file
+	      Specifies a file to be pre-included, before the main source file
+	      starts to be processed.
+
+       -p file
+	      Same as the -P option.
+
+       -D macro[=value]
+	      Pre-defines a single-line macro.
+
+       -d macro[=value]
+	      Same as the -D option.
+
+       -U macro
+	      Undefines a single-line macro.
+
+       -u macro
+	      Same as the -U option.
+
+
+   SYNTAX
+       This  man  page	does  not fully describe the syntax of nasm's assembly
+       language, but does give a summary of the differences from other	assem-
+       blers.
+
+       Registers  have	no  leading  `%'  sign, unlike gas, and floating-point
+       stack registers are referred to as st0, st1, and so on.
+
+       Floating-point instructions may use either the single-operand  form  or
+       the double. A TO keyword is provided; thus, one could either write
+
+		      fadd st0,st1
+		      fadd st1,st0
+
+       or one could use the alternative single-operand forms
+
+		      fadd st1
+		      fadd to st1
+
+       Uninitialised  storage is reserved using the RESB, RESW, RESD, RESQ and
+       REST pseudo-opcodes, each taking one parameter which gives  the	number
+       of bytes, words, doublewords, quadwords or ten-byte words to reserve.
+
+       Repetition  of data items is not done by the DUP keyword as seen in DOS
+       assemblers, but by the use of the TIMES prefix, like this:
+
+	     message: times 3 db 'abc'
+		      times 64-$+message db 0
+
+       which defines the string `abcabcabc', followed by the right  number  of
+       zero bytes to make the total length up to 64 bytes.
+
+       Symbol  references  are	always	understood  to	be immediate (i.e. the
+       address of the symbol), unless square brackets are used, in which  case
+       the contents of the memory location are used. Thus:
+
+		      mov ax,wordvar
+
+       loads AX with the address of the variable `wordvar', whereas
+
+		      mov ax,[wordvar]
+		      mov ax,[wordvar+1]
+		      mov ax,[es:wordvar+bx]
+
+       all refer to the contents of memory locations. The syntaxes
+
+		      mov ax,es:wordvar[bx]
+		      es mov ax,wordvar[1]
+
+       are not legal at all, although the use of a segment register name as an
+       instruction prefix is valid, and can be used with instructions such  as
+       LODSB which can't be overridden any other way.
+
+       Constants may be expressed numerically in most formats: a trailing H, Q
+       or B denotes hex, octal or binary respectively, and a leading  `0x'  or
+       `$'  denotes  hex  as  well. Leading zeros are not treated specially at
+       all.  Character constants may be enclosed in single or  double  quotes;
+       there is no escape character. The ordering is little-endian (reversed),
+       so that the  character  constant  'abcd'  denotes  0x64636261  and  not
+       0x61626364.
+
+       Local  labels  begin  with a period, and their `locality' is granted by
+       the assembler prepending the name of  the  previous  non-local  symbol.
+       Thus  declaring	a  label  `.loop'  after  a label `label' has actually
+       defined a symbol called `label.loop'.
+
+   DIRECTIVES
+       SECTION name or SEGMENT name causes nasm to direct all  following  code
+       to  the	named  section.  Section  names  vary with output file format,
+       although most formats support the names .text, .data  and  .bss.   (The
+       exception is the obj format, in which all segments are user-definable.)
+
+       ABSOLUTE address causes nasm to position its notional assembly point at
+       an  absolute  address: so no code or data may be generated, but you can
+       use RESB, RESW and RESD to move the assembly point further on, and  you
+       can  define labels. So this directive may be used to define data struc-
+       tures. When you have finished doing absolute assembly, you  must  issue
+       another SECTION directive to return to normal assembly.
+
+       BITS  16  or BITS 32 switches the default processor mode for which nasm
+       is generating code: it is equivalent to USE16 or USE32  in  DOS	assem-
+       blers.
+
+       EXTERN  symbol  and GLOBAL symbol import and export symbol definitions,
+       respectively, from and to other modules. Note that the GLOBAL directive
+       must appear before the definition of the symbol it refers to.
+
+       STRUC  strucname  and  ENDSTRUC, when used to bracket a number of RESB,
+       RESW or similar instructions, define a data structure. In  addition  to
+       defining  the  offsets  of  the	structure  members, the construct also
+       defines a symbol for the size of the structure,	which  is  simply  the
+       structure name with _size tacked on to the end.
+
+   FORMAT-SPECIFIC DIRECTIVES
+       ORG  address  is  used  by  the bin flat-form binary output format, and
+       specifies the address at which  the  output  code  will	eventually  be
+       loaded.
+
+       GROUP  grpname seg1 seg2...  is used by the obj (Microsoft 16-bit) out-
+       put format, and defines segment groups. This format  also  uses	UPPER-
+       CASE,  which directs that all segment, group and symbol names output to
+       the object file should be in uppercase. Note that the  actual  assembly
+       is still case sensitive.
+
+       LIBRARY	libname  is used by the rdf output format, and causes a depen-
+       dency record to be written to the output file which indicates that  the
+       program requires a certain library in order to run.
+
+   MACRO PREPROCESSOR
+       Single-line  macros are defined using the %define or %idefine commands,
+       in a similar fashion to the C preprocessor. They can be overloaded with
+       respect	to  number  of	parameters,  although defining a macro with no
+       parameters prevents the definition of any macro with the same name tak-
+       ing  parameters,  and  vice  versa.  %define defines macros whose names
+       match  case-sensitively,  whereas  %idefine  defines   case-insensitive
+       macros.
+
+       Multi-line macros are defined using %macro and %imacro (the distinction
+       is the same as that between %define and %idefine), whose syntax	is  as
+       follows:
+
+	     %macro name minprm[-maxprm][+][.nolist] [defaults]
+		      <some lines of macro expansion text>
+	     %endmacro
+
+       Again, these macros may be overloaded. The trailing plus sign indicates
+       that any parameters after the last one get subsumed, with  their  sepa-
+       rating  commas,	into the last parameter. The defaults part can be used
+       to specify defaults for unspecified macro  parameters  after  minparam.
+       %endm is a valid synonym for %endmacro.
+
+       To  refer to the macro parameters within a macro expansion, you use %1,
+       %2 and so on. You can also enforce that a macro parameter  should  con-
+       tain  a	condition  code by using %+1, and you can invert the condition
+       code by using %-1.  You can also define a label	specific  to  a  macro
+       invocation by prefixing it with a double % sign.
+
+       Files can be included using the %include directive, which works like C.
+
+       The preprocessor has a `context stack', which may be used by one  macro
+       to  store  information  that  a later one will retrieve. You can push a
+       context on the stack using %push, remove one using %pop, and change the
+       name of the top context (without disturbing any associated definitions)
+       using %repl.  Labels and %define macros specific to the top context may
+       be defined by prefixing their names with %$, and things specific to the
+       next context down with %$$, and so on.
+
+       Conditional assembly is done by means of  %ifdef,  %ifndef,  %else  and
+       %endif  as  in C. (Except that %ifdef can accept several putative macro
+       names, and will evaluate TRUE if any of them is defined.) In  addition,
+       the  directives %ifctx and %ifnctx can be used to condition on the name
+       of the top context on the context stack. The obvious set  of  `else-if'
+       directives,  %elifdef,  %elifndef, %elifctx and %elifnctx are also sup-
+       ported.
+
+BUGS
+       There is a reported seg-fault on some (Linux) systems with  some  large
+       source  files.  This  appears  to  be very hard to reproduce. All other
+       known bugs have been fixed...
+
+RESTRICTIONS
+       There is no support  for  listing  files,  symbol  maps,  or  debugging
+       object-file  records. The advanced features of the ELF and Win32 object
+       file formats are not supported, and there is no means for  warning  the
+       programmer  against  using  an instruction beyond the capability of the
+       target processor.
+
+SEE ALSO
+       as(1), ld(1).
+
+
+
+			 The Netwide Assembler Project		       NASM(1)

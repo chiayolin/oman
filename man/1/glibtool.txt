@@ -1,0 +1,128 @@
+LIBTOOL(1)			 User Commands			    LIBTOOL(1)
+
+
+
+NAME
+       libtool - manual page for libtool 2.4.5.7-408c
+
+SYNOPSIS
+       libtool [OPTION]... [MODE-ARG]...
+
+DESCRIPTION
+       Provide generalized library-building support services.
+
+OPTIONS
+       --config
+	      show all configuration variables
+
+       --debug
+	      enable verbose shell tracing
+
+       -n, --dry-run
+	      display commands without modifying any files
+
+       --features
+	      display basic configuration information and exit
+
+       --mode=MODE
+	      use operation mode MODE
+
+       --no-warnings
+	      equivalent to '-Wnone'
+
+       --preserve-dup-deps
+	      don't remove duplicate dependency libraries
+
+       --quiet, --silent
+	      don't print informational messages
+
+       --tag=TAG
+	      use configuration variables from tag TAG
+
+       -v, --verbose
+	      print more informational messages than default
+
+       --version
+	      print version information
+
+       -W, --warnings=CATEGORY
+	      report the warnings falling in CATEGORY [all]
+
+       -h, --help, --help-all
+	      print short, long, or detailed help message
+
+   Warning categories include:
+       'all'  show all warnings
+
+       'none' turn off all the warnings
+
+       'error'
+	      warnings are treated as fatal errors
+
+       MODE must be one of the following:
+
+       clean  remove files from the build directory
+
+       compile
+	      compile a source file into a libtool object
+
+       execute
+	      automatically set library path, then run a program
+
+       finish complete the installation of libtool libraries
+
+       install
+	      install libraries or executables
+
+       link   create a library or an executable
+
+       uninstall
+	      remove libraries from an installed directory
+
+       MODE-ARGS  vary	depending  on  the MODE.  When passed as first option,
+       '--mode=MODE' may be abbreviated as 'MODE' or a unique abbreviation  of
+       that.
+
+       GNU libtool home page: <http://www.gnu.org/s/libtool/>.
+
+       When  reporting	a bug, please describe a test case to reproduce it and
+       include the following information:
+
+       host-triplet:
+	      x86_64-apple-darwin14.1.0
+
+       shell: /bin/sh
+
+       compiler:
+	      gcc
+
+	      compiler	  flags:    -g	  -O2	 linker:	     /Applica-
+	      tions/Xcode.app/Contents/Developer/Toolchains/XcodeDe-
+	      fault.xctoolchain/usr/bin/ld (gnu? no)  version:	       libtool
+	      (GNU   libtool)	2.4.5.7-408c   automake:	automake  (GNU
+	      automake) 1.15 autoconf:	     autoconf (GNU Autoconf) 2.69
+
+AUTHOR
+       Written by Gordon Matzigkeit, 1996
+
+REPORTING BUGS
+       Report bugs to <bug-libtool@gnu.org>.
+
+COPYRIGHT
+       Copyright (C) 2014 Free Software Foundation, Inc.
+       This is free software; see the source for copying conditions.  There is
+       NO  warranty;  not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+SEE ALSO
+       The full documentation for libtool is maintained as a  Texinfo  manual.
+       If  the	info and libtool programs are properly installed at your site,
+       the command
+
+	      info libtool
+
+       should give you access to the complete manual.
+
+
+
+libtool 2.4.5.7-408c		 February 2015			    LIBTOOL(1)

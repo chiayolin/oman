@@ -1,0 +1,92 @@
+
+BuildStrings(1) 	  BSD General Commands Manual	       BuildStrings(1)
+
+NAME
+     /usr/bin/BuildStrings -- Generate header (.h) or resource (.r) file from
+     text files (DEPRECATED)
+
+SYNOPSIS
+     /usr/bin/BuildStrings [-define variable] [-header]
+			   [-attributes attributeList] [-type filekind] -id
+			   ResID -in path -out path
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/BuildStrings,
+     were deprecated with Xcode 6.
+
+     The /usr/bin/BuildStrings command translates a text file into a resource
+     or header file for use in localizing your Carbon application.  The input
+     file is a series of newline-separated pairs of newline-separated strings.
+     Each pair of strings represents the "base" string and the localized
+     equivalent.  When generating a resource file, /usr/bin/BuildStrings gen-
+     erates a STR# resource containing only the localized equivalents (which
+     must be enclosed in double quotes in the source file).  When generating
+     the header file, /usr/bin/BuildStrings generates a C header file with
+     #define directives for each of the base strings (which must be valid C
+     preprocessor symbols) equating each to the ordinal number of the string
+     in the STR# resource.  Your C/C++ source code can use these preprocessor
+     macros, along with standard Resource Manager calls (like GetIndString) to
+     load the appropriate localized string.
+
+     The source file may include #ifdef/#endif (or #ifndef/#endif) directives
+     to conditionally include different pairs of strings, e.g. for debugging
+     builds or different versions.  Note that these are the only preprocessor
+     directives allowed in the source file.
+
+     When generating a resource file, you can set the resource ID and
+     attributes of the STR# resource by providing /usr/bin/BuildStrings with
+     the appropriate command-line options.
+
+     You can use /usr/bin/BuildStrings with several different sets of strings
+     in the same application, for example, error strings and warning strings.
+     The -type argument customizes some #defines in the generated header file
+     so there are no conflicts.
+
+     The /usr/bin/BuildStrings command accepts the following arguments:
+
+     -header  Generate a header file.  If not provided, default is resource
+	      file format.  Note that the file extension is not provided auto-
+	      matically; your output file name must have the appropriate .h or
+	      .r extension.
+
+     -define variable
+	      Defines variable for use in #ifdef or #ifndef conditionals.  No
+	      value may be assigned to variable.  This argument may be
+	      repeated for any number of variables.
+
+     -id ResID
+	      The resource ID for the STR# resource.  There is no support for
+	      setting the resource name.
+
+     -attributes attribute
+	      Resource attributes for the STR# resource definition (such as
+	      locked, preload, etc.)  These are provided after the resource
+	      name in the resource definition.	This argument may be repeated
+	      for any number of attributes. It is ignored if generating a
+	      header.
+
+     -type filekind
+	      Customizes three preprocessor variables (MinValidFoo, MaxValid-
+	      Foo, FooRsrcID) #defined in a generated header file.  Note that
+	      if this argument is not provided, the default is the literal
+	      string "(null)", which will cause compile errors in the header
+	      file.
+
+     -in path
+	      The input file, a set of newline-separated pairs of newline-sep-
+	      arated strings.  The first string of the pair is ignored for the
+	      resource file (but is provided in a comment) and is used as the
+	      preprocessor symbol in the header file.  The second string of
+	      the pair is used as the resource string in the resource file and
+	      is ignored in the header file (but is provided in a comment),
+	      and must be enclosed in double-quotes in your source file.
+
+     -out path
+	      The output file.	Note that you should provide the appropriate
+	      file extension; it is not provided automatically according to
+	      the -header flag.
+
+SEE ALSO
+     Rez(1), DeRez(1)
+
+Mac OS X			April 12, 2004			      Mac OS X

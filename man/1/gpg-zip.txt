@@ -1,0 +1,124 @@
+GPG-ZIP(1)		       GNU Privacy Guard		    GPG-ZIP(1)
+
+
+
+NAME
+       gpg-zip - Encrypt or sign files into an archive
+
+SYNOPSIS
+       gpg-zip [options] filename1 [ filename2, ... ] directory1 [ directory2,
+       ... ]
+
+
+DESCRIPTION
+       gpg-zip encrypts or signs files into an archive.  It is an gpg-ized tar
+       using the same format as used by PGP's PGP Zip.
+
+
+OPTIONS
+       gpg-zip understands these options:
+
+
+
+       --encrypt
+
+       -e     Encrypt data.  This option may be combined with --symmetric (for
+	      output that may be decrypted via a secret key or a  passphrase).
+
+
+       --decrypt
+
+       -d     Decrypt data.
+
+
+       --symmetric
+
+       -c     Encrypt with a symmetric cipher using a passphrase.  The default
+	      symmetric cipher used is CAST5,  but  may  be  chosen  with  the
+	      --cipher-algo option to gpg.
+
+
+       --sign
+
+       -s     Make a signature.  See gpg.
+
+
+       --recipient user
+
+       -r user
+	      Encrypt for user id user. See gpg.
+
+
+       --local-user user
+
+       -u user
+	      Use user as the key to sign with.  See gpg.
+
+
+       --list-archive
+	      List the contents of the specified archive.
+
+
+       --output file
+
+       -o file
+	      Write output to specified file file.
+
+
+       --gpg gpgcmd
+	      Use the specified command gpgcmd instead of gpg.
+
+
+       --gpg-args args
+	      Pass the specified options to gpg.
+
+
+       --tar tarcmd
+	      Use the specified command tarcmd instead of tar.
+
+
+       --tar-args args
+	      Pass the specified options to tar.
+
+
+       --version
+	      Print version of the program and exit.
+
+
+       --help Display a brief help page and exit.
+
+
+
+EXAMPLES
+       Encrypt	the  contents  of  directory  `mydocs'	for  user  Bob to file
+       `test1':
+
+	 gpg-zip --encrypt --output test1 --gpg-args  -r Bob mydocs
+
+
+       List the contents of archive `test1':
+
+	 gpg-zip --list-archive test1
+
+
+
+DIAGNOSTICS
+       The program returns 0 if everything was fine, 1 otherwise.
+
+
+
+SEE ALSO
+       gpg(1), tar(1),
+
+       The full documentation for this tool is maintained as a Texinfo manual.
+       If  GnuPG and the info program are properly installed at your site, the
+       command
+
+	 info gnupg
+
+       should give you access to the complete manual including a  menu	struc-
+       ture and an index.
+
+
+
+GnuPG 1.4			  2011-02-23			    GPG-ZIP(1)

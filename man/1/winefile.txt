@@ -1,0 +1,36 @@
+WINEFILE(1)			 Wine Programs			   WINEFILE(1)
+
+
+
+NAME
+       winefile - Wine File Manager
+
+SYNOPSIS
+       winefile path
+
+DESCRIPTION
+       winefile  is  the  Wine	file  manager,	with a similar design to early
+       Microsoft Windows explorer.
+
+USAGE
+       You can pass winefile either a Unix or Win32 path, for example:
+
+       Using a Unix path:  winefile /mnt/hda1
+
+       Using a Win32 path: winefile C:\\windows\\
+
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       winefile is part of the Wine distribution, which is  available  through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			   WINEFILE(1)

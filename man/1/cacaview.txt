@@ -1,0 +1,59 @@
+cacaview(1)							   cacaview(1)
+
+
+
+NAME
+       cacaview - ASCII image browser
+
+SYNOPSIS
+       cacaview [FILE...]
+
+DESCRIPTION
+       cacaview  is  a	lightweight  text mode image viewer. It renders images
+       using colour ASCII characters. It is a powerful add-on to  famous  con-
+       sole  programs  such  as the mutt email client, the slrn newsreader and
+       the links or w3m web browsers.
+
+       cacaview can load the most widespread image formats:  PNG,  JPEG,  GIF,
+       PNG, BMP etc.
+
+       You  can  zoom and scroll the image around for more details, and choose
+       four different dithering modes. All commands are accessible  through  a
+       single key press.
+
+KEYS
+       ?      show the help screen
+
+       n, p   switch to next image, previous image
+
+       Left, Right, Up, Down or h, l, k, j
+	      scroll the image around
+
+       +, -   zoom in and out
+
+       z      reset the zoom level to normal
+
+       f      switch fullscreen mode (hide/show menu and status bars)
+
+       d      toggle  the dithering mode (no dithering, 4x4 ordered dithering,
+	      8x8 ordered dithering and random dithering)
+
+       q      exit the program
+
+EXAMPLE
+       cacaview /usr/share/pixmaps/*.*
+
+BUGS
+       There is no support for aspect ratio yet. Also, since there is  no  way
+       yet  to	load  an image from cacaview it is completely useless when run
+       without an argument.
+
+SEE ALSO
+       img2txt(1)
+
+AUTHOR
+       This manual page was written by Sam Hocevar <sam@hocevar.net>.
+
+
+
+libcaca 			  2003-11-30			   cacaview(1)

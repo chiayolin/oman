@@ -1,0 +1,109 @@
+MYSQL_CONVERT_TAB(1)	     MySQL Database System	  MYSQL_CONVERT_TAB(1)
+
+
+
+NAME
+       mysql_convert_table_format - convert tables to use a given storage
+       engine
+
+SYNOPSIS
+       mysql_convert_table_format [options] db_name
+
+DESCRIPTION
+	   Note
+	   This utility is deprecated in MySQL 5.6.17 and removed in MySQL 5.7
+
+       mysql_convert_table_format converts the tables in a database to use a
+       particular storage engine (MyISAM by default).
+       mysql_convert_table_format is written in Perl and requires that the DBI
+       and DBD::mysql Perl modules be installed (see Section 2.13, "Perl
+       Installation Notes").
+
+       Invoke mysql_convert_table_format like this:
+
+	   shell> mysql_convert_table_format [options]db_name
+
+       The db_name argument indicates the database containing the tables to be
+       converted.
+
+       mysql_convert_table_format supports the options described in the
+       following list.
+
+       o   --help
+
+	   Display a help message and exit.
+
+       o   --force
+
+	   Continue even if errors occur.
+
+       o   --host=host_name
+
+	   Connect to the MySQL server on the given host.
+
+       o   --password=password
+
+	   The password to use when connecting to the server. Note that the
+	   password value is not optional for this option, unlike for other
+	   MySQL programs.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security". You can use an option file to avoid giving the password
+	   on the command line.
+
+       o   --port=port_num
+
+	   The TCP/IP port number to use for the connection.
+
+       o   --socket=path
+
+	   For connections to localhost, the Unix socket file to use.
+
+       o   --type=engine_name
+
+	   Specify the storage engine that the tables should be converted to
+	   use. The default is MyISAM if this option is not given.
+
+       o   --user=user_name
+
+	   The MySQL user name to use when connecting to the server.
+
+       o   --verbose
+
+	   Verbose mode. Print more information about what the program does.
+
+       o   --version
+
+	   Display version information and exit.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		  MYSQL_CONVERT_TAB(1)

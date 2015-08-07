@@ -1,0 +1,173 @@
+LOCKFILE(1)							   LOCKFILE(1)
+
+
+
+NAME
+       lockfile - conditional semaphore-file creator
+
+SYNOPSIS
+       lockfile -sleeptime | -r retries |
+	    -l locktimeout | -s suspend | -!  | -ml | -mu | filename ...
+
+DESCRIPTION
+       lockfile  can  be used to create one or more semaphore files.  If lock-
+       file can't create all the specified files (in the specified order),  it
+       waits  sleeptime (defaults to 8) seconds and retries the last file that
+       didn't succeed.	You can specify the number  of	retries  to  do  until
+       failure	is  returned.	If the number of retries is -1 (default, i.e.,
+       -r-1) lockfile will retry forever.
+
+       If the number of retries expires before all files  have	been  created,
+       lockfile  returns  failure and removes all the files it created up till
+       that point.
+
+       Using lockfile as the condition of a loop in a shell script can be done
+       easily  by  using  the  -!  flag to invert the exit status.  To prevent
+       infinite loops, failures for any reason other than the lockfile already
+       existing  are  not inverted to success but rather are still returned as
+       failures.
+
+       All flags can be specified anywhere on the command line, they  will  be
+       processed  when	encountered.   The  command line is simply parsed from
+       left to right.
+
+       All files created by lockfile will be  read-only,  and  therefore  will
+       have to be removed with rm -f.
+
+       If  you	specify a locktimeout then a lockfile will be removed by force
+       after locktimeout seconds have passed since the lockfile was last modi-
+       fied/created  (most likely by some other program that unexpectedly died
+       a long time ago, and hence could not clean up any leftover  lockfiles).
+       Lockfile  is  clock  skew immune.  After a lockfile has been removed by
+       force, a suspension of suspend seconds (defaults to 16) is  taken  into
+       account,  in  order to prevent the inadvertent immediate removal of any
+       newly created lockfile by another program  (compare  SUSPEND  in  proc-
+       mail(1)).
+
+   Mailbox locks
+       If  the	permissions on the system mail spool directory allow it, or if
+       lockfile is suitably setgid, it will be able to lock  and  unlock  your
+       system mailbox by using the options -ml and -mu respectively.
+
+EXAMPLES
+       Suppose	you  want  to make sure that access to the file "important" is
+       serialised, i.e., no more than one program or shell  script  should  be
+       allowed	to access it.  For simplicity's sake, let's suppose that it is
+       a shell script.	In this case you could solve it like this:
+	      ...
+	      lockfile important.lock
+	      ...
+	      access_"important"_to_your_hearts_content
+	      ...
+	      rm -f important.lock
+	      ...
+       Now if all the scripts that access "important" follow  this  guideline,
+       you  will  be assured that at most one script will be executing between
+       the `lockfile' and the `rm' commands.
+
+ENVIRONMENT
+       LOGNAME		      used as a hint to determine the invoker's login-
+			      name
+
+FILES
+       /etc/passwd	      to verify and/or correct the invoker's loginname
+			      (and to find out his HOME directory, if needed)
+
+       /var/mail/$LOGNAME.lock
+			      lockfile for the system mailbox, the environment
+			      variables present in here will not be taken from
+			      the environment, but will be determined by look-
+			      ing in /etc/passwd
+
+SEE ALSO
+       rm(1), mail(1), binmail(1), sendmail(8), procmail(1)
+
+DIAGNOSTICS
+       Filename too long, ... Use shorter filenames.
+
+       Forced unlock denied on "x"
+			      No write permission in the directory where lock-
+			      file "x" resides, or more than one lockfile try-
+			      ing to force a lock at exactly the same time.
+
+       Forcing lock on "x"    Lockfile "x" is going to be removed by force be-
+			      cause of a timeout (compare LOCKTIMEOUT in proc-
+			      mail(1)).
+
+       Out of memory, ...     The system is out of swap space.
+
+       Signal received, ...   Lockfile	will  remove  anything it created till
+			      now and terminate.
+
+       Sorry, ...	      The retries limit has been reached.
+
+       Truncating "x" and retrying lock
+			      "x" does not seem to be a valid filename.
+
+       Try praying, ...       Missing subdirectories  or  insufficient	privi-
+			      leges.
+
+BUGS
+       Definitely less than one.
+
+WARNINGS
+       The  behavior  of  the -!  flag, while useful, is not necessarily intu-
+       itive or consistent.   When  testing  lockfile's  return  value,  shell
+       script  writers	should consider carefully whether they want to use the
+       -!  flag, simply reverse the test, or do a switch on  the  exact  exit-
+       code.   In  general,  the -!  flag should only be used when lockfile is
+       the conditional of a loop.
+
+MISCELLANEOUS
+       Lockfile is NFS-resistant and eight-bit clean.
+
+NOTES
+       Calling up lockfile with the -h or -? options will cause it to  display
+       a  command-line help page.  Calling it up with the -v option will cause
+       it to display its version information.
+
+       Multiple -!  flags will toggle the return status.
+
+       Since flags can occur anywhere on the command line, any filename start-
+       ing with a '-' has to be preceded by './'.
+
+       The  number of retries will not be reset when any following file is be-
+       ing created (i.e., they are simply used up).  It can, however, be reset
+       by specifying -rnewretries after every file on the command line.
+
+       Although  files	with  any  name can be used as lockfiles, it is common
+       practice to use the extension `.lock' to lock mailfolders  (it  is  ap-
+       pended  to  the mailfolder name).  In case one does not want to have to
+       worry about too long filenames and does not have to conform to any oth-
+       er  lockfilename  convention, then an excellent way to generate a lock-
+       filename corresponding to some already existing file is by  taking  the
+       prefix  `lock.' and appending the i-node number of the file which is to
+       be locked.
+
+SOURCE
+       This program is part of the  procmail  mail-processing-package  (v3.22)
+       available  at http://www.procmail.org/ or ftp.procmail.org in pub/proc-
+       mail/.
+
+MAILINGLIST
+       There exists a mailinglist for questions relating to any program in the
+       procmail package:
+	      <procmail-users@procmail.org>
+		     for submitting questions/answers.
+	      <procmail-users-request@procmail.org>
+		     for subscription requests.
+
+       If  you	would  like  to  stay informed about new versions and official
+       patches send a subscription request to
+	      procmail-announce-request@procmail.org
+       (this is a readonly list).
+
+AUTHORS
+       Stephen R. van den Berg
+	      <srb@cuci.nl>
+       Philip A. Guenther
+	      <guenther@sendmail.com>
+
+
+
+BuGless 			  2001/06/23			   LOCKFILE(1)

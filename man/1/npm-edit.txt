@@ -1,0 +1,49 @@
+NPM-EDIT(1)							   NPM-EDIT(1)
+
+
+
+NAME
+       npm-edit - Edit an installed package
+
+SYNOPSIS
+	 npm edit <name>[@<version>]
+
+DESCRIPTION
+       Opens the package folder in the default editor (or whatever you've con-
+       figured as the npm editor config -- see npm help 7 npm-config.)
+
+       After it has been edited, the package is rebuilt so as to pick  up  any
+       changes in compiled packages.
+
+       For  instance,  you  can do npm install connect to install connect into
+       your package, and then npm edit connect to make a few changes  to  your
+       locally installed copy.
+
+CONFIGURATION
+   editor
+       o Default:  EDITOR  environment	variable  if set, or "vi" on Posix, or
+	 "notepad" on Windows.
+
+       o Type: path
+
+
+       The command to run for npm edit or npm config edit.
+
+SEE ALSO
+       o npm help 5 folders
+
+       o npm help explore
+
+       o npm help install
+
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+
+
+
+
+				   June 2015			   NPM-EDIT(1)

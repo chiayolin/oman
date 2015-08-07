@@ -1,0 +1,78 @@
+GDBM_LOAD(1)		      GDBM User Reference		  GDBM_LOAD(1)
+
+
+
+NAME
+       gdbm_load - re-create a GDBM database from a dump file.
+
+SYNOPSIS
+       gdbm_load [-Mnr] [-b NUM] [-c NUM] [-m MODE] [-u NAME|UID[:NAME|GID]]
+		 [--block-size=NUM] [--cache-size=NUM] [--mmap=NUM]
+		 [--mode=MODE] [--no-meta] [--replace]
+		 [--user=NAME|UID[:NAME|GID]] FILE [DB_FILE]
+
+       gdbm_load [-Vh] [--help] [--usage] [--version]
+
+DESCRIPTION
+       Create  a  gdbm	database file DB_FILE from the dump file FILE.	If the
+       FILE argument is not supplied, output the created database to the stan-
+       dard error.
+
+       If  the	input  file is in ASCII dump format, the mode and ownership of
+       the created database are restored from the  information	in  the  dump.
+       This can be overridden using the command line options (see below).
+
+OPTIONS
+       -b, --block-size=NUM
+	      Sets block size.
+
+       -c, --cache-size=NUM
+	      Sets cache size.
+
+       -M, --mmap
+	      Use memory mapping.
+
+       -m, --mode=MODE
+	      Set database file mode (octal number).
+
+       -n, --no-meta
+	      Do  not  attempt	to restore database meta-data (mode and owner-
+	      ship).
+
+       -r, --replace
+	      If the database exists, replace records in it.
+
+       -u, --user=NAME|UID[:NAME|GID]
+	      Set file ownership.
+
+       -h, --help
+	      Print a short usage summary.
+
+       --usage
+	      Print a list of available options.
+
+       -V, --version
+	      Print program version
+
+SEE ALSO
+       gdbm_dump(1), gdbmtool(1), gdbm(3).
+
+       For a detailed description of gdbm_load and other gdbm utilities, refer
+       to the GDBM Manual available in Texinfo format.	To access it, run:
+
+	 info gdbm
+
+
+REPORTING BUGS
+       Report bugs to <bug-gdbm@gnu.org>.
+
+COPYRIGHT
+       Copyright (C) 2013 Free Software Foundation, Inc
+       License GPLv3+: GNU GPL version 3 or later
+       <http://gnu.org/licenses/gpl.html>
+       This is free software: you are free  to	change	and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+
+
+GDBM			       December 25, 2013		  GDBM_LOAD(1)

@@ -1,0 +1,258 @@
+DeRez(1)							      DeRez(1)
+
+
+
+NAME
+       DeRez - decompiles resources (DEPRECATED)
+
+SYNTAX
+       DeRez resourceFile [ typeDeclFile1 [ typeDeclFile2 ] ... ]
+       [ -c[ompatible] ] [ -d[efine] macro [ = data ] ]
+       [ -e[scape] ] [ -i directoryPath ] [ -is[ysroot] sdkPath ]
+       [ -m[axstringsize] n ] [ -noResolve ]
+       [ -only typeExpr [ (idExpr1 [:idExpr2 ] | resourceName) ] ]
+       [ -only type ] [ -p ] [ -rd ]
+       [ -script Roman | Japanese | Korean | SimpChinese |
+	  TradChinese ]
+       [ -s[kip] typeExpr [ (idExpr1 [:idExpr2 ] | resourceName) ] ]
+       [ -s[kip] type ] [ -u[ndef] macro ]
+       [ -useDF ]
+
+DESCRIPTION
+       Tools supporting Carbon development, including DeRez, were deprecated
+       with Xcode 6.
+
+       The DeRez tool decompiles the resource fork of resourceFile according
+       to the type declarations supplied by the type declaration files. The
+       resource description produced by this decompilation contains the
+       resource definitions (resource and data statements) associated with
+       these type declarations. If for some reason it cannot reproduce the
+       appropriate resource statements, DeRez generates hexadecimal data
+       statements instead.
+
+       A type declaration file is a file of type declarations used by the
+       resource compiler, Rez.	The type declarations for the standard
+       Macintosh resources are contained in the Carbon.r resource header file,
+       contained in the Carbon framework.  You may use the ${RIncludes} shell
+       environment variable to define a default path to resource header files.
+       If you do not specify any type declaration files, DeRez produces data
+       statements in hexadecimal form.
+
+       This same process works backward to recompile the resource fork. If you
+       use the output of DeRez and the appropriate type declaration files as
+       input to Rez, it produces the original resource fork of resourceFile.
+
+INPUT
+       An input file containing resources in its resource fork.  DeRez does
+       not read standard input. You can also specify resource description
+       files containing type declarations.  For each type declaration file on
+       the command line, DeRez applies the following search rules: 1.  DeRez
+       tries to open the file with the name specified as is.
+
+       2. If rule 1 fails and the filename contains no colons or begins with a
+       colon, DeRez appends the filename to each of the pathnames specified by
+       the {RIncludes} environment variable and tries to open the file.
+
+OUTPUT
+       Standard output.  DeRez writes a resource description to standard
+       output consisting of resource and data statements that can be
+       understood by Rez.  If you omit the typeDeclFile1 [ typeDeclFile2 ]...
+       parameter, DeRez generates hexadecimal data statements instead.
+
+       Errors and warnings are written to diagnostic output.
+
+ALIAS RESOLUTION
+       This command resolves Finder aliases on all input file specifications.
+       Finder aliases are also resolved in the pathnames of any files included
+       by specified resource definition files. You can optionally suppress the
+       resolution of leaf aliases for the input resource file (with the
+       -noResolve option).
+
+STATUS
+       DeRez can return the following status codes:
+
+       0  no errors
+       1  error in parameters
+       2  syntax error in resourceFile
+       3  I/O or program error
+
+PARAMETERS
+       resourceFile
+	      Specifies a file containing the resource fork to be decompiled.
+
+       typeDeclFile1 [ typeDeclFile2 ]...
+	      Specifies one or more files containing type declarations. These
+	      type declarations are the templates associated with the
+	      information in the resource description. In addition to using
+	      those in the ${RIncludes} folder, you can also specify your own
+	      type declaration files.
+
+	      Note
+	      The DeRez tool ignores any include (but not #include), read,
+	      data, change, delete, and resource statements found in these
+	      files. However, it still checks these statements for correct
+	      syntax.
+
+OPTIONS
+       -c[ompatible]
+	      Generates output that is backward-compatible with Rez 1.0.
+
+       -d[efine] macro [ = data ]
+	      Defines the macro variable macro as having the value data.  You
+	      can use this option more than once on a command line.
+
+	      macro  Specifies the macro variable to be defined.
+
+	      data   Specifies the value of macro.  This is the same as
+		     writing
+
+		     #define macro [ data ]
+
+		     at the beginning of the resource file.
+
+		     If you do not specify data, DeRez sets the value of data
+		     to the null string. Note that this still defines the
+		     macro.
+
+       -e[scape]
+	      Prints characters that are normally escaped, such as \0xff, as
+	      extended Macintosh characters. By default, characters with
+	      values between $20 and $FF are printed as Macintosh characters.
+	      With this option, however, DeRez prints all characters (except
+	      null, newline, tab, backspace, form feed, vertical tab, and
+	      rubout) as characters, not as escape sequences.
+
+	      Note
+	      Not all fonts have all the characters defined.
+
+       -i directoryPath
+	      Specifies the directory to search for #include files. You may
+	      specify this option more than once. Directory paths are searched
+	      in the order in which they appear on the command line.
+
+       -is[ysroot] sdkPath
+	      Specifies the system SDK in which to search for include files
+	      and frameworks.  If omitted, the system root ("/") is assumed.
+
+       -m[axstringsize] n
+	      Sets the maximum output string width to n, where n must be in
+	      the range 2-120.
+
+       -noResolve
+	      Suppresses leaf alias resolution of the file or pathname for the
+	      input resource file thus allowing the resource fork of a Finder
+	      alias file to be decompiled. Finder aliases are still resolved
+	      on all resource definition file paths and on any files they may
+	      include.
+
+       -only typeExpr [ (idExpr1[:idExpr2] | resourceName) ]
+	      Reads only resources of the type indicated by typeExpr.  An ID
+	      (idExpr1), range of IDs (idExpr1:idExpr2), or resource name can
+	      also be supplied to further specify which resources to read. If
+	      you provide this additional information, DeRez reads only the
+	      specified resources.
+
+	      This option can be repeated multiple times. Note that this
+	      option cannot be specified in conjunction with the -skip option.
+
+	      Note
+	      The typeExpr parameter is an expression and must be enclosed in
+	      single quotation marks. If you also specify an ID, range of IDs,
+	      or resource name, you must place double quotation marks around
+	      the entire option parameter, as in these examples:
+
+	      -only "'MENU' (1:128)"
+	      -only "'MENU' ("'"Edit"'")"
+
+       -only type
+	      Reads only resources of the specified type. It is not necessary
+	      to place quotation marks around the type as long as it starts
+	      with a letter and contains no spaces or special characters. For
+	      example, this specification doesn't require quotation marks:
+
+	      -only MENU
+
+	      Escape characters are not allowed. This option can be repeated
+	      multiple times.
+
+       -p     Writes progress and summary information to standard output.
+
+       -rd    Suppresses warning messages emitted when a resource type is
+	      redeclared.
+
+       -script Roman | Japanese | Korean | SimpChinese | TradChinese
+	      Enables the recognition of any of several 2-byte character
+	      script systems to use when compiling and decompiling files. This
+	      option insures that 2-byte characters in strings are handled as
+	      indivisible entities. The default language is Roman and
+	      specifies 1-byte character sets.
+
+       -s[kip] typeExpr [ (idExpr1 [:idExpr2 ] | resourceName) ]
+	      Skips resources of the type indicated by typeExpr.  For example,
+	      it is very useful to be able to skip 'CODE' resources.
+
+	      An ID (idExpr1), range of IDs (idExpr1:idExpr2), or resource
+	      name can also be supplied to further specify which resources to
+	      skip. If you provide this additional information, DeRez skips
+	      only the specified resources.
+
+	      You can repeat this option multiple times. Note that this option
+	      cannot be used in conjunction with the -only option.
+
+	      Note
+	      The typeExpr parameter is an expression and must be enclosed in
+	      single quotation marks. If you also specify an ID, range of IDs,
+	      or resource name, you must place double quotation marks around
+	      the entire option parameter, as in this example:
+
+	      -skip "'MENU' (1:128)"
+	      -skip -only "'MENU' ("'"Edit"'")"
+
+       -s[kip] type
+	      Skips only resources of the specified type. It is not necessary
+	      to place quotation marks around the type as long as it starts
+	      with a letter and does not contain spaces or special characters.
+	      For example, this specification doesn't require quotation marks:
+
+	      -skip CODE
+
+	      Escape characters are not allowed. This option can be repeated
+	      multiple times.
+
+       -u[ndef] macro
+	      Undefines the preset macro variable This is the same as writing
+
+	      #undef macro
+
+	      at the beginning of the resource file. This option can be
+	      repeated more than once on a command line.
+
+       -useDF Reads and writes resource information from the files' data
+	      forks, instead of their resource forks.
+
+EXAMPLES
+       The following command line displays the 'cfrg' resources in the
+       CarbonLib library. The type declaration for 'cfrg' resources is found
+       in the CarbonCore.r framework umbrella resource header file.
+
+       /Developer/Tools/DeRez -I
+       /System/Library/Frameworks/CoreServices.framework/Frameworks/
+       CarbonCore.framework/Headers/ /System/Library/CFMSupport/CarbonLib
+       CarbonCore.r
+
+       In the following example, DeRez decompiles the 'itl1' resource ID 0 in
+       the data-fork-based localized resource file in the HIToolbox framework.
+
+       $ export RIncludes=/System/Library/Frameworks/Carbon.framework/Headers/
+
+       $ /Developer/Tools/DeRez -only 'itl1'
+       /System/Library/Frameworks/Carbon.framework/Frameworks/
+       HIToolbox.framework/Resources/English.lproj/Localized.rsrc Carbon.r
+       -useDF
+
+SEE ALSO
+       Rez
+
+
+
+Mac OS X			 July 24, 2000			      DeRez(1)

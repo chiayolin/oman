@@ -1,0 +1,36 @@
+NPM-BUILD(1)							  NPM-BUILD(1)
+
+
+
+NAME
+       npm-build - Build a package
+
+SYNOPSIS
+	 npm build <package-folder>
+
+       o <package-folder>:  A  folder  containing  a  package.json file in its
+	 root.
+
+
+DESCRIPTION
+       This is the plumbing command called by npm link and npm install.
+
+       It should generally be called during installation, but if you  need  to
+       run it directly, run:
+
+	 npm run-script build
+
+SEE ALSO
+       o npm help install
+
+       o npm help link
+
+       o npm help 7 scripts
+
+       o npm help 5 package.json
+
+
+
+
+
+				   June 2015			  NPM-BUILD(1)

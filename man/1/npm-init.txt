@@ -1,0 +1,50 @@
+NPM-INIT(1)							   NPM-INIT(1)
+
+
+
+NAME
+       npm-init - Interactively create a package.json file
+
+SYNOPSIS
+	 npm init [-f|--force|-y|--yes]
+
+DESCRIPTION
+       This  will  ask you a bunch of questions, and then write a package.json
+       for you.
+
+       It attempts to make reasonable guesses about what you want things to be
+       set  to,  and  then  writes a package.json file with the options you've
+       selected.
+
+       If you already have a package.json file, it'll  read  that  first,  and
+       default to the options in there.
+
+       It  is strictly additive, so it does not delete options from your pack-
+       age.json without a really good reason to do so.
+
+       If you invoke it with -f, --force, -y,  or  --yes,  it  will  use  only
+       defaults and not prompt you for any options.
+
+CONFIGURATION
+   scope
+       o Default: none
+
+       o Type: String
+
+
+       The scope under which the new module should be created.
+
+SEE ALSO
+       o https://github.com/isaacs/init-package-json
+
+       o npm help 5 package.json
+
+       o npm help version
+
+       o npm help 7 scope
+
+
+
+
+
+				   June 2015			   NPM-INIT(1)

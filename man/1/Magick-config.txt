@@ -1,0 +1,62 @@
+Magick-Config(1)					      Magick-Config(1)
+
+
+
+NAME
+       Magick-config - get information about the installed version of
+       ImageMagick
+
+SYNOPSIS
+       Magick-config [--cflags] [--cppflags] [--exec-prefix] [--ldflags]
+       [--libs] [--prefix] [--version]
+
+DESCRIPTION
+       Magick-config prints the compiler and linker flags required to compile
+       and link programs that use the ImageMagick Application Programmer
+       Interface.
+
+EXAMPLES
+       To print the version of the installed distribution of ImageMagick, use:
+
+	 Magick-config --version
+
+       To compile a program that calls the ImageMagick Application Programmer
+       Interface, use:
+
+	 cc `Magick-config --cflags --cppflags --ldflags --libs` program.c
+
+
+OPTIONS
+       --cflags
+	      Print the compiler flags that were used to compile libMagick.
+
+       --cppflags
+	      Print the preprocessor flags that are needed to find the
+	      ImageMagick C include files and defines to ensure that the
+	      ImageMagick data structures match between your program and the
+	      installed libraries.
+
+       --exec-prefix
+	      Print the directory under which target specific binaries and
+	      executables are installed.
+
+       --ldflags
+	      Print the linker flags that are needed to link with the
+	      ImageMagick library.
+
+       --libs Print the linker flags that are needed to link a program with
+	      libMagick.
+
+       --version
+	      Print the version of the ImageMagick distribution to standard
+	      output.
+
+LICENSE
+       See http://www.imagemagick.org/script/license.php.
+
+AUTHORS
+       Cristy, ImageMagick Studio LLC
+
+
+
+ImageMagick			  2 May 2002		      Magick-Config(1)

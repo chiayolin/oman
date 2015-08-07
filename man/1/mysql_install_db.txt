@@ -1,0 +1,258 @@
+MYSQL_INSTALL_DB()					    MYSQL_INSTALL_DB()
+
+
+
+NAME
+       mysql_install_db - initialize MySQL data directory
+
+SYNOPSIS
+       mysql_install_db [options]
+
+DESCRIPTION
+       mysql_install_db initializes the MySQL data directory and creates the
+       system tables that it contains, if they do not exist. It also
+       initializes the system tablespace and related data structures needed to
+       manage InnoDB tables. As of MySQL 5.6.8, mysql_install_db is a Perl
+       script and can be used on any system with Perl installed. Before 5.6.8,
+       it is a shell script and is available only on Unix platforms.
+
+       As of MySQL 5.6.8, on Unix platforms, mysql_install_db creates a
+       default option file named my.cnf in the base installation directory.
+       This file is created from a template included in the distribution
+       package named my-default.cnf. You can find the template in or under the
+       base installation directory. When started using mysqld_safe, the server
+       uses my.cnf file by default. If my.cnf already exists, mysql_install_db
+       assumes it to be in use and writes a new file named my-new.cnf instead.
+
+       With one exception, the settings in the default option file are
+       commented and have no effect. The exception is that the file sets the
+       sql_mode system variable to NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES.
+       This setting produces a server configuration that results in errors
+       rather than warnings for bad data in operations that modify
+       transactional tables. See Section 5.1.7, "Server SQL Modes".
+
+       To invoke mysql_install_db, use the following syntax:
+
+	   shell> mysql_install_db [options]
+
+       Because the MySQL server, mysqld, must access the data directory when
+       it runs later, you should either run mysql_install_db from the same
+       system account that will be used for running mysqld, or run it as root
+       and specify the --user option to indicate the user name that mysqld
+       will run as. It might be necessary to specify other options such as
+       --basedir or --datadir if mysql_install_db does not use the correct
+       locations for the installation directory or data directory. For
+       example:
+
+	   shell> scripts/mysql_install_db --user=mysql \
+		    --basedir=/opt/mysql/mysql \
+		    --datadir=/opt/mysql/mysql/data
+
+
+	   Note
+	   After mysql_install_db sets up the InnoDB system tablespace,
+	   changes to some tablespace characteristics require setting up a
+	   whole new instance. This includes the file name of the first file
+	   in the system tablespace and the number of undo logs. If you do not
+	   want to use the default values, make sure that the settings for the
+	   innodb_data_file_path and innodb_log_file_size configuration
+	   parameters are in place in the MySQL configuration file before
+	   running mysql_install_db. Also make sure to specify as necessary
+	   other parameters that affect the creation and location of InnoDB
+	   files, such as innodb_data_home_dir and innodb_log_group_home_dir.
+
+	   If those options are in your configuration file but that file is
+	   not in a location that MySQL reads by default, specify the file
+	   location using the --defaults-extra-file option when you run
+	   mysql_install_db.
+
+	   Note
+	   If you have set a custom TMPDIR environment variable when
+	   performing the installation, and the specified directory is not
+	   accessible, mysql_install_db may fail. If so, unset TMPDIR or set
+	   TMPDIR to point to the system temporary directory (usually /tmp).
+
+       mysql_install_db supports the following options, which can be specified
+       on the command line or in the [mysql_install_db] group of an option
+       file. (Options that are common to mysqld can also be specified in the
+       [mysqld] group.) Other options are passed to mysqld. For information
+       about option files used by MySQL programs, see Section 4.2.6, "Using
+       Option Files".
+
+       o   --help
+
+	   Display a help message and exit.
+
+       o   --basedir=path
+
+	   The path to the MySQL installation directory.
+
+       o   --builddir=path
+
+	   For use with --srcdir and out-of-source builds. Set this to the
+	   location of the directory where the built files reside.
+
+       o   --cross-bootstrap
+
+	   For internal use. This option is used for building system tables on
+	   one host intended for another.
+
+       o   --datadir=path
+
+	   The path to the MySQL data directory. Beginning with MySQL 5.6.8,
+	   mysql_install_db is more strict about the option value. Only the
+	   last component of the path name is created if it does not exist;
+	   the parent directory must already exist or an error occurs.
+
+       o   --defaults-extra-file=file_name
+
+	   Read this option file after the global option file but (on Unix)
+	   before the user option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-file=file_name
+
+	   Use only the given option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --force
+
+	   Cause mysql_install_db to run even if DNS does not work. Grant
+	   table entries normally created using host names will use IP
+	   addresses instead.
+
+       o   --keep-my-cnf
+
+	   Tell mysql_install_db to preserve any existing my.cnf file and not
+	   create a new default my.cnf file. This option was added in MySQL
+	   5.6.20.
+
+       o   --ldata=path
+
+	   A synonym for --datadir.
+
+       o   --no-defaults
+
+	   Do not read any option files. If program startup fails due to
+	   reading unknown options from an option file, --no-defaults can be
+	   used to prevent them from being read.
+
+       o   --random-passwords
+
+	   On Unix platforms, this option provides for more secure MySQL
+	   installation. Invoking mysql_install_db with --random-passwords
+	   causes it to perform the following actions in addition to its
+	   normal operation:
+
+	   o   The installation process creates a random password, assigns it
+	       to the initial MySQL root accounts, and sets the "password
+	       expired" flag for those accounts.
+
+	   o   The initial random root password is written to the
+	       .mysql_secret file in the directory named by the HOME
+	       environment variable. Depending on operating system, using a
+	       command such as sudo may cause the value of HOME to refer to
+	       the home directory of the root system user.
+
+	       If .mysql_secret already exists, the new password information
+	       is appended to it. Each password entry includes a timestamp so
+	       that in the event of multiple install operations it is possible
+	       to determine the password associated with each one.
+
+	       .mysql_secret is created with mode 600 to be accessible only to
+	       the system user for whom it is created.
+
+	   o   No anonymous-user MySQL accounts are created.
+
+	   As a result of these actions, it is necessary after installation to
+	   start the server, connect as root using the password written to the
+	   .mysql_secret file, and specify a new root password. Until this is
+	   done, root cannot do anything else. This must be done for each root
+	   account you intend to use. To change the password, you can use the
+	   SET PASSWORD statement (for example, with the mysql client). You
+	   can also use mysqladmin or mysql_secure_installation.
+
+	   New RPM install operations (not upgrades) invoke mysql_install_db
+	   with the --random-passwords option. (Install operations using RPMs
+	   for Unbreakable Linux Network are unaffected because they do not
+	   use mysql_install_db.)
+
+	   As of MySQL 5.6.9, new Solaris PKG install operations (not
+	   upgrades) invoke mysql_install_db with the --random-passwords
+	   option.
+
+	   For install operations using a binary .tar.gz distribution or a
+	   source distribution, you can invoke mysql_install_db with the
+	   --random-passwords option manually to make your MySQL installation
+	   more secure. This is recommended, particularly for sites with
+	   sensitive data.
+
+	   This option was added in MySQL 5.6.8.
+
+       o   --rpm
+
+	   For internal use. This option is used during the MySQL installation
+	   process for install operations performed using RPM packages.
+
+       o   --skip-name-resolve
+
+	   Use IP addresses rather than host names when creating grant table
+	   entries. This option can be useful if your DNS does not work.
+
+       o   --srcdir=path
+
+	   For internal use. This option specifies the directory under which
+	   mysql_install_db looks for support files such as the error message
+	   file and the file for populating the help tables.
+
+       o   --user=user_name
+
+	   The system (login) user name to use for running mysqld. Files and
+	   directories created by mysqld will be owned by this user. You must
+	   be the system root user to use this option. By default, mysqld runs
+	   using your current login name and files and directories that it
+	   creates will be owned by you.
+
+       o   --verbose
+
+	   Verbose mode. Print more information about what the program does.
+
+       o   --windows
+
+	   For internal use. This option is used for creating Windows
+	   distributions.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+							    MYSQL_INSTALL_DB()

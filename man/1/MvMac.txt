@@ -1,0 +1,39 @@
+
+MVMAC(1)		  BSD General Commands Manual		      MVMAC(1)
+
+NAME
+     /usr/bin/MvMac -- move files while preserving metadata and forks (DEPRE-
+     CATED)
+
+SYNOPSIS
+     /usr/bin/MvMac source ... directory
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/MvMac, were dep-
+     recated with Xcode 6.
+
+     /usr/bin/MvMac moves each file named by a source operand to a destination
+     file in the existing directory named by the directory operand.  The des-
+     tination path for each operand is the pathname produced by the concatena-
+     tion of the last operand, a slash, and the final pathname component of
+     the named file.
+
+     If the destination path does not have a mode that permits writing,
+     /usr/bin/MvMac will return an error.
+
+NOTES
+     The MvMac command does not support the same options as the POSIX mv com-
+     mand, and is much less flexible in its operands.  It cannot be used as a
+     direct substitute for mv in scripts.
+
+     As of Mac OS X 10.4, the mv command preserves metadata and resource forks
+     of files on Extended HFS volumes, so it can be used in place of MvMac.
+     The MvMac command will be deprecated in future versions of Mac OS X.
+
+BUGS
+     Currently doesn't work across volumes/filesystems.
+
+SEE ALSO
+     mv(1) CpMac(1)
+
+Mac OS X			  Oct 6, 2001			      Mac OS X

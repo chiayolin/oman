@@ -1,0 +1,29 @@
+imgcmp(1)			 JasPer Manual			     imgcmp(1)
+
+
+
+NAME
+       imgcmp - Image comparison utility
+
+
+SYNOPSIS
+       imgcmp [options]
+
+
+DESCRIPTION
+       The  imgcmp  command  compares  two  images  of	the same geometry with
+       respect to a given metric.  Please use the --help command  line	switch
+       and the JasPer Software Reference Manual for more information.
+
+
+SEE ALSO
+       jasper(1)
+
+
+AUTHOR
+       Michael	D. Adams <mdadams@ieee.org> This manpage was initially written
+       by Roland Stigge <stigge@antcom.de> for the Debian Project.
+
+
+
+Version 1.701.0 		 20 June 2004			     imgcmp(1)

@@ -1,0 +1,89 @@
+
+SDP(1)			  BSD General Commands Manual			SDP(1)
+
+NAME
+     sdp -- scripting definition (sdef) processor
+
+SYNOPSIS
+     sdp -f {ahst} [-o directory | file | -] [options...] [file]
+
+DESCRIPTION
+     sdp transforms a scripting definition (``sdef'') file, or standard input
+     if none is specified, into a variety of other formats for use with a
+     scriptable application.  The options are as follows:
+
+     -f format
+	   Specify the output format.  The format may be one or more of the
+	   following.  Use these when you want to create a scriptable applica-
+	   tion:
+
+	   a   Rez(1) input describing an `aete' resource.
+	   s   Cocoa Scripting ``.scriptSuite'' file.
+	   t   Cocoa Scripting ``.scriptTerminology'' file.
+
+	   These formats are only necessary when creating a scriptable appli-
+	   cation that will run on Mac OS X 10.4 (Tiger) or earlier; as of
+	   10.5 (Leopard), an application may use only an sdef.
+
+	   Use these when you want to control a scriptable application:
+
+	   h   Scripting Bridge Objective-C header.
+
+	   You do not need to create a corresponding implementation file;
+	   Scripting Bridge will create the class implementations at runtime.
+
+     -i includefile
+	   Include the type and class definitions from the specified sdef.  It
+	   may be repeated to specify multiple files.  This option is obso-
+	   lete; you should use an XInclude element in the sdef instead.
+
+     -o directory | file | -
+	   Specify where to write the output.  There are three styles:
+
+	   directory	 Write the output to automatically named files in that
+			 directory.  Depending on the input and formats, sdp
+			 may generate several files.
+
+	   file 	 Write all the output to that file.
+
+	   -		 Write all the output to standard output.
+
+	   The default is `-o .'; i.e., generate files in the current direc-
+	   tory.  Because Cocoa Scripting requires each suite to be in a sepa-
+	   rate file, using -o file with -f s or -f t is usually not a good
+	   idea.
+
+     Some output formats have additional options relevant only to that format.
+     For scriptSuite and scriptTerminology files (-f s and -f t):
+
+     -V version
+	   Specify the minimum system version to be compatible with, for exam-
+	   ple, ``-V -10.4''.  The default is to assume the current system
+	   version.  Specifying anything before 10.3 will use NSString for
+	   `file' type attributes, and will warn about non-object direct
+	   parameters.
+
+     For Scripting Bridge Objective-C header files (-f h):
+
+     --basename name, -N name
+	   Specify the ``base'' name.  This name becomes the base name of the
+	   generated header and the prefix attached to all the generated
+	   classes.  For example, saying --basename iTunes would result in a
+	   header file ``iTunes.h'' defining a iTunesApplication class.
+
+     --hidden, -A
+	   Output definitions even for items the scripting definition marks as
+	   hidden.  All such definitions will be flagged as deprecated, since
+	   hidden items are usually hidden for a reason.
+
+SEE ALSO
+     sdef(5)
+
+BUGS
+     sdp's error reporting leaves much to be desired.  It does not provide
+     line numbers for errors, though it will describe the element.  It will
+     not warn you of certain types of mistakes, such as using two different
+     names with the same code (or vice versa), and will return a zero status
+     even for erroneous input.
+
+Mac OS X			 July 12, 2007			      Mac OS X

@@ -1,0 +1,72 @@
+RESOLVE_STACK_DUM(1)	     MySQL Database System	  RESOLVE_STACK_DUM(1)
+
+
+
+NAME
+       resolve_stack_dump - resolve numeric stack trace dump to symbols
+
+SYNOPSIS
+       resolve_stack_dump [options] symbols_file [numeric_dump_file]
+
+DESCRIPTION
+       resolve_stack_dump resolves a numeric stack dump to symbols.
+
+       Invoke resolve_stack_dump like this:
+
+	   shell> resolve_stack_dump [options] symbols_file [numeric_dump_file]
+
+       The symbols file should include the output from the nm --numeric-sort
+       mysqld command. The numeric dump file should contain a numeric stack
+       track from mysqld. If no numeric dump file is named on the command
+       line, the stack trace is read from the standard input.
+
+       resolve_stack_dump supports the following options.
+
+       o   --help, -h
+
+	   Display a help message and exit.
+
+       o   --numeric-dump-file=file_name, -n file_name
+
+	   Read the stack trace from the given file.
+
+       o   --symbols-file=file_name, -s file_name
+
+	   Use the given symbols file.
+
+       o   --version, -V
+
+	   Display version information and exit.
+
+       For more information, see Section 24.4.1.5, "Using a Stack Trace".
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		  RESOLVE_STACK_DUM(1)

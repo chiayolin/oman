@@ -1,0 +1,50 @@
+SIZE(1) 							       SIZE(1)
+
+
+
+NAME
+       size - print the size of the sections in an object file
+
+SYNOPSIS
+       size [ option ... ] [ object ... ]
+
+DESCRIPTION
+       Size  (without  the  -m	option)  prints  the (decimal) number of bytes
+       required by the __TEXT, __DATA and __OBJC segments.  All other segments
+       are  totaled and that size is listed in the `others' column.  The final
+       two columns is the sum in decimal and hexadecimal.  If no file is spec-
+       ified, a.out is used.
+
+       The options to size(1) are:
+
+       -      Treat  the  remaining  arguments	as  name  of  object files not
+	      options to size(1).
+
+       -m     Print the sizes of the Mach-O segments and sections as  well  as
+	      the  total  sizes  of the sections in each segment and the total
+	      size of the segments in the file.
+
+       -l     When used with the -m option, also print the addresses and  off-
+	      sets of the sections and segments.
+
+       -x     When  used  with	the -m option, print the values in hexadecimal
+	      (with leading 0x's) rather than decimal.
+
+       -arch arch_type
+	      Specifies the architecture, arch_type, of the file  for  size(1)
+	      to  operate  on when the file is a universal file.  (See arch(3)
+	      for the currently know arch_types.)  The arch_type can be  "all"
+	      to  operate on all architectures in the file.  The default is to
+	      display only the host architecture, if  the  file  contains  it;
+	      otherwise, all architectures in the file are shown.
+
+SEE ALSO
+       otool(1)
+
+BUGS
+       The size of common symbols can't be reflected in any of the numbers for
+       relocatable object files.
+
+
+
+Apple Computer, Inc.		 July 28, 2005			       SIZE(1)

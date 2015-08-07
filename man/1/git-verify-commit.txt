@@ -1,0 +1,27 @@
+GIT-VERIFY-COMMIT(1)		  Git Manual		  GIT-VERIFY-COMMIT(1)
+
+
+
+NAME
+       git-verify-commit - Check the GPG signature of commits
+
+SYNOPSIS
+       git verify-commit <commit>...
+
+
+DESCRIPTION
+       Validates the gpg signature created by git commit -S.
+
+OPTIONS
+       -v, --verbose
+	   Print the contents of the commit object before validating it.
+
+       <commit>...
+	   SHA-1 identifiers of Git commit objects.
+
+GIT
+       Part of the git(1) suite
+
+
+
+Git 2.5.0			  07/27/2015		  GIT-VERIFY-COMMIT(1)

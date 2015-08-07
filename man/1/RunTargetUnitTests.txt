@@ -1,0 +1,66 @@
+
+RunTargetUnitTests(1)	  BSD General Commands Manual	 RunTargetUnitTests(1)
+
+NAME
+     RunTargetUnitTests -- run unit tests for the current target
+
+SYNOPSIS
+     RunTargetUnitTests
+
+DESCRIPTION
+     RunTargetUnitTests examines its environment and runs the unit tests it
+     presumes are present using otest(1).
+
+     RunTargetUnitTests is intended to be called from a shell script build
+     phase.  It expects certain environment variables to be configured from
+     Xcode build settings (see below).
+
+     RunTargetUnitTests will run tests for all built architectures appropriate
+     for the machine running the tests.
+
+ENVIRONMENT
+     ARCHS		 The architectures the tests were built for; when
+			 tests are run, they will be run once per architec-
+			 ture.	If unspecified, tests are run for the archi-
+			 tecture returned by arch(1).
+
+     DEVELOPER_DIR	 The Xcode folder, e.g. "/Developer". If unspecified
+			 the value for SYSTEM_DEVELOPER_DIR will be used, or
+			 "/Developer" if that also is unspecified.
+
+     BUILT_PRODUCTS_DIR  The directory containing built products; when tests
+			 are run, this is specified in DYLD_FRAMEWORK_PATH.
+			 If unspecified tests are run from the current working
+			 directory with no DYLD_FRAMEWORK_PATH.
+
+     FULL_PRODUCT_NAME	 The full name of the built product, including its
+			 wrapper extension if any.
+
+     GCC_ENABLE_OBJC_GC  Whether or not the test bundle was compiled with
+			 Objective-C garbage collection enabled.  Possible
+			 values are unsupported, supported, and required.  If
+			 not set, defaults to unsupported, which will run
+			 otest(1) with Objective-C garbage collection dis-
+			 abled.
+
+     NATIVE_ARCH_ACTUAL  The architecture of the machine running the tests,
+			 used to determine for which architectures tests can
+			 be run.  If unspecified, defaults to the architecture
+			 returned by arch(1).
+
+     OTEST		 The path to the otest command line tool; defaults to
+			 /Developer/Tools/otest.
+
+     TEST_AFTER_BUILD	 Set to YES to run tests, any other value will prevent
+			 test execution.
+
+FILES
+     /Developer/Tools/RunTargetUnitTests  The script used to run tests from a
+					  shell script build phase.
+
+     /Developer/Tools/otest		  The OCUnit test rig.
+
+SEE ALSO
+     arch(1), otest(1)
+
+Xcode				August 4, 2015				 Xcode

@@ -1,0 +1,50 @@
+
+HEADERDOC2HTML(1)	  BSD General Commands Manual	     HEADERDOC2HTML(1)
+
+NAME
+     headerdoc2html -- header documentation processor
+
+SYNOPSIS
+     headerdoc2html [-HXdhquvx] [-o output_dir] file [file ...]
+
+DESCRIPTION
+     Headerdoc2html processes the header file or files and generates HTML doc-
+     umentation based on specially-formatted comments.
+
+     The options are as follows:
+
+     -H    The -H option turns on inclusion of the htmlHeader line, as speci-
+	   fied in the config file.
+
+     -X    The -X option switches from HTML to XML output
+
+     -d    The -d option turns on extra debugging output.
+
+     -h    The -h option causes headerdoc to output an XML file containing
+	   metadata about the resulting document.
+
+     -p    The -p option turns on the C preprocessor.
+
+     -q    The -q option causes headerdoc to be excessively quiet.
+
+     -u    The -u option causes headerdoc to produce unsorted output.
+
+     -v    The -v option causes headerdoc to print version information.
+
+     If no options are specified, headerdoc will produce directories contain-
+     ing its standard HTML output.
+
+     For a complete list of flags, see the HeaderDoc User Guide.
+
+FILES
+     /$HOME/Library/Preferences/com.apple.headerDoc2HTML.config
+
+SEE ALSO
+     gatherheaderdoc(1)
+
+     For more information, see the HeaderDoc User Guide.  It can be found in
+     /Developer/Documentation/ if you have the Xcode Tools package installed,
+     or at <http://developer.apple.com/mac/library/documentation/Developer-
+     Tools/Conceptual/HeaderDoc/> in the reference library.
+
+Darwin				 June 13, 2003				Darwin

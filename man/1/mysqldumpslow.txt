@@ -1,0 +1,129 @@
+MYSQLDUMPSLOW(1)	     MySQL Database System	      MYSQLDUMPSLOW(1)
+
+
+
+NAME
+       mysqldumpslow - Summarize slow query log files
+
+SYNOPSIS
+       mysqldumpslow [options] [log_file ...]
+
+DESCRIPTION
+       The MySQL slow query log contains information about queries that take a
+       long time to execute (see Section 5.2.5, "The Slow Query Log").
+       mysqldumpslow parses MySQL slow query log files and prints a summary of
+       their contents.
+
+       Normally, mysqldumpslow groups queries that are similar except for the
+       particular values of number and string data values. It "abstracts"
+       these values to N and 'S' when displaying summary output. The -a and -n
+       options can be used to modify value abstracting behavior.
+
+       Invoke mysqldumpslow like this:
+
+	   shell> mysqldumpslow [options] [log_file ...]
+
+       mysqldumpslow supports the following options.
+
+       o   --help
+
+	   Display a help message and exit.
+
+       o   -a
+
+	   Do not abstract all numbers to N and strings to 'S'.
+
+       o   --debug, -d
+
+	   Run in debug mode.
+
+       o   -g pattern
+
+	   Consider only queries that match the (grep-style) pattern.
+
+       o   -h host_name
+
+	   Host name of MySQL server for *-slow.log file name. The value can
+	   contain a wildcard. The default is * (match all).
+
+       o   -i name
+
+	   Name of server instance (if using mysql.server startup script).
+
+       o   -l
+
+	   Do not subtract lock time from total time.
+
+       o   -n N
+
+	   Abstract numbers with at least N digits within names.
+
+       o   -r
+
+	   Reverse the sort order.
+
+       o   -s sort_type
+
+	   How to sort the output. The value of sort_type should be chosen
+	   from the following list:
+
+	   o   t, at: Sort by query time or average query time
+
+	   o   l, al: Sort by lock time or average lock time
+
+	   o   r, ar: Sort by rows sent or average rows sent
+
+	   o   c: Sort by count
+
+	   By default, mysqldumpslow sorts by average query time (equivalent
+	   to -s at).
+
+       o   -t N
+
+	   Display only the first N queries in the output.
+
+       o   --verbose, -v
+
+	   Verbose mode. Print more information about what the program does.
+
+       Example of usage:
+
+	   shell> mysqldumpslow
+	   Reading mysql slow query log from /usr/local/mysql/data/mysqld51-apple-slow.log
+	   Count: 1  Time=4.32s (4s)  Lock=0.00s (0s)  Rows=0.0 (0), root[root]@localhost
+	    insert into t2 select * from t1
+	   Count: 3  Time=2.53s (7s)  Lock=0.00s (0s)  Rows=0.0 (0), root[root]@localhost
+	    insert into t2 select * from t1 limit N
+	   Count: 3  Time=2.13s (6s)  Lock=0.00s (0s)  Rows=0.0 (0), root[root]@localhost
+	    insert into t1 select * from t1
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		      MYSQLDUMPSLOW(1)

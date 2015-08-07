@@ -1,0 +1,231 @@
+PDFROFF(1)							    PDFROFF(1)
+
+
+
+NAME
+       pdfroff - create PDF documents using groff
+
+SYNOPSIS
+       pdfroff [-abcegilpstzCEGNRSUVXZ] [-d cs] [-f fam] [-F dir]
+	       [-I dir] [-L arg] [-m name] [-M dir] [-n num] [-o list]
+	       [-P arg] [-r cn] [-T dev] [-w name] [-W name]
+	       [--no-toc-relocation] [--stylesheet=name]
+	       [--no-pdf-output | --pdf-output=name]
+	       [--no-reference-dictionary | --reference-dictionary=name]
+	       [--report-progress] file ...
+
+       pdfroff -h | --help
+
+       pdfroff -v | --version [option ...]
+
+       The  command  line is parsed in accordance with normal GNU conventions,
+       but with one exception -- when specifying any short form option	(i.e.,
+       a  single  character option introduced by a single hyphen), and if that
+       option expects an argument, then it  must  be  specified  independently
+       (i.e.,  it  may	not be appended to any group of other single character
+       short form options).
+
+       Long form option names (i.e., those introduced by a double hyphen)  may
+       be abbreviated to their minimum length unambigous initial substring.
+
+DESCRIPTION
+       pdfroff is a wrapper program for the GNU text processing system, groff.
+       It transparently handles the mechanics of multiple pass groff  process-
+       ing,  when  applied to suitably marked up groff source files, such that
+       tables of contents and body text are formatted separately, and are sub-
+       sequently  combined  in	the  correct order, for final publication as a
+       single PDF document.  A further optional  "style sheet"	capability  is
+       provided;  this	allows for the definition of content which is required
+       to preceed the table of contents, in the published document.
+
+       For each invocation of pdfroff, the ultimate  groff  output  stream  is
+       post-processed  by  the	GhostScript interpreter, to produce a finished
+       PDF document.
+
+       pdfroff makes no assumptions about, and imposes no restrictions on, the
+       use of any groff macro packages which the user may choose to employ, in
+       order to achieve a desired document format; however,  it  does  include
+       specific built in support for the pdfmark macro package, should the us-
+       er choose to employ it.	Specifically, if the pdfhref macro, defined in
+       the  pdfmark.tmac package, is used to define public reference marks, or
+       dynamic links to such reference marks, then  pdfroff  will  perform  as
+       many  preformatting  groff passes as required, up to a maximum limit of
+       four, in order to compile a document reference dictionary,  to  resolve
+       references, and to expand the dynamically defined content of links.
+
+USAGE
+       pdfroff	usage  closely mirrors that of groff itself.  Indeed, with the
+       exception of the -h, -v, and -T dev short form options,	and  all  long
+       form  options,  which are parsed internally by pdfroff, all options and
+       file name arguments specified on the command  line  are	passed	on  to
+       groff,  to  control  the formatting of the PDF document.  Consequently,
+       pdfroff accepts all options and arguments, as  specified  in  groff(1),
+       which  may also be considered as the definitive reference for all stan-
+       dard pdfroff options and argument usage.
+
+OPTIONS
+       pdfroff accepts all of the short form options (i.e.,  those  introduced
+       by  a  single  hyphen), which are available with groff itself.  In most
+       cases, these are simply passed transparently to groff;  the  following,
+       however, are handled specially by pdfroff.
+
+       -h     Same as --help; see below.
+
+       -i     Process  standard  input, after all other specified input files.
+	      This is passed transparently to groff, but, if grouped with oth-
+	      er options, it must be the first in the group.  Hiding it within
+	      a group will break standard input processing,  in  the  multiple
+	      pass groff processing context of pdfroff.
+
+       -T dev Only  -T ps  is supported by pdfroff.  Attempting to specify any
+	      other device will cause pdfroff to abort.
+
+       -v     Same as --version; see below.
+
+       See groff(1) for a description of all other short form  options,  which
+       are transparently passed through pdfroff to groff.
+
+       All  long  form options (i.e., those introduced by a double hyphen) are
+       interpreted locally by pdfroff; they are not passed on to groff, unless
+       otherwise stated below.
+
+       --help Causes pdfroff to display a summary of the its usage syntax, and
+	      supported options, and then exit.
+
+       --no-pdf-output
+	      May be used with	the  --reference-dictionary=name  option  (de-
+	      scribed below) to eliminate the overhead of PDF formatting, when
+	      running pdfroff to create a reference dictionary, for use  in  a
+	      different document.
+
+       --no-reference-dictionary
+	      May  be  used  to eliminate the overhead of creating a reference
+	      dictionary, when it is known that the target PDF	document  will
+	      contain no public references, created by the pdfhref macro.
+
+       --no-toc-relocation
+	      May  be used to eliminate the extra groff processing pass, which
+	      is required to generate a table of contents, and relocate it  to
+	      the  start  of  the  PDF	document, when processing any document
+	      which lacks an automatically generated table of contents.
+
+       --pdf-output=name
+	      Specifies the name to be used for the resultant PDF document; if
+	      unspecified,  the  PDF  output is written to standard output.  A
+	      future version of pdfroff may use this  option,  to  encode  the
+	      document name in a generated reference dictionary.
+
+       --reference-dictionary=name
+	      Specifies  the  name to be used for the generated reference dic-
+	      tionary file; if unspecified, the reference dictionary is creat-
+	      ed  in a temporary file, which is deleted when pdfroff completes
+	      processing of the current document.  This option must be	speci-
+	      fied, if it is desired to save the reference dictionary, for use
+	      in references placed in other PDF documents.
+
+       --report-progress
+	      Causes pdfroff to display an informational message  on  standard
+	      error, at the start of each groff processing pass.
+
+       --stylesheet=name
+	      Specifies the name of an input file, to be used as a style sheet
+	      for formatting of content, which is to be placed before the  ta-
+	      ble of contents, in the formatted PDF document.
+
+       --version
+	      Causes pdfroff to display a version identification message.  The
+	      entire command line is then passed transparently to groff, in  a
+	      one  pass  operation  only,  in  order to display the associated
+	      groff version information, before exiting.
+
+ENVIRONMENT
+       The following environment variables may be set, and exported, to modify
+       the behaviour of pdfroff.
+
+       GROFF_TMPDIR
+	      Identifies  the  directory in which pdfroff should create tempo-
+	      rary files.  If GROFF_TMPDIR is not specified,  then  the  vari-
+	      ables  TMPDIR,  TMP and TEMP are considered in turn, as possible
+	      temporary file repositories.  If none of	these  are  set,  then
+	      temporary files will be created in the current directory.
+
+       GROFF_GHOSTSCRIPT_INTERPRETER
+	      Specifies the program to be invoked, when pdfroff converts groff
+	      PostScript output to PDF.  If  GROFF_GHOSTSCRIPT_INTERPRETER  is
+	      not  specified, then pdfroff will search the process PATH, look-
+	      ing for a program with any of  the  well	known  names  for  the
+	      GhostScript  interpreter;  if  no GhostScript interpreter can be
+	      found, pdfroff will abort.
+
+       GROFF_AWK_INTERPRETER
+	      Specifies the program to be invoked, when pdfroff is  extracting
+	      reference  dictionary  entries from a groff intermediate message
+	      stream.  If GROFF_AWK_INTERPRETER is not specified, then pdfroff
+	      will  search  the process PATH, looking for any of the preferred
+	      programs, `gawk', `mawk', `nawk' and `awk', in  this  order;  if
+	      none  of	these are found, pdfroff will issue a warning message,
+	      and continue processing; however, in  this  case,  no  reference
+	      dictionary will be created.
+
+       OSTYPE Typically  defined automatically by the operating system, OSTYPE
+	      is used on Microsoft Win32/MS-DOS platforms only, to  infer  the
+	      default PATH_SEPARATOR character, which is used when parsing the
+	      process PATH to search for external helper programs.
+
+       PATH_SEPARATOR
+	      If set, PATH_SEPARATOR overrides the default  separator  charac-
+	      ter,  (':'  on  POSIX/UNIX  systems, inferred from OSTYPE on Mi-
+	      crosoft Win32/MS-DOS), which is used when  parsing  the  process
+	      PATH to search for external helper programs.
+
+       SHOW_PROGRESS
+	      If  this	is  set to a non-empty value, then pdfroff will always
+	      behave as if the --report-progress option is specified,  on  the
+	      command line.
+
+FILES
+       Input  and  output files for pdfroff may be named according to any con-
+       vention of the user's choice.  Typically, input files may be named  ac-
+       cording	to the choice of the principal formatting macro package, e.g.,
+       file.ms might be an input file  for  formatting	using  the  ms	macros
+       (s.tmac); normally, the final output file should be named file.pdf.
+
+       Temporary files, created by pdfroff, are placed in the directory speci-
+       fied by environment variables (see section ENVIRONMENT), and named  ac-
+       cording to the convention pdf$$.*, where $$ is the standard shell vari-
+       able representing the process ID of the pdfroff process itself,	and  *
+       represents  any of a number of extensions used by pdfroff for temporary
+       and intermediate files.
+
+SEE ALSO
+       See groff(1) for the definitive reference to document  formatting  with
+       groff.	Since  pdfroff	provides a superset of all groff capabilities,
+       groff(1) may also be considered to be the definitive reference  to  all
+       standard capabilities of pdfroff, with this document providing the ref-
+       erence to pdfroff's extended features.
+
+       While pdfroff imposes neither any restriction on, nor  any  requirement
+       for,  the use of any specific groff macro package, a number of supplied
+       macro packages, and in particular those	associated  with  the  package
+       pdfmark.tmac,  are  best  suited  for use with pdfroff as the preferred
+       formatter.  Detailed documentation on the use of these packages may  be
+       found,  in PDF format, in the reference guide "Portable Document Format
+       Publishing with GNU Troff", included in the installed documentation set
+       as /usr/share/doc/groff/1.19.2/pdf/pdfmark.pdf.
+
+AUTHOR
+       Copyright (C) 2005, Free Software Foundation, Inc.
+
+       This man page is distributed under the terms of the GNU Free Documenta-
+       tion License (FDL), version 1.1 or later, and is part of the GNU  troff
+       software  package.   It	was  originally  written  by  Keith  Marshall,
+       <keith.d.marshall@ntlworld.com>, who also wrote the  implementation  of
+       the pdfroff program, to which it relates.
+
+       You  should  have  received  a copy of the FDL as part of the GNU troff
+       distribution; it is also available on-line, at the GNU "copyleft" site,
+       <http://www.gnu.org/copyleft/fdl.html>.
+
+
+
+Groff Version 1.19.2		  17 May 2005			    PDFROFF(1)

@@ -1,0 +1,135 @@
+OTOOL(1)							      OTOOL(1)
+
+
+
+NAME
+       otool - object file displaying tool
+
+SYNOPSIS
+       otool [ option ...  ] [ file ...  ]
+
+DESCRIPTION
+       The   otool  command  displays  specified  parts  of  object  files  or
+       libraries.  If the -m option is not used the file arguments may	be  of
+       the  form  libx.a(foo.o), to request information about only that object
+       file and not the entire library.   (Typically  this  argument  must  be
+       quoted,	``libx.a(foo.o)'',  to	get  it past the shell.)  Otool under-
+       stands both Mach-O (Mach object)  files	and  universal	file  formats.
+       Otool can display the specified information in either its raw (numeric)
+       form (without the -v flag), or in a symbolic form using macro names  of
+       constants, etc. (with the -v or -V flag).
+
+       At least one of the following options must be specified:
+
+       -a     Display the archive header, if the file is an archive.
+
+       -S     Display  the contents of the `__.SYMDEF' file, if the file is an
+	      archive.
+
+       -f     Display the universal headers.
+
+       -h     Display the Mach header.
+
+       -l     Display the load commands.
+
+       -L     Display the names and version numbers of	the  shared  libraries
+	      that  the  object file uses, as well as the shared library ID if
+	      the file is a shared library.
+
+       -D     Display  just  the  install  name  of  a	shared	library.   See
+	      install_name_tool(1) for more info.
+
+       -s segname sectname
+	      Display  the contents of the section (segname,sectname).	If the
+	      -v flag is specified, the section  is  displayed	as  its  type,
+	      unless  the  type  is zero (the section header flags).  Also the
+	      sections	 (__OBJC,__protocol),	(__OBJC,__string_object)   and
+	      (__OBJC,__runtime_setup)	are  displayed	symbolically if the -v
+	      flag is specified.
+
+       -t     Display the contents of the (__TEXT,__text) section.   With  the
+	      -v  flag, this disassembles the text.  With the -V flag, it also
+	      symbolically disassembles the operands.
+
+       -d     Display the contents of the (__DATA,__data) section.
+
+       -o     Display the contents of the __OBJC segment used  by  the	Objec-
+	      tive-C run-time system.
+
+       -r     Display the relocation entries.
+
+       -c     Display  the  argument  strings  (argv[] and envp[]) from a core
+	      file.
+
+       -I     Display the indirect symbol table.
+
+       -T     Display the table of contents for a  dynamically	linked	shared
+	      library.
+
+       -R     Display  the  reference  table  of  a  dynamically linked shared
+	      library.
+
+       -M     Display the module table of a dynamically linked shared library.
+
+       -H     Display the two-level namespace hints table.
+
+       -G     Display the data in code table.
+
+       -C     Display  the  linker optimization hints (-v for verbose mode can
+	      also be added).
+
+       -P     Print the info plist section, (__TEXT,__info_plist), as strings.
+
+
+       The following options may also be given:
+
+       -p name
+	      Used  with  the -t and -v or -V options to start the disassembly
+	      from symbol name and continue to the end of the  (__TEXT,__text)
+	      section.
+
+       -v     Display verbosely (symbolically) when possible.
+
+       -V     Display the disassembled operands symbolically (this implies the
+	      -v option).  This is useful with the -t option.
+
+       -X     Don't print leading addresses or	headers  with  disassembly  of
+	      sections.
+
+       -q     Use the llvm disassembler when doing disassembly; this is avail-
+	      able for the x86 and arm architectures.  This is the default.
+
+       -mcpu=arg
+	      When doing disassembly using the llvm disassembler use  the  cpu
+	      arg.
+
+       -function_offsets
+	      When  doing  disassembly	print the decimal offset from the last
+	      label printed.
+
+       -j     When doing disassembly print the print the opcode bytes  of  the
+	      instructions.
+
+       -Q     Use otool(1)'s disassembler when doing disassembly.
+
+       -arch arch_type
+	      Specifies  the architecture, arch_type, of the file for otool(1)
+	      to operate on when the file is a universal file (aka a file with
+	      multiple	architectures).   (See arch(3) for the currently known
+	      arch_types.)  The arch_type can  be  "all"  to  operate  on  all
+	      architectures  in  the file.  The default is to display only the
+	      host architecture, if  the  file	contains  it;  otherwise,  all
+	      architectures in the file are shown.
+
+       -m     The  object file names are not assumed to be in the archive(mem-
+	      ber) syntax, which allows file names containing parenthesis.
+
+       --version
+	      Print the otool(1) version information.
+
+SEE ALSO
+       install_name_tool(1), dyld(1) and libtool(1)
+
+
+
+Apple Inc.		       October 15, 2014 		      OTOOL(1)

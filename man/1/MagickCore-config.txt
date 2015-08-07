@@ -1,0 +1,65 @@
+
+MAGICKCORE-CONFIG(1)	  BSD General Commands Manual	  MAGICKCORE-CONFIG(1)
+
+NAME
+     MagickCore-config -- get information about the installed version of
+     ImageMagick
+
+SYNOPSIS
+     MagickCore-config [--cflags] [--cppflags] [--exec-prefix] [--ldflags]
+		       [--libs] [--prefix] [--version]
+
+DESCRIPTION
+     The MagickCore-config utility prints the compiler and linker flags
+     required to compile and link programs that use the ImageMagick Core
+     Application Programmer Interface.
+
+     The following options are available:
+
+     --cppflags, --cflags, --cxxflags
+		 Print the compiler flags that are needed to find the
+		 ImageMagick(1) C include files and defines to ensure that the
+		 ImageMagick data structures match between your program and
+		 the installed libraries.
+
+     --prefix, --exec-prefix
+		 Print the directory under which target specific binaries and
+		 executables are installed.
+
+     --ldflags, --libs
+		 Print the linker flags that are needed to link with the
+		 ImageMagick(1) library.
+
+     --version	 Print the version of the ImageMagick(1) distribution to stan-
+		 dard output.
+
+     --coder-path
+		 Print the path where the ImageMagick(1) coder modules are
+		 installed.
+
+     --filter-path
+		 Print the path where the ImageMagick(1) filter modules are
+		 installed.
+
+EXAMPLES
+     To print the version of the installed distribution of ImageMagick use:
+
+	   MagickCore-config --version
+
+     To compile a program that calls the ImageMagick(1) Application Programmer
+     Interface, use:
+
+	   cc `MagickCore-config --cppflags --ldflags` program.c
+
+SEE ALSO
+     ImageMagick(1)
+
+LICENSE
+     ImageMagick is licensed with the Apache license 2.0. See
+     http://www.imagemagick.org/script/license.php for more details.
+
+AUTHORS
+     The ImageMagick suite and this manual page where written by Cristy,
+     ImageMagick Studio LLC <development-team@imagemagick.org>.
+
+BSD				 July 13, 2015				   BSD

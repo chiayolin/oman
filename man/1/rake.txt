@@ -1,0 +1,146 @@
+RAKE(1) 		      Rake User Commands		       RAKE(1)
+
+
+
+NAME
+       rake - a make-like build utility for Ruby
+
+SYNOPSIS
+       rake [-f rakefile] {OPTIONS} TARGETS...
+
+DESCRIPTION
+       rake  is a make-like build utility for Ruby. Tasks and dependencies are
+       specified in standard Ruby syntax.
+
+OPTIONS
+       -m, --multitask
+	      Treat all tasks as multitasks.
+
+       -B, --build-all
+	      Build all prerequisites, including those which are up-to-date.
+
+
+       -j, --jobs [NUMBER]
+	      Specifies the maximum number of tasks  to  execute  in  parallel
+	      (default is number of CPU cores + 4).
+
+
+   Modules
+       -I, --libdir LIBDIR
+	      Include LIBDIR in the search path for required modules.
+
+       -r, --require MODULE
+	      Require MODULE before executing rakefile.
+
+
+   Rakefile location
+       -f, --rakefile [FILENAME]
+	      Use FILENAME as the rakefile to search for.
+
+       -N, --no-search, --nosearch
+	      Do not search parent directories for the Rakefile.
+
+       -G, --no-system, --nosystem
+	      Use  standard  project Rakefile search paths, ignore system wide
+	      rakefiles.
+
+       -R, --rakelibdir RAKELIBDIR
+	      Auto-import any .rake files in RAKELIBDIR (default is 'rakelib')
+
+       --rakelib
+
+       -g, --system
+	      Using system wide (global) rakefiles (usually '~/.rake/*.rake').
+
+
+   Debugging
+       --backtrace=[OUT]
+	      Enable full backtrace.  OUT can be stderr (default) or stdout.
+
+       -t, --trace=[OUT]
+	      Turn on invoke/execute tracing, enable full backtrace.  OUT  can
+	      be stderr (default) or stdout.
+
+       --suppress-backtrace PATTERN
+	      Suppress	backtrace  lines  matching  regexp PATTERN. Ignored if
+	      --trace is on.
+
+       --rules
+	      Trace the rules resolution.
+
+
+       -n, --dry-run
+	      Do a dry run without executing actions.
+
+       -T, --tasks [PATTERN]
+	      Display the tasks (matching optional PATTERN) with descriptions,
+	      then exit.
+
+       -D, --describe [PATTERN]
+	      Describe the tasks (matching optional PATTERN), then exit.
+
+       -W, --where [PATTERN]
+	      Describe the tasks (matching optional PATTERN), then exit.
+
+       -P, --prereqs
+	      Display the tasks and dependencies, then exit.
+
+
+       -e, --execute CODE
+	      Execute some Ruby code and exit.
+
+       -p, --execute-print CODE
+	      Execute some Ruby code, print the result, then exit.
+
+       -E, --execute-continue CODE
+	      Execute  some Ruby code, then continue with normal task process-
+	      ing.
+
+
+   Information
+       -v, --verbose
+	      Log message to standard output.
+
+       -q, --quiet
+	      Do not log messages to standard output.
+
+       -s, --silent
+	      Like --quiet, but also suppresses the 'in  directory'  announce-
+	      ment.
+
+       -X, --no-deprecation-warnings
+	      Disable the deprecation warnings.
+
+       --comments
+	      Show commented tasks only
+
+       -A, --all
+	      Show all tasks, even uncommented ones (in combination with -T or
+	      -D)
+
+       --job-stats [LEVEL]
+	      Display job statistics. LEVEL=history displays  a  complete  job
+	      list
+
+       -V, --version
+	      Display the program version.
+
+       -h, -H, --help
+	      Display a help message.
+
+
+SEE ALSO
+       The   complete	documentation	for   rake   has   been  installed  at
+       /usr/share/doc/rake-doc/html/index.html. It is also available online at
+       http://docs.seattlerb.org/rake.
+
+AUTHOR
+       rake was written by Jim Weirich <jim@weirichhouse.org>
+
+       This  manual  was created by Caitlin Matos <caitlin.matos@zoho.com> for
+       the Debian project (but may be used by others). It was inspired by  the
+       manual by Jani Monoses <jani@iv.ro> for the Ubuntu project.
+
+
+
+rake 10.3.2			August 27, 2014 		       RAKE(1)

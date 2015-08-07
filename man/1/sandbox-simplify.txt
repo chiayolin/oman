@@ -1,0 +1,23 @@
+
+SANDBOX-SIMPLIFY(1)	  BSD General Commands Manual	   SANDBOX-SIMPLIFY(1)
+
+NAME
+     sandbox-simplify -- simplify a sandbox profile created by a trace direc-
+     tive
+
+SYNOPSIS
+     sandbox-simplify file ...
+
+DESCRIPTION
+     When a profile contains a trace directive such as
+
+	  (trace "trace.sb")
+
+     the sandboxed process will be allowed to perform any operation, and a
+     rule will be appended to the trace profile allowing access to any
+     resource that would have otherwise been denied.
+
+     The sandbox-simplify command processes a profile produced by a trace
+     directive and outputs a simplified profile suitable for human inspection.
+
+Mac OS X			August 5, 2010			      Mac OS X

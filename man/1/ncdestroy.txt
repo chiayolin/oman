@@ -1,0 +1,80 @@
+
+NCDESTROY(1)		  BSD General Commands Manual		  NCDESTROY(1)
+
+NAME
+     ncdestroy -- Destroy kernel NFS credentials
+
+SYNOPSIS
+     ncdestroy [-v] [-P] [path [path...]]
+
+DESCRIPTION
+     ncdestroy invalidates the caller's kernel GSS credentials for any of the
+     specified path's associated NFS mounts.  If no paths are specified then
+     all the caller's associated credentials for all NFS file systems are
+     destroyed.
+
+     When a nfs file system is mounted using a GSS mechanism (currently only
+     Kerberos is supported) through the ``sec='' option or by the export spec-
+     ified on the server, the resulting session context is stored in a table
+     for each mount. If the user decides to finish his or her session or
+     chooses to use a different credential, then ncdestroy can be called to
+     invalidate those credentials in the kernel. New credentials can be obtain
+     (typically by calling kinit) and those credentials can be used when
+     accessing the mount.
+
+     The options are as follows:
+
+     -v      Be verbose and show what file system is being operated on and any
+	     resulting errors.
+
+     -P      If the trailing component resolves to a symbolic link do not
+	     resolve the link but use the current path to determine any asso-
+	     ciate NFS file system.
+
+EXAMPLES
+     If leaving for the day:
+
+      $ kdestroy -A
+      $ ncdestroy
+
+     Lets say a user does
+
+      $ kinit user@FOO.COM
+
+     And through the automounter access a path /Network/Serves/some-
+     server/Sources/foo/bar where the mount of /Network/Servers/some-
+     server/Sources/foo was done with user@FOO.COM.
+
+      $ cat /Network/Servers/someserver/Sources/foo/bar
+      cat: /Network/Servers/someserver/Sources/foo/bar: Permission denied
+
+     The user realizes that in order to have access on the server his identity
+     should be user2@BAR.COM. So:
+
+      $ kdestroy -A
+      $ kinit user2@BAR.COM
+      $ ncdestroy /Network/Servers/someserver/Sources/foo
+
+     Now the local user can access bar
+
+NOTES
+     In the above example the user destroyed all credentials so the only cre-
+     dential to choose was new credential user2@BAR.COM. However, if accessing
+     the server with user@FOO.COM was done by getting a cross realm TGT to
+     obtain the service ticket nfs/some.server.fqdn@BAR.COM, then it won't be
+     necessary to use kdestroy. The GSS infrastructure will prefer to use cre-
+     dentials in the same realm as the service.
+
+DIAGNOSTICS
+     The ncdestroy command will exit with 1 if any of the supplied paths don't
+     exist. If all paths exist or no paths are given the exit status will be
+     0.
+
+SEE ALSO
+     kinit(1), kdestroy(1), mount_nfs(8)
+
+BUGS
+     There should be an option to kdestroy to destroy cached nfs contexts.
+
+
+BSD			       December 10, 2012			   BSD

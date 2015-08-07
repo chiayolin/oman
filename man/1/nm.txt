@@ -1,0 +1,113 @@
+NM(1)									 NM(1)
+
+
+
+NAME
+       nm - display name list (symbol table)
+
+SYNOPSIS
+       nm  [  -agnoprumxjlfPA  [  s segname sectname ]] [ - ] [ -t format ] [[
+       -arch arch_flag ]...] [ file ... ]
+
+DESCRIPTION
+       Nm displays the name list (symbol table) of each  object  file  in  the
+       argument list.  If an argument is an archive, a listing for each object
+       file in the archive  will  be  produced.   File	can  be  of  the  form
+       libx.a(x.o),  in which case only symbols from that member of the object
+       file are listed.  (The parentheses have to be  quoted  to  get  by  the
+       shell.)	If no file is given, the symbols in a.out are listed.
+
+       Each  symbol  name  is  preceded  by  its  value (blanks if undefined).
+       Unless the -m option is specified, this value is followed by one of the
+       following  characters,  representing  the symbol type: U (undefined), A
+       (absolute), T (text section symbol), D (data section  symbol),  B  (bss
+       section	symbol),  C  (common  symbol),	-  (for  debugger symbol table
+       entries; see -a below), S (symbol in a section other than those above),
+       or  I  (indirect  symbol).   If the symbol is local (non-external), the
+       symbol's type is instead represented  by  the  corresponding  lowercase
+       letter.	 A  lower case u in a dynamic shared library indicates a unde-
+       fined reference to a private external in another  module  in  the  same
+       library.
+
+       If   the   symbol   is  a  Objective  C	method,  the  symbol  name  is
+       +-[Class_name(category_name) method:name:],  where  `+'	is  for  class
+       methods,  `-'  is  for instance methods, and (category_name) is present
+       only when the method is in a category.
+
+       The output is sorted alphabetically by default.
+
+       Options are:
+
+       -a     Display all symbol table entries, including those  inserted  for
+	      use by debuggers.
+
+       -g     Display only global (external) symbols.
+
+       -n     Sort numerically rather than alphabetically.
+
+       -o     Prepend file or archive element name to each output line, rather
+	      than only once.
+
+       -p     Don't sort; display in symbol-table order.
+
+       -r     Sort in reverse order.
+
+       -u     Display only undefined symbols.
+
+       -U     Don't display undefined symbols.
+
+       -m     Display the  N_SECT  type  symbols  (Mach-O  symbols)  as  (seg-
+	      ment_name,  section_name)  followed  by  either external or non-
+	      external and then the symbol name.  Undefined, common,  absolute
+	      and  indirect  symbols  get  displayed as (undefined), (common),
+	      (absolute), and (indirect), respectively.
+
+       -x     Display the symbol table entry's fields  in  hexadecimal,  along
+	      with the name as a string.
+
+       -j     Just display the symbol names (no value or type).
+
+       -s segname sectname
+	      List only those symbols in the section (segname,sectname).
+
+       -l     List  a  pseudo  symbol  .section_start  if no symbol has as its
+	      value the starting address of the section.  (This is  used  with
+	      the -s option above.)
+
+       -arch arch_type
+	      Specifies  the architecture, arch_type, of the file for nm(1) to
+	      operate on when the file is a universal file  (see  arch(3)  for
+	      the  currently known arch_types).  The arch_type can be "all" to
+	      operate on all architectures in the file.   The  default	is  to
+	      display the symbols from only the host architecture, if the file
+	      contains it; otherwise, symbols for  all	architectures  in  the
+	      file are displayed.
+
+       -f     Display  the symbol table of a dynamic library flat (as one file
+	      not separate modules).
+
+       -A     Write the pathname or library name of an object on each line.
+
+       -P     Write information in a portable output format.
+
+       -t format
+	      For the -P output, write the numeric value in the specified for-
+	      mat.  The format shall be dependent on the single character used
+	      as the format option-argument:
+
+       d      The value shall be written in decimal (default).
+
+       o      The value shall be written in octal.
+
+       x      The value shall be written in hexadecimal.
+
+SEE ALSO
+       ar(1), ar(5), Mach-O(5), stab(5), nlist(3)
+
+BUGS
+       Displaying Mach-O symbols with -m is too verbose.  Without the -m, sym-
+       bols in the Objective C sections get displayed as an `s'.
+
+
+
+Apple, Inc.			March 26, 2010				 NM(1)

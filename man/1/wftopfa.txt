@@ -1,0 +1,28 @@
+WFTOPFA(1)			  Ghostscript			    WFTOPFA(1)
+
+
+
+NAME
+       wftopfa - Convert a Wadalab base font to Postscript .PFA (or .PFB) for-
+       mat using ghostscript
+
+SYNOPSIS
+       wftopfa fontname
+
+DESCRIPTION
+       This script invokes gs(1) to convert a Wadalab base font to  Postscript
+       .PFA (or .PFB) format.
+
+SEE ALSO
+       gs(1)
+
+VERSION
+       This document was last revised for Ghostscript version 8.71.
+
+AUTHOR
+       Artifex	Software,  Inc.  are  the  primary maintainers of Ghostscript.
+       This manpage by George Ferguson.
+
+
+
+8.71			       10 February 2010 		    WFTOPFA(1)

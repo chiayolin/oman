@@ -1,0 +1,61 @@
+NPM-PUBLISH(1)							NPM-PUBLISH(1)
+
+
+
+NAME
+       npm-publish - Publish a package
+
+SYNOPSIS
+	 npm publish <tarball> [--tag <tag>] [--access <public|restricted>]
+	 npm publish <folder> [--tag <tag>] [--access <public|restricted>]
+
+DESCRIPTION
+       Publishes  a  package  to  the  registry so that it can be installed by
+       name. See npm help 7 npm-developers for details on what's  included  in
+       the  published package, as well as details on how the package is built.
+
+       By default npm will publish to the public registry. This can  be  over-
+       ridden by specifying a different default registry or using a npm help 7
+       npm-scope in the name (see npm help 5 package.json).
+
+       o <folder>: A folder containing a package.json file
+
+       o <tarball>: A url or file path to a gzipped tar archive  containing  a
+	 single folder with a package.json file inside.
+
+       o [--tag  <tag>]  Registers  the  published package with the given tag,
+	 such that npm install <name>@<tag> will  install  this  version.   By
+	 default, npm publish updates and npm install installs the latest tag.
+
+       o [--access <public|restricted>] Tells the registry whether this  pack-
+	 age  should  be  published  as  public or restricted. Only applies to
+	 scoped packages, which default to restricted.	If you	don't  have  a
+	 paid account, you must publish with --access public to publish scoped
+	 packages.
+
+
+       Fails if the package name and version combination already exists in the
+       specified registry.
+
+       Once  a	package  is published with a given name and version, that spe-
+       cific name and version combination can never be used again, even if  it
+       is removed with npm help unpublish.
+
+SEE ALSO
+       o npm help 7 registry
+
+       o npm help 7 scope
+
+       o npm help adduser
+
+       o npm help owner
+
+       o npm help deprecate
+
+       o npm help tag
+
+
+
+
+
+				   June 2015			NPM-PUBLISH(1)

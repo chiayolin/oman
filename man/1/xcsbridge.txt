@@ -1,0 +1,203 @@
+XCSBRIDGE(1)							  XCSBRIDGE(1)
+
+
+
+NAME
+       xcsbridge - command-line tool for using Xcode Server frameworks
+
+SYNOPSIS
+       xcsbridge framework-identifier command [options...]
+
+DESCRIPTION
+       xcsbridge  is  a  command-line  tool used by xcsd and friends to invoke
+       commands against Xcode Server's Objective-C services, like  the	source
+       control framework and XCSCore.
+
+SUPPORTED FRAMEWORKS
+       The following are supported values for framework-identifier:
+
+       source-control
+	      Specifies commands to be run against the DVTSourceControl frame-
+	      work.
+
+       serialization
+	      Specifies commands for transforming serializations between  JSON
+	      and Property List representations.
+
+       profiles
+	      Specifies commands for generating provisioning and configuration
+	      profiles.
+
+SOURCE CONTROL COMMANDS
+       A number of the source control  commands  involve  working  with  blue-
+       prints,	which  are canned representations of the source control layout
+       and credential information for a given  Xcode  workspace.  For  any  of
+       these commands that output blueprints, the following formatting options
+       are available:
+
+       --format format
+	      Specifies the output format for the blueprint, which must be one
+	      of:   json   (a	standard,   compacted	JSON  representation),
+	      json-pretty (a pretty-printed JSON format),  plist  (a  standard
+	      XML  Property List representation), or bplist (a binary Property
+	      List). If no format is specified, json-pretty will be assumed.
+
+       --with-anonymous-urls
+	      If passed, the source control URLs will be stripped of  username
+	      and password information.
+
+       --with-auth
+	      If passed, the blueprint will contain authentication information
+	      for the included repositories. Otherwise, this information  will
+	      be omitted.
+
+       --no-auth-strategies
+	      If passed, the blueprint will not contain information on authen-
+	      tication strategies (i.e., whether a particular repository  uses
+	      anonymous  auth,	username/password  auth,  SSH  key-based auth,
+	      etc.). Note that this information is  not  generally  considered
+	      sensitive  since	it does not contain user credentials, so it is
+	      printed by default.
+
+       --no-required-optional
+	      If passed, the blueprint will not contain information on whether
+	      each repository in the blueprint is required or optional.
+
+       --no-branches
+	      If  passed, the blueprint will not contain branch/subpath infor-
+	      mation for each checked out repository.
+
+       --no-special-folder-information
+	      If passed, the blueprint will not contain  information  on  (for
+	      example,	in Subversion) which paths correspond to the branches,
+	      tags, etc. directories.
+
+       --with-favorites
+	      If passed, the blueprint will  contain  information  on  whether
+	      each repository has been marked as a "favorite" within Xcode.
+
+       --legacy
+	      If passed, all other options (besides --format) will be ignored,
+	      and xcsbridge will output an old ".xccheckout"-style  blueprint.
+
+       The blueprint commands that accept an incoming blueprint will also rec-
+       ognize the --input-plist flag, which will attempt to use  the  Property
+       List parser rather than the JSON parser to interpret the blueprint.
+
+   blueprint-validation
+       blueprint-validation --path blueprint
+
+       Validates  the  format of the blueprint at blueprint. This command only
+       verifies the integrity of the blueprint data, not that it contains suf-
+       ficient or valid authentication information for use.
+
+       By  default, xcsbridge assumes the incoming blueprint is formatted as a
+       JSON dictionary. If the blueprint is instead a Property	List  (XML  or
+       binary), pass --input-plist.
+
+       You may pass "-" for blueprint to read the blueprint from STDIN.
+
+   blueprint-transform
+       blueprint-transform --path blueprint [format options...]
+
+       Interprets  the blueprint at blueprint, and reexports it with a differ-
+       ent set of options. This command is useful if you, for instance, have a
+       blueprint with authentication information that you would like to strip.
+
+       By default, xcsbridge assumes the incoming blueprint is formatted as  a
+       JSON  dictionary.  If  the blueprint is instead a Property List (XML or
+       binary), pass --input-plist.
+
+       You may pass "-" for blueprint to read the blueprint from STDIN.
+
+   blueprint-merge
+       blueprint-merge	--path	blueprintA  --merge-path  blueprintB   [format
+       options...]
+
+       Interprets  the	blueprints at blueprintA, and reexports it merged with
+       the contents of blueprintB and the specified set of options. The  blue-
+       print  at bluepintA will be used to resolve any conflicts. This command
+       is useful if you, for instance, have a  blueprint  with	authentication
+       information and a blueprint with revision information.
+
+       By  default, xcsbridge assumes the incoming blueprints are formatted as
+       a JSON dictionary. If the blueprints are instead a Property  List  (XML
+       or binary), pass --input-plist. Both must be of a mathcing format.
+
+       You  may  pass  "-"  for blueprintA or blueprintB to read the blueprint
+       from STDIN.
+
+   blueprint-preflight
+       blueprint-preflight --path blueprint [format options...]
+
+       Attempts connections to all of the remote repositories included in  the
+       blueprint  with	the  embedded credentials, and reports back any issues
+       that were encountered. This is useful for performing  remote  blueprint
+       pre-flights  to	know if (for instance) a bot configuration is going to
+       succeed when running in Xcode Server. The format  parameter  (--format)
+       applies here for the output format of any error information.
+
+       By  default, xcsbridge assumes the incoming blueprint is formatted as a
+       JSON dictionary. If the blueprint is instead a Property	List  (XML  or
+       binary), pass --input-plist.
+
+       You may pass "-" for blueprint to read the blueprint from STDIN.
+
+   blueprint-checkout
+       blueprint-checkout --path blueprint [--output location]
+
+       Checks out the given blueprint at the specified location, including all
+       sub-repositories and dependencies, at the location specified  by  loca-
+       tion.  If  no location is specified, it will be checked out in the cur-
+       rent directory.
+
+       By default, xcsbridge assumes the incoming blueprint is formatted as  a
+       JSON  dictionary.  If  the blueprint is instead a Property List (XML or
+       binary), pass --input-plist.
+
+       You may pass "-" for blueprint to read the blueprint from STDIN.
+
+   blueprint-update-check
+       blueprint-update-check --path blueprint
+
+       Checks the given revisioned blueprint for any available updates.
+
+       By default, xcsbridge assumes the incoming blueprint is formatted as  a
+       JSON  dictionary.  If  the blueprint is instead a Property List (XML or
+       binary), pass --input-plist.
+
+       You may pass "-" for blueprint to read the blueprint from STDIN.
+
+SERIALIZATION COMMANDS
+   json2plist
+       json2plist --path jsonpath
+
+       Converts the given serialized object, in JSON format, into an XML Prop-
+       erty List.
+
+       You may pass "-" for jsonpath to read the JSON from STDIN.
+
+   plist2json
+       plist2json --path plistpath
+
+       Converts  the  given  serialized  object, in Property List format, into
+       valid JSON.
+
+       You may pass "-" for plistpath to read the Property List from STDIN.
+
+PROFILE COMMANDS
+   generate-default-ssl
+       generate-ca-profile --path filename
+
+       Produces a mobile configuration profile containing only	the  SSL  cer-
+       tificate specified via filename, and outputs it to STDOUT. This profile
+       can be used to enable OTA app installation on iOS 7.1+. Note  that  the
+       certificate  must be in PEM-encoded format, and can be passed via STDIN
+       by passing "-" to --path.
+
+COPYRIGHT
+       xcsbridge is Copyright (C) 2014 Apple, Inc. All rights reserved.
+
+
+
+				   July 2014			  XCSBRIDGE(1)

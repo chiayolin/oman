@@ -1,0 +1,237 @@
+
+AGVTOOL(1)		  BSD General Commands Manual		    AGVTOOL(1)
+
+NAME
+     agvtool -- Apple-generic versioning tool for Xcode projects
+
+SYNOPSIS
+     agvtool what-version | vers [-terse]
+     agvtool [-noscm | -usecvs | -usesvn] next-version | bump [-all]
+     agvtool [-noscm | -usecvs | -usesvn] new-version [-all] versionNumber
+     agvtool [-noscm | -usecvs | -usesvn] tag [-force | -F]
+	     [-noupdatecheck | -Q] [-baseurlfortag]
+     agvtool [-noscm | -usecvs | -usesvn] submit [-bytag | -notbytag]
+	     [-baseurlfortag] release ...
+     agvtool what-marketing-version | mvers [-terse | -terse1]
+     agvtool [-noscm | -usecvs | -usesvn] new-marketing-version | vers version
+
+DESCRIPTION
+     agvtool helps speed up common operations for Xcode projects that use the
+     Apple Generic Versioning system.
+
+     You enable versioning support by setting up some build settings in your
+     project.
+
+   Build Settings
+     The settings used by the apple-generic versioning system are as follows:
+
+     VERSIONING_SYSTEM	       This must be set to ``apple-generic'' at the
+			       project level to enable versioning.
+
+     CURRENT_PROJECT_VERSION   This setting defines the the current version of
+			       the project. The value must be a integer or
+			       floating point number like 57 or 365.8.
+
+     DYLIB_CURRENT_VERSION     This setting defines the the current version of
+			       any framework built by the project. Like
+			       CURRENT_PROJECT_VERSION the value must be an
+			       integer or floating point number like 57 or
+			       365.8. By default it is set to
+			       ``$(CURRENT_PROJECT_VERSION)''.
+
+     VERSION_INFO_PREFIX       Used as a prefix for the name of the version
+			       info symbol in the generated versioning source
+			       file.  If you prefix your exported symbols you
+			       will probably want to set this to the same pre-
+			       fix.
+
+     VERSION_INFO_SUFFIX       Used as a suffix for the name of the version
+			       info symbol in the generated versioning source
+			       file.  This is rarely used.
+
+     VERSION_INFO_BUILDER      This defines a reference to the user performing
+			       a build to be included in the generated stub,
+			       and defaults to the value of the USER environ-
+			       ment variable.
+
+     VERSION_INFO_EXPORT_DECL  This defines a prefix string for the version
+			       info symbol declaration in the generated stub.
+			       This can be used, for example, to add an
+			       optional `export' keyword to the version symbol
+			       declaration. This should rarely be changed.
+
+     VERSION_INFO_FILE	       Used to specify a name for the source file that
+			       will be generated and compiled into your prod-
+			       uct.  By default this is set to
+			       ``$(PRODUCT_NAME)_vers.c''.
+
+     To enable Apple Generic Versioning, then, you must set up at least the
+     VERSIONING_SYSTEM and CURRENT_PROJECT_VERSION project build settings for
+     each project you want to be versioned.  The target of a versioned project
+     will have two global variables generated and linked into your product.
+     One is of type double and is simply the CURRENT_PROJECT_VERSION.  The
+     other is a version string which is formatted to be compatible with
+     what(1).  These variables are available for use in your code.
+
+     Projects with multiple targets are required to have the same
+     CURRENT_PROJECT_VERSION for each target. The easiest way to achieve this
+     is to set CURRENT_PROJECT_VERSION at the project level.
+
+   Usage
+     agvtool should be invoked with the working directory set to your project
+     directory (the folder containing your .xcodeproj project file).
+
+     agvtool pays attention to the following defaults for CVS usage:
+     CVSEnabled, CVSSubmitByTag, and CVSToolPath.
+
+     If CVSEnabled is set to YES then agvtool will perform certain CVS opera-
+     tions like committing modified project files and performing tagging oper-
+     ations.  You can set this default by issuing the following command:
+
+	   defaults write agvtool CVSEnabled YES
+
+     The sense of this default can be overidden by supplying an explicit
+     -noscm (which turns off CVS and Subversion usage), -usecvs (which turns
+     on CVS usage and turns off Subversion usage), or -usesvn (which turns off
+     CVS usage and turns on Subversion usage).
+
+     If CVSSubmitByTag is set to YES then agvtool will submit your project by
+     CVS tag using the same version as the tag operation.  The sense of this
+     default can be overridden by supplying an explicit -bytag or -notbytag
+     argument to the submit operation. You can set this default by issuing the
+     following command:
+
+	   defaults write agvtool CVSSubmitByTag YES
+
+     Set CVSToolPath to point to the location of the cvs tool to use. If this
+     default is not set then agvtool will use /usr/bin/ocvs if it exists. Oth-
+     erwise /usr/bin/cvs will be used. You can set this default by issuing the
+     following command:
+
+	   defaults write agvtool CVSToolPath pathToCVS
+
+     agvtool pays attention to the following defaults for Subversion usage:
+     SVNEnabled, SVNSubmitByTag, and SVNToolPath.
+
+     If SVNEnabled is set to YES then agvtool will perform certain Subversion
+     operations like committing modified project files and performing tagging
+     operations.  You can set this default by issuing the following command:
+
+	   defaults write agvtool SVNEnabled YES
+
+     The sense of this default can be overidden by supplying an explicit
+     -noscm (which turns off CVS and Subversion usage), -usecvs (which turns
+     on CVS usage and turns off Subversion usage), or -usesvn (which turns off
+     CVS usage and turns on Subversion usage).
+
+     If SVNSubmitByTag is set to YES then agvtool () will submit your project
+     by Subversion URL using the same version as that created by the tag oper-
+     ation.  The sense of this default can be overridden by supplying an
+     explicit -bytag or -notbytag argument to the submit operation. You can
+     set this default by issuing the following command:
+
+	   defaults write agvtool SVNSubmitByTag YES
+
+     Set SVNToolPath to point to the location of the svn tool to use. If this
+     default is not set then agvtool will use /usr/local/bin/svn if it exists.
+     You can set this default by issuing the following command:
+
+	   defaults write agvtool SVNToolPath pathToSVN
+
+   Commands And Options
+     what-version | vers [-terse]
+	   Prints out the current version number of the project.
+
+	   The -terse option can be used to limit the output to the version
+	   number only.
+
+     next-version | bump [-all]
+	   Increments the version numbers of all versioned targets to the next
+	   highest integral value.  For example, 54 will change to 55 and
+	   234.6 will change to 235.
+
+	   The CURRENT_PROJECT_VERSION and the DYLIB_CURRENT_VERSION will be
+	   updated.  The -all option will also update the CFBundleVersion
+	   Info.plist key.
+
+	   If CVS support is enabled, the modified project file will be com-
+	   mitted.
+
+     new-version [-all version]
+	   Sets the version numbers of all targets to the given version.
+
+	   The CURRENT_PROJECT_VERSION and the DYLIB_CURRENT_VERSION will be
+	   updated.  The -all option will also update the CFBundleVersion
+	   Info.plist key.
+
+	   If CVS support is enabled, the modified project file will be com-
+	   mitted.
+
+     tag [-force | -F] [-noupdatecheck | -Q] [-baseurlfortag]
+	   Create a new tag projectname-currentversion where projectname is
+	   the name of the Xcode project file (without the extension) and
+	   currentversion is the CURRENT_PROJECT_VERSION with any `.' trans-
+	   formed into `~' (since CVS does not allow dots in tag names).
+
+	   The -force or -F option will add a -F to the tag operation.
+
+	   The -noupdatecheck or -Q option skips the cvs update usually done
+	   prior to tagging to ensure that there are no uncommitted changes.
+
+	   The -baseurlfortag option can be used to provide a URL that points
+	   to the directory to place the "tag" in when using Subversion. This
+	   overrides the SVNBaseTagURL default. This option is ignored if Sub-
+	   version is not being used.
+
+	   Note: This command will only function if CVS or Subversion support
+	   is enabled.
+
+     submit [-bytag | -notbytag] [-baseurlfortag] release ...
+	   Submits your project to the specified releases in Build & Integra-
+	   tion.
+
+	   The -bytag option performs the submission by tag instead of submit-
+	   ting from the project source directly.  The -notbytag option sub-
+	   mits from the project source.
+
+	   If CVSSubmitByTag is set, -bytag is the default.  Otherwise,
+	   -notbytag is the default.
+
+	   The -baseurlfortag option can be used to provide a URL that points
+	   to the directory to find "tags" in when using Subversion. This
+	   overrides the SVNBaseTagURL default. This option is ignored if Sub-
+	   version is not being used.
+
+	   Note: This command is relevant only for Apple employees.
+
+     what-marketing-version | mvers [-terse | -terse1]
+	   Prints the current marketing version of the project. For native
+	   targets, a marketing version is listed for each Info.plist file
+	   found. For Jambase targets a marketing version is shown if a common
+	   value is found.
+
+	   The marketing version is the CFBundleShortVersionString Info.plist
+	   key. This is often a totally different version determined by prod-
+	   uct marketing folks.
+
+	   The -terse option will limit the output to the version number only
+	   when displaying version numbers for Jambase targets.
+
+	   The -terse1 option will limit the output to the first version num-
+	   ber found, and only display the version number.
+
+     new-marketing-version version
+	   Sets the marketing version numbers of all versioned targets to the
+	   given version number.
+
+	   The marketing version is the CFBundleShortVersionString Info.plist
+	   key. This is often a totally different version determined by prod-
+	   uct marketing folks.
+
+	   If CVS support is enabled, the modified project file will be com-
+	   mitted.
+
+	   Do not use this command on a project with targets that track dif-
+	   ferent marketing versions.
+
+OS X				April 11, 2012				  OS X

@@ -1,0 +1,28 @@
+
+Document title(1)	  BSD General Commands Manual	     Document title(1)
+
+NAME
+     hdxml2manxml -- HeaderDoc XML to MPGL translator
+
+SYNOPSIS
+     hdxml2manxml [-M man_section] filename [...]
+
+OPTIONS
+     The available options are as follows:
+
+     -M 	the manual section for the output files
+
+     filename	the filename(s) to be processed
+
+ENVIRONMENT
+     This tool was designed to translate from headerdoc's XML output to an
+     mxml file for use with xml2man.  The tool takes a list of XML files gen-
+     erated with headerdoc2html (with the -X flag) and outputs a series of
+     .mxml files (suitable for use with xml2man) in the current directory.
+
+SEE ALSO
+     For more information on xml2man, see:
+
+     xml2man(1)
+
+Darwin				August 28, 2002 			Darwin

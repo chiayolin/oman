@@ -1,0 +1,31 @@
+NPM-STAR(1)							   NPM-STAR(1)
+
+
+
+NAME
+       npm-star - Mark your favorite packages
+
+SYNOPSIS
+	 npm star <pkgname> [<pkg>, ...]
+	 npm unstar <pkgname> [<pkg>, ...]
+
+DESCRIPTION
+       "Starring"  a  package means that you have some interest in it.	It's a
+       vaguely positive way to show that you care.
+
+       "Unstarring" is the same thing, but in reverse.
+
+       It's a boolean thing.  Starring repeatedly has no additional effect.
+
+SEE ALSO
+       o npm help view
+
+       o npm help whoami
+
+       o npm help adduser
+
+
+
+
+
+				   June 2015			   NPM-STAR(1)

@@ -1,0 +1,37 @@
+j2k_dump(1)		     dumps jpeg2000 files		   j2k_dump(1)
+
+
+
+NAME
+       j2k_dump  -  This  program reads in a jpeg2000 image and dumps the con-
+       tents to stdout. It is part of the OpenJPEG library.
+
+       Valid input image extensions are .j2k, .jp2, .jpt
+
+
+SYNOPSIS
+       j2k_dump -i infile.j2k
+
+       j2k_dump -ImgDir images/ Dump all files in images/
+
+       j2k_dump -h Print help message and exit
+
+
+OPTIONS
+       -i name
+	      (jpeg2000 input file name)
+
+       -ImgDir directory_name
+	      (directory containing jpeg2000 input files)
+
+
+AUTHORS
+       Copyright (c) 20010, Mathieu Malaterre
+
+
+SEE ALSO
+       image_to_j2k(1) j2k_to_image(1)
+
+
+
+j2k_dump			 Version 1.4.0			   j2k_dump(1)

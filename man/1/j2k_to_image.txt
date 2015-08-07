@@ -1,0 +1,86 @@
+j2k_to_image(1) 	    converts jpeg2000 files	       j2k_to_image(1)
+
+
+
+NAME
+       j2k_to_image  -	This program reads in a jpeg2000 image and converts it
+       to another image type. It is part of the OpenJPEG library.
+
+       Valid input image extensions are .j2k, .jp2, .j2c, .jpt
+
+       Valid output image extensions are .bmp, .pgm, .pgx, .png,  .pnm,  .ppm,
+       .raw, .tga, .tif . For PNG resp. TIF it needs libpng resp. libtiff .
+
+SYNOPSIS
+       j2k_to_image -i infile.j2k -o outfile.png
+
+       j2k_to_image -ImgDir images/ -OutFor bmp
+
+       j2k_to_image -h Print help message and exit
+
+       See JPWL OPTIONS for special options
+
+OPTIONS
+       -i name
+	      (jpeg2000 input file name)
+
+       -l n   n  is the maximum number of quality layers to decode. See LAYERS
+	      below)
+
+       -o name
+	      (output file name with extension)
+
+       -r n   (n is the highest resolution level to be discarded.  See	REDUC-
+	      TION below)
+
+       -x name
+	      (use name as index file and fill it)
+
+       -ImgDir directory_name
+	      (directory containing input files)
+
+       -OutFor ext
+	      (extension for output files)
+
+
+JPWL OPTIONS
+       Options usable only if the library has been compiled with -DUSE_JPWL
+
+       -W  c[=Nc]  (Nc is the number of expected components in the codestream;
+       default:3)
+
+       -W  t[=Nt]  (Nt	is  the  maximum  number  of  tiles in the codestream;
+       default:8192)
+
+       -W c[=Nc], t[=Nt] (same as above)
+
+
+REDUCTION
+       Set the number of highest resolution levels to be discarded.  The image
+       resolution is effectively divided by 2 to the power of  the  number  of
+       discarded  levels.  The	reduce factor is limited by the smallest total
+       number of decomposition levels among tiles.
+
+TILES
+       Set the maximum number of quality layers to decode. If there  are  less
+       quality	layers	than  the specified number, all the quality layers are
+       decoded.
+
+
+AUTHORS
+       Copyright (c) 2002-2007, Communications and Remote Sensing  Laboratory,
+       Universite catholique de Louvain (UCL), Belgium
+       Copyright (c) 2002-2007, Professor Benoit Macq
+       Copyright (c) 2001-2003, David Janssens
+       Copyright (c) 2002-2003, Yannick Verschueren
+       Copyright (c) 2003-2007, Francois-Olivier Devaux and Antonin Descampe
+       Copyright (c) 2005, Herve Drolon, FreeImage Team
+       Copyright (c) 2006-2007, Parvatha Elangovan
+
+
+SEE ALSO
+       image_to_j2k(1) j2k_dump(1)
+
+
+
+j2k_to_image			 Version 1.4.0		       j2k_to_image(1)

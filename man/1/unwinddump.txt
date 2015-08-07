@@ -1,0 +1,25 @@
+
+unwinddump(1)		  BSD General Commands Manual		 unwinddump(1)
+
+NAME
+     unwinddump -- Displays compact unwind information in an executable
+
+SYNOPSIS
+     unwinddump [-arch arch-name] file(s)
+
+DESCRIPTION
+     When a C++ (or x86_64 Objective-C) exception is thrown, the runtime must
+     unwind the stack looking for some function to catch the exception.  Tra-
+     ditionally, the unwind information is stored in the __TEXT/__eh_frame
+     section of each executable as Dwarf CFI (call frame information).	Begin-
+     ning in Mac OS X 10.6, the unwind information is also encoded in the
+     __TEXT/__unwind_info section using a two-level lookup table of compact
+     unwind encodings.
+
+     The unwinddump tool displays the content of the __TEXT/__unwind_info sec-
+     tion.
+
+SEE ALSO
+     ld(1) dwarfdump(1)
+
+Darwin			       November 7, 2008 			Darwin

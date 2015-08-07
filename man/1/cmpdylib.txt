@@ -1,0 +1,60 @@
+CMPDYLIB(1)							   CMPDYLIB(1)
+
+
+
+NAME
+       cmpdylib - compare two dynamic shared libraries for compatibility
+
+SYNOPSIS
+       cmpdylib oldLibrary newLibrary
+
+DESCRIPTION
+       cmpdylib  compares  two	versions of a dynamic shared library to see if
+       they are compatible with each other. If the two versions are incompati-
+       ble,  the  reason is printed to stdout, and the exit status is nonzero.
+       If they are compatible, nothing is printed,  and  the  exit  status  is
+       zero.
+
+       To see if the two versions are compatible, cmpdylib first verifies that
+       newLibrary was built for all of the architectures that  oldLibrary  was
+       built for. If so, for each architecture, it checks to see if the global
+       symbols defined in oldLibrary are still defined in newLibrary.  It then
+       looks  for  new	symbols,  symbols  defined  in newLibrary that are not
+       defined in oldLibrary.  If it finds new symbols, it compares  the  com-
+       patibility  version numbers of the two libraries.  If the compatibility
+       version number of newLibrary is greater than oldLibrary, the  libraries
+       are  still compatible.  If the compatibility version number is the same
+       or less, the libraries are incompatible.
+
+OPTIONS
+       oldLibrary
+	      The older version of the library.
+
+       newLibrary
+	      The newer version of the library.
+
+EXAMPLES
+       This example shows the result of performing cmpdylib on two  incompati-
+       ble  versions  of  the  Foundation library. As stated, the versions are
+       incompatible because the newer version was not built for the ppc archi-
+       tecture.
+
+       cmpdylib     /System/Library/Frameworks/Foundation.framework/Foundation
+       Foundation_proj/Foundation
+       cmpdylib: file: Foundation_proj/Foundation does not  contain  architec-
+       ture: ppc
+       cmpdylib:  new dynamic shared library: Foundation_proj/Foundation  does
+       not contain architecture ppc
+
+DIAGNOSTICS
+       The exit status is zero if the  library	versions  are  compatible  and
+       nonzero if they are incompatible.
+
+BUGS
+       There  are  lots of other things that could be checked for that are not
+       (such as the Objective C API).
+
+
+
+
+Apple Computer, Inc.	       November 3, 1997 		   CMPDYLIB(1)

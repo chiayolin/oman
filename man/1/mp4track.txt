@@ -1,0 +1,158 @@
+MP4TRACK(1)			MP4v2 Utilities 		   MP4TRACK(1)
+
+
+
+NAME
+       mp4track - manual page for mp4track - MP4v2 2.0.0
+
+SYNOPSIS
+       mp4track [OPTION]... [PARAMETERS]... ACTION file...
+
+DESCRIPTION
+       For  each  mp4  file specified, perform the specified ACTION. An action
+       must be specified. Some options are not applicable to some actions.
+
+       ACTIONS
+
+       --list list all tracks in mp4
+
+       --enabled BOOL
+	      set trak.tkhd.flags (enabled bit)
+
+       --inmovie BOOL
+	      set trak.tkhd.flags (inMovie bit)
+
+       --inpreview BOOL
+	      set trak.tkhd.flags (inPreview bit)
+
+       --layer NUM
+	      set trak.tkhd.layer
+
+       --altgroup NUM
+	      set trak.tkhd.alternate_group
+
+       --volume FLOAT
+	      set trak.tkhd.volume
+
+       --width FLOAT
+	      set trak.tkhd.width
+
+       --height FLOAT
+	      set trak.tkhd.height
+
+       --language CODE
+	      set trak.mdia.mdhd.language
+
+       --hdlrname STR
+	      set trak.mdia.hdlr.name
+
+       --udtaname STR
+	      set trak.udta.name.value
+
+       --udtaname-remove
+	      remove trak.udta.name atom
+
+       --colr-list
+	      list all colr-boxes in mp4
+
+       --colr-add
+	      add colr-box to a video track
+
+       --colr-set
+	      set colr-box parms
+
+       --colr-remove
+	      remove colr-box from track
+
+       --pasp-list
+	      list all pasp-boxes in mp4
+
+       --pasp-add
+	      add pasp-box to a video track
+
+       --pasp-set
+	      set pasp-box parms
+
+       --pasp-remove
+	      remove pasp-box from track
+
+       PARAMETERS
+
+       --track-any
+	      act on any/all tracks
+
+       --track-index IDX
+	      act on track index IDX
+
+       --track-id ID
+	      act on track id ID
+
+       --colr-parms CSV
+	      where CSV is IDX1,IDX2,IDX3
+
+       --colr-parm-hd
+	      equivalent to --colr-parms=1,1,1
+
+       --colr-parm-sd
+	      equivalent to --colr-parms=6,1,6
+
+       --pasp-parms CSV
+	      where CSV is hSPACING,vSPACING
+
+       OPTIONS
+
+       -z, --optimize
+	      optimize mp4 file after modification
+
+       -y, --dryrun
+	      do not actually create or modify any files
+
+       -k, --keepgoing
+	      continue batch processing even after errors
+
+       -o, --overwrite
+	      overwrite existing files when creating
+
+       -f, --force
+	      force overwrite even if file is read-only
+
+       -q, --quiet
+	      equivalent to --verbose 0
+
+       -d, --debug NUM
+	      increase debug or long-option to set NUM
+
+       -v, --verbose NUM
+	      increase verbosity or long-option to set NUM
+
+       -h, --help
+	      print brief help or long-option for extended help
+
+       --version
+	      print version information and exit
+
+       DEBUG LEVELS (for raw mp4 file I/O)
+
+       0      supressed
+
+       1      add warnings and errors (default)
+
+       2      add table details
+
+       3      add implicits
+
+       4      everything
+
+       VERBOSE LEVELS
+
+       0      warnings and errors
+
+       1      normal informative messages (default)
+
+       2      more informative messages
+
+       3      everything
+
+
+
+mp4track - MP4v2 2.0.0		   May 2012			   MP4TRACK(1)

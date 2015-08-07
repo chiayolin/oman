@@ -1,0 +1,257 @@
+REZ(1)									REZ(1)
+
+
+
+NAME
+       Rez - compiles resources (DEPRECATED)
+
+SYNOPSIS
+       Rez [ rezFile1 ] [ rezFile2 ] ...
+       [ -align word | longword ] [ -a[ppend] ]
+       [ -arch architecture ] [ -c[reator] creatorExpr ] [ -d[efine] macro [ =
+       data ] ]
+       [ -i directoryPath ] [ -F frameworkDirectoryPath ] [ -is[ysroot]
+       sdkPath ] [ [ -m[odification] ]
+       [ -noResolve [ output | include ] ] [ -o outputFile ]
+       [ -ov ] [ -p[rogress] ] [ -rd ] [ -ro ]
+       [ -s directoryPath ]
+       [ -script Roman | Japanese | Korean |
+	  SimpChinese | TradChinese ]
+       [ -t[ype] typeExpr ] [ -u[ndef] macro ]
+       [ -useDF ]
+
+DESCRIPTION
+       Tools supporting Carbon development, including Rez, were deprecated
+       with Xcode 6.
+
+       The Rez tool compiles the resource fork of a file according to the
+       textual description contained in the resource description files. These
+       resource description files must contain both the type declarations and
+       the resource definitions needed to compile the resources. This data can
+       come directly from the resource description files, as in this example:
+
+       Rez -F Carbon Carbon.r myResource.r
+
+       The data can also come from other text files that are included in
+       resource description files using #include and read directives. For
+       example, myResource.r could use #include to include the Carbon.r file.
+
+INPUT
+       Standard input, unless you specify one or more resource description
+       files.
+
+OUTPUT
+       Normally Rez writes the resource fork to the file Rez.out.  You can
+       specify a different output file by using the -o option. Errors and
+       warnings are written to diagnostic output. The Rez tool does not write
+       to standard output.
+
+ALIAS RESOLUTION
+       This command resolves Finder aliases in all input and output file
+       specifications. This includes input source files, listing files, output
+       object files, paths specified with the -i and -s options, and paths
+       specified within source code using INCLUDE or #include statements. This
+       behavior may be changed for resource files by using the -noResolve
+       option.
+
+STATUS
+       Rez can return the following status codes:
+
+       0  no errors
+       1  error in parameters
+       2  syntax error in resource description file
+       3  I/O or program error
+
+       Note
+       If any errors are detected, Rez sets the output file's modification
+       date to 0, which is January 1, 1904, 12:00 A.M.
+
+PARAMETERS
+       rezFile1 [ rezFile2 ] ...
+	      Specifies one or more resource description files that contain
+	      type declarations and resource definitions. Typically this pairs
+	      a file containing only resource definitions with another
+	      containing only type declarations. The type declarations for the
+	      standard Macintosh resources are contained in the MacTypes.r
+	      file in the CarbonCore framework.
+
+	      You can also specify resource description files by using
+	      #include.  For example, a file containing only resource
+	      definitions could include those containing the appropriate type
+	      declarations (for example, myResource.r could include
+	      <Carbon/MacTypes.r>).  In addition, you can also include
+	      resource files that have already been compiled by Rez include
+	      directive.
+
+	      The -script option enables Rez to correctly process the 2- byte
+	      character sets for foreign-language script systems.
+
+OPTIONS
+       -align word | longword
+	      Aligns resources along word or longword boundaries. This allows
+	      the Resource Manager to load these resources faster. The Rez
+	      tool ignores this option if you use -a[ppend].
+
+       -a[ppend]
+	      Appends new resources to the output file rather than replacing
+	      the output file.
+
+	      Note
+	      The Rez tool cannot append resources to a resource file that has
+	      its read-only bit set. It also cannot replace a resource that
+	      has its protected bit set unless you specify -ov.
+
+	      WARNING
+	      The Rez tool overwrites any existing resource of the same type
+	      and ID without any warning message.
+
+       -arch architecture
+	      A synonym for
+
+	      -d __architecture__
+
+	      If no -arch arguments are provided, Rez automatically adds one
+	      for the current system's architecture.
+
+       -c[reator] creatorExpr
+	      Sets the output file creator. (The default value is '????'.)
+	      Note that creatorExpr is a Rez expression such as
+
+	      -c "3*200+5"
+
+	      If the creator begins with a letter and does not contain any
+	      spaces or special characters, you can simply type it in, as in
+	      this example:
+
+	      -c APPL
+
+	      Otherwise, you must format the creator as a numeric expression
+	      or as a literal expression such as
+
+	      -c " '@@@@' "
+
+       -d[efine] macro	[= data ]
+	      Defines the macro variable macro as having the value data.  You
+	      can use this option more than once on a command line.
+
+	      macro  Specifies the macro variable to be defined.
+
+	      data   Specifies the value of macro. This is the same as writing
+
+		     #define macro [data]
+
+		     at the beginning of the input.
+
+		     If you do not specify data, Rez sets the value of data to
+		     the null string. Note that this still defines the macro.
+
+       -i directoryPath
+	      Directs Rez to search this directory for #include files. You can
+	      specify this option more than once. The Rez tool searches
+	      directories in the order in which they appear on the command
+	      line.
+
+       -F frameworkDirectoryPath
+	      Directs Rez to search this directory for frameworks referred to
+	      by framework-style #include references (e.g. <Carbon/Carbon.r>.)
+	      By default, Rez only searches the /System/Library/Frameworks
+	      directory; using this option you can specify other directories
+	      to be searched.  You can specify this option more than once. The
+	      Rez tool searches directories in the order in which they appear
+	      on the command line.
+
+       -is[ysroot] sdkPath
+	      Directs Rez to search for included files and frameworks in the
+	      designated SDK.  If omitted, the system root ("/") is assumed.
+
+       -m[odification]
+	      Does not change the output file's modification date. If an error
+	      occurs, the output file's modification date is set to zero, even
+	      if you use this option. A date of 0 means January 1, 1904, 12:00
+	      A.M.
+
+       -noResolve [output|include]
+	      Overrides the default alias resolution behavior by not resolving
+	      leaf aliases in the output resource file specification or in any
+	      included resource input files.
+
+	      output If output is specified, Rez overrides the default Finder
+		     alias resolution behavior by not resolving leaf aliases
+		     in the output resource file specification. This allows
+		     you to modify a Finder alias file directly.
+
+	      include
+		     If include is specified with -noResolve then Rez
+		     overrides the default Finder alias resolution behavior by
+		     not resolving leaf aliases in any included resource input
+		     files. This allows you to include resources directly from
+		     Finder alias files.
+
+       -o outputFile
+	      Places output in the specified output file. The default output
+	      file is Rez.out.
+
+       -ov    Overrides the protected bit when replacing resources with
+	      -a[ppend].
+
+       -p[rogress]
+	      Writes version and progress information to diagnostic output.
+
+       -rd    Suppresses warning messages for redeclared resource types.
+
+       -ro    Sets the mapReadOnly flag in the resource map.
+
+       -s directoryPath
+	      Directs Rez to search this directory for resource include files.
+	      You can specify this option more than once. The Rez tool
+	      searches directories in the order in which they appear on the
+	      command line.
+
+       -script Roman | Japanese | Korean | SimpChinese | TradChinese
+	      Enables the recognition of any of several 2-byte character
+	      script systems to use when compiling and decompiling files. This
+	      option insures that 2-byte characters in strings are handled as
+	      indivisible entities. The default language is Roman and
+	      specifies 1-byte character sets.
+
+       -t[ype] typeExpr
+	      Sets the type of the output file (the default is 'APPL'). Note
+	      that typeExpr is a Rez expression, such as
+
+	      -t "3*200+5"
+
+	      If the type begins with a letter and does not contain any spaces
+	      or special characters, you can simply type it in, as in this
+	      example:
+
+	      -t MPST
+
+	      Otherwise, you must format it as a numeric expression or literal
+	      expression, such as
+
+	      -t " '@@@@' "
+
+       -u[ndef] macro
+	      Undefines the preset macro variable This is the same as writing
+
+	      #undef macro
+
+	      at the beginning of the input. This option can be repeated more
+	      than once on a command line.
+
+       -useDF Reads and writes resource information from the files' data
+	      forks, instead of their resource forks.
+
+EXAMPLES
+       The following command line generates a resource fork for the file
+       Sample, based on the type declarations and resource definitions in
+       Types.r and Sample.r:
+
+       Rez Types.r Sample.r -o Sample
+
+SEE ALSO
+       DeRez
+
+
+
+Mac OS X			 July 25, 2000				REZ(1)

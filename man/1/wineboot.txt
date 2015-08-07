@@ -1,0 +1,54 @@
+WINEBOOT(1)			 Wine Programs			   WINEBOOT(1)
+
+
+
+NAME
+       wineboot - perform Wine initialization, startup, and shutdown tasks
+
+SYNOPSIS
+       wineboot [options]
+
+DESCRIPTION
+       wineboot  performs  the	initial creation and setup of a WINEPREFIX for
+       wine(1). It can also perform a simulated  reboot  or  shutdown  to  any
+       applications running within the WINEPREFIX.
+
+OPTIONS
+       -h, --help
+	      Display help message.
+
+       -e, --end-session
+	      End the current session cleanly.
+
+       -f, --force
+	      Force exit for processes that don't exit cleanly
+
+       -i, --init
+	      Initialize the WINEPREFIX.
+
+       -k, --kill
+	      Kill running processes without any cleanup.
+
+       -r, --restart
+	      Restart only, don't do normal startup operations.
+
+       -s, --shutdown
+	      Shutdown only, don't reboot.
+
+       -u, --update
+	      Update the WINEPREFIX.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       wineboot  is  part of the Wine distribution, which is available through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			   WINEBOOT(1)

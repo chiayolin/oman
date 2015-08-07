@@ -1,0 +1,123 @@
+actool(1)							     actool(1)
+
+
+
+NAME
+       actool - compiles, prints, updates, and verifies asset catalogs.
+
+
+SYNOPSIS
+       actool [options] document
+
+DESCRIPTION
+       actool  verifies, updates, and prints the contents of an asset catalog,
+       generating its output in standard plist format.	 The  tool  follows  a
+       "read", "modify", "write", "print" order of operations.
+
+
+OPTIONS
+   Specifying Output:
+       --write path
+	      Write the resulting asset catalog to the specified path.
+
+
+       --output-format format
+	      By  default,  actool provides output in the form of an XML prop-
+	      erty list. Specifying binary1 will instruct actool to  output  a
+	      binary  property list. Similarly, xml1 specifies an XML property
+	      list, and human-readable-text specifies human readable text.
+
+
+
+   Compiling:
+       --compile path
+	      Compile the input file and writes the output  to	the  specified
+	      path.  The  compile  option instructs actool to convert an asset
+	      catalog to files optimized for  runtime.	Additionally,  --warn-
+	      ings, --errors, and --output-format are three other options that
+	      are commonly combined with --compile.
+
+
+       --warnings
+	      Include document warning	messages  in  actool's	plist  output.
+	      Warnings	     will	appear	     under	 the	   key
+	      com.apple.actool.document.warnings, with messages  listed  under
+	      the subkey message and warning types under the subkey type.
+
+
+       --errors
+	      Include  document  error	messages  in  actool's	plist  output.
+	      Errors	   will       appear	   under	the	   key
+	      com.apple.actool.document.errors, with messages listed under the
+	      subkey message and error types under the subkey type.
+
+
+       --notices
+	      Include document	notice	messages  in  actool's	plist  output.
+	      Notices	     will	appear	     under	 the	   key
+	      com.apple.actool.document.notices, with  messages  listed  under
+	      the subkey message and error types under the subkey type.
+
+
+       --output-partial-info-plist path
+	      Emit a plist to path that contains keys and values to include in
+	      an application's info plist.
+
+
+       --app-icon name
+	      Can be combined with --compile to select an app icon to  compile
+	      to the output directory. This flag also causes actool to declare
+	      the app icon in the patrial info plist  component  specified  by
+	      --output-partial-info-plist.
+
+
+       --launch-image name
+	      Can  be combined with --compile to select a launch image to com-
+	      pile to the output directory. This flag also  causes  actool  to
+	      declare  the  launch  image  in the patrial info plist component
+	      specified by --output-partial-info-plist.
+
+
+       --platform platform-name
+	      Specifies the target platform to compile for. This option influ-
+	      ences warnings, validation, and which images are included in the
+	      built product.
+
+
+       --minimum-deployment-target version
+	      Specifies the minimum deployment target  to  compile  for.  This
+	      option  influences  warnings,  validation,  and which images are
+	      included in the built product.
+
+
+       --target-device device-name
+	      Specifies the target device to compile for, and  may  be	passed
+	      multiple times. This option influences warnings, validation, and
+	      which images are included in the built product.
+
+
+
+   Listing Content:
+       --print-contents
+	      Include a listing of the catalog's content in the output.
+
+
+
+   Version Information:
+       --version
+	      Print the version of actool.  The version information is	output
+	      under  the key com.apple.actool.version with the subkeys bundle-
+	      version and short-bundle-version.
+
+
+EXAMPLES
+       actool MyApp.assetcatalog --compile MyApp.car
+	      actool will compile MyApp.assetcatalog and produce MyApp.car.
+
+
+SEE ALSO
+       plist(1)
+
+
+
+Apple Inc.			  Dec 15 2011			     actool(1)

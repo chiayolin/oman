@@ -1,0 +1,33 @@
+cacaserver(1)							 cacaserver(1)
+
+
+
+NAME
+       cacaserver - telnet server for libcaca
+
+SYNOPSIS
+       cacaserver
+
+DESCRIPTION
+       cacaserver  reads  libcaca  animation  files  in its standard input and
+       serves them as ANSI art on network port 51914. These animations can  be
+       created	by  any libcaca program by setting the CACA_DRIVER environment
+       variable to raw and piping the program's standard output to cacaserver.
+
+       Clients	can  then  connect to port 51914 using telnet or netcat to see
+       the output.
+
+EXAMPLE
+       CACA_DRIVER=raw cacademo | cacaserver
+
+       telnet localhost 51914
+
+SEE ALSO
+       cacaplay(1)
+
+AUTHOR
+       This manual page was written by Sam Hocevar <sam@hocevar.net>.
+
+
+
+libcaca 			  2006-11-10			 cacaserver(1)

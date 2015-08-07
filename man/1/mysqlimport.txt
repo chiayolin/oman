@@ -1,0 +1,348 @@
+MYSQLIMPORT(1)		     MySQL Database System		MYSQLIMPORT(1)
+
+
+
+NAME
+       mysqlimport - a data import program
+
+SYNOPSIS
+       mysqlimport [options] db_name textfile1 ...
+
+DESCRIPTION
+       The mysqlimport client provides a command-line interface to the LOAD
+       DATA INFILE SQL statement. Most options to mysqlimport correspond
+       directly to clauses of LOAD DATA INFILE syntax. See Section 13.2.6,
+       "LOAD DATA INFILE Syntax".
+
+       Invoke mysqlimport like this:
+
+	   shell> mysqlimport [options] db_name textfile1 [textfile2 ...]
+
+       For each text file named on the command line, mysqlimport strips any
+       extension from the file name and uses the result to determine the name
+       of the table into which to import the file's contents. For example,
+       files named patient.txt, patient.text, and patient all would be
+       imported into a table named patient.
+
+       mysqlimport supports the following options, which can be specified on
+       the command line or in the [mysqlimport] and [client] groups of an
+       option file. For information about option files used by MySQL programs,
+       see Section 4.2.6, "Using Option Files".
+
+       o   --help, -?
+
+	   Display a help message and exit.
+
+       o   --bind-address=ip_address
+
+	   On a computer having multiple network interfaces, use this option
+	   to select which interface to use for connecting to the MySQL
+	   server.
+
+	   This option is supported beginning with MySQL 5.6.1.
+
+       o   --character-sets-dir=path
+
+	   The directory where character sets are installed. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --columns=column_list, -c column_list
+
+	   This option takes a comma-separated list of column names as its
+	   value. The order of the column names indicates how to match data
+	   file columns with table columns.
+
+       o   --compress, -C
+
+	   Compress all information sent between the client and the server if
+	   both support compression.
+
+       o   --debug[=debug_options], -# [debug_options]
+
+	   Write a debugging log. A typical debug_options string is
+	   d:t:o,file_name. The default is d:t:o.
+
+       o   --debug-check
+
+	   Print some debugging information when the program exits.
+
+       o   --debug-info
+
+	   Print debugging information and memory and CPU usage statistics
+	   when the program exits.
+
+       o   --default-character-set=charset_name
+
+	   Use charset_name as the default character set. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --default-auth=plugin
+
+	   A hint about the client-side authentication plugin to use. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --defaults-extra-file=file_name
+
+	   Read this option file after the global option file but (on Unix)
+	   before the user option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-file=file_name
+
+	   Use only the given option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-group-suffix=str
+
+	   Read not only the usual option groups, but also groups with the
+	   usual names and a suffix of str. For example, mysqlimport normally
+	   reads the [client] and [mysqlimport] groups. If the
+	   --defaults-group-suffix=_other option is given, mysqlimport also
+	   reads the [client_other] and [mysqlimport_other] groups.
+
+       o   --delete, -D
+
+	   Empty the table before importing the text file.
+
+       o   --fields-terminated-by=..., --fields-enclosed-by=...,
+	   --fields-optionally-enclosed-by=..., --fields-escaped-by=...
+
+	   These options have the same meaning as the corresponding clauses
+	   for LOAD DATA INFILE. See Section 13.2.6, "LOAD DATA INFILE
+	   Syntax".
+
+       o   --force, -f
+
+	   Ignore errors. For example, if a table for a text file does not
+	   exist, continue processing any remaining files. Without --force,
+	   mysqlimport exits if a table does not exist.
+
+       o   --host=host_name, -h host_name
+
+	   Import data to the MySQL server on the given host. The default host
+	   is localhost.
+
+       o   --ignore, -i
+
+	   See the description for the --replace option.
+
+       o   --ignore-lines=N
+
+	   Ignore the first N lines of the data file.
+
+       o   --lines-terminated-by=...
+
+	   This option has the same meaning as the corresponding clause for
+	   LOAD DATA INFILE. For example, to import Windows files that have
+	   lines terminated with carriage return/linefeed pairs, use
+	   --lines-terminated-by="\r\n". (You might have to double the
+	   backslashes, depending on the escaping conventions of your command
+	   interpreter.) See Section 13.2.6, "LOAD DATA INFILE Syntax".
+
+       o   --local, -L
+
+	   Read input files locally from the client host.
+
+       o   --lock-tables, -l
+
+	   Lock all tables for writing before processing any text files. This
+	   ensures that all tables are synchronized on the server.
+
+       o   --login-path=name
+
+	   Read options from the named login path in the .mylogin.cnf login
+	   path file. A "login path" is an option group that permits only a
+	   limited set of options: host, user, and password. Think of a login
+	   path as a set of values that indicate the server host and the
+	   credentials for authenticating with the server. To create the login
+	   path file, use the mysql_config_editor utility. See
+	   mysql_config_editor(1). This option was added in MySQL 5.6.6.
+
+       o   --low-priority
+
+	   Use LOW_PRIORITY when loading the table. This affects only storage
+	   engines that use only table-level locking (such as MyISAM, MEMORY,
+	   and MERGE).
+
+       o   --no-defaults
+
+	   Do not read any option files. If program startup fails due to
+	   reading unknown options from an option file, --no-defaults can be
+	   used to prevent them from being read.
+
+	   The exception is that the .mylogin.cnf file, if it exists, is read
+	   in all cases. This permits passwords to be specified in a safer way
+	   than on the command line even when --no-defaults is used.
+	   (.mylogin.cnf is created by the mysql_config_editor utility. See
+	   mysql_config_editor(1).)
+
+       o   --password[=password], -p[password]
+
+	   The password to use when connecting to the server. If you use the
+	   short option form (-p), you cannot have a space between the option
+	   and the password. If you omit the password value following the
+	   --password or -p option on the command line, mysqlimport prompts
+	   for one.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security". You can use an option file to avoid giving the password
+	   on the command line.
+
+       o   --pipe, -W
+
+	   On Windows, connect to the server using a named pipe. This option
+	   applies only if the server supports named-pipe connections.
+
+       o   --plugin-dir=path
+
+	   The directory in which to look for plugins. It may be necessary to
+	   specify this option if the --default-auth option is used to specify
+	   an authentication plugin but mysqlimport does not find it. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --port=port_num, -P port_num
+
+	   The TCP/IP port number to use for the connection.
+
+       o   --print-defaults
+
+	   Print the program name and all options that it gets from option
+	   files.
+
+       o   --protocol={TCP|SOCKET|PIPE|MEMORY}
+
+	   The connection protocol to use for connecting to the server. It is
+	   useful when the other connection parameters normally would cause a
+	   protocol to be used other than the one you want. For details on the
+	   permissible values, see Section 4.2.2, "Connecting to the MySQL
+	   Server".
+
+       o   --replace, -r
+
+	   The --replace and --ignore options control handling of input rows
+	   that duplicate existing rows on unique key values. If you specify
+	   --replace, new rows replace existing rows that have the same unique
+	   key value. If you specify --ignore, input rows that duplicate an
+	   existing row on a unique key value are skipped. If you do not
+	   specify either option, an error occurs when a duplicate key value
+	   is found, and the rest of the text file is ignored.
+
+       o   --secure-auth
+
+	   Do not send passwords to the server in old (pre-4.1) format. This
+	   prevents connections except for servers that use the newer password
+	   format. This option is enabled by default; use --skip-secure-auth
+	   to disable it. This option was added in MySQL 5.6.17.
+
+	       Note
+	       Passwords that use the pre-4.1 hashing method are less secure
+	       than passwords that use the native password hashing method and
+	       should be avoided. Pre-4.1 passwords are deprecated and support
+	       for them will be removed in a future MySQL release. For account
+	       upgrade instructions, see Section 6.3.8.3, "Migrating Away from
+	       Pre-4.1 Password Hashing and the mysql_old_password Plugin".
+
+       o   --shared-memory-base-name=name
+
+	   On Windows, the shared-memory name to use, for connections made
+	   using shared memory to a local server. The default value is MYSQL.
+	   The shared-memory name is case sensitive.
+
+	   The server must be started with the --shared-memory option to
+	   enable shared-memory connections.
+
+       o   --silent, -s
+
+	   Silent mode. Produce output only when errors occur.
+
+       o   --socket=path, -S path
+
+	   For connections to localhost, the Unix socket file to use, or, on
+	   Windows, the name of the named pipe to use.
+
+       o   --ssl*
+
+	   Options that begin with --ssl specify whether to connect to the
+	   server using SSL and indicate where to find SSL keys and
+	   certificates. See Section 6.3.10.4, "SSL Command Options".
+
+       o   --user=user_name, -u user_name
+
+	   The MySQL user name to use when connecting to the server.
+
+       o   --use-threads=N
+
+	   Load files in parallel using N threads.
+
+       o   --verbose, -v
+
+	   Verbose mode. Print more information about what the program does.
+
+       o   --version, -V
+
+	   Display version information and exit.
+
+       Here is a sample session that demonstrates use of mysqlimport:
+
+	   shell> mysql -e 'CREATE TABLE imptest(id INT, n VARCHAR(30))' test
+	   shell> ed
+	   a
+	   100	   Max Sydow
+	   101	   Count Dracula
+	   .
+	   w imptest.txt
+	   32
+	   q
+	   shell> od -c imptest.txt
+	   0000000   1	 0   0	\t   M	 a   x	     S	 y   d	 o   w	\n   1	 0
+	   0000020   1	\t   C	 o   u	 n   t	     D	 r   a	 c   u	 l   a	\n
+	   0000040
+	   shell> mysqlimport --local test imptest.txt
+	   test.imptest: Records: 2  Deleted: 0  Skipped: 0  Warnings: 0
+	   shell> mysql -e 'SELECT * FROM imptest' test
+	   +------+---------------+
+	   | id   | n		  |
+	   +------+---------------+
+	   |  100 | Max Sydow	  |
+	   |  101 | Count Dracula |
+	   +------+---------------+
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			MYSQLIMPORT(1)

@@ -1,0 +1,378 @@
+MYSQL_UPGRADE(1)	     MySQL Database System	      MYSQL_UPGRADE(1)
+
+
+
+NAME
+       mysql_upgrade - check and upgrade MySQL tables
+
+SYNOPSIS
+       mysql_upgrade [options]
+
+DESCRIPTION
+       mysql_upgrade examines all tables in all databases for
+       incompatibilities with the current version of MySQL Server.
+       mysql_upgrade also upgrades the system tables so that you can take
+       advantage of new privileges or capabilities that might have been added.
+
+       If mysql_upgrade finds that a table has a possible incompatibility, it
+       performs a table check and, if problems are found, attempts a table
+       repair. If the table cannot be repaired, see Section 2.11.4,
+       "Rebuilding or Repairing Tables or Indexes" for manual table repair
+       strategies.
+
+       You should execute mysql_upgrade each time you upgrade MySQL.
+
+       If you install MySQL from RPM packages on Linux, you must install the
+       server and client RPMs.	mysql_upgrade is included in the server RPM
+       but requires the client RPM because the latter includes mysqlcheck.
+       (See Section 2.5.5, "Installing MySQL on Linux Using RPM Packages".)
+
+	   Note
+	   On Windows Server 2008, Vista, and newer, you must run
+	   mysql_upgrade with administrator privileges. You can do this by
+	   running a Command Prompt as Administrator and running the command.
+	   Failure to do so may result in the upgrade failing to execute
+	   correctly.
+
+	   Caution
+	   You should always back up your current MySQL installation before
+	   performing an upgrade. See Section 7.2, "Database Backup Methods".
+
+	   Some upgrade incompatibilities may require special handling before
+	   you upgrade your MySQL installation and run mysql_upgrade. See
+	   Section 2.11.1, "Upgrading MySQL", for instructions on determining
+	   whether any such incompatibilities apply to your installation and
+	   how to handle them.
+
+       To use mysql_upgrade, make sure that the server is running. Then invoke
+       it like this:
+
+	   shell> mysql_upgrade [options]
+
+       After running mysql_upgrade, stop the server and restart it so that any
+       changes made to the system tables take effect.
+
+       If you have multiple MySQL server instances running, invoke
+       mysql_upgrade with connection parameters appropriate for connecting to
+       the desired server. For example, with servers running on the local host
+       on parts 3306 through 3308, upgrade each of them by connecting to the
+       appropriate port:
+
+	   shell> mysql_upgrade --protocol=tcp -P 3306 [other_options]
+	   shell> mysql_upgrade --protocol=tcp -P 3307 [other_options]
+	   shell> mysql_upgrade --protocol=tcp -P 3308 [other_options]
+
+       For local host connections on Unix, the --protocol=tcp option forces a
+       connection using TCP/IP rather than the Unix socket file.
+
+       mysql_upgrade executes the following commands to check and repair
+       tables and to upgrade the system tables:
+
+	   mysqlcheck --no-defaults --databases
+	    --fix-db-names --fix-table-names mysql
+	   mysqlcheck --no-defaults --check-upgrade --databases
+	    --auto-repair mysql
+	   mysql < fix_priv_tables
+	   mysqlcheck --no-defaults --all-databases
+	    --skip-database=mysql --fix-db-names --fix-table-names
+	   mysqlcheck --no-defaults --check-upgrade --all-databases
+	    --skip-database=mysql --auto-repair
+
+       Notes about the preceding commands:
+
+       o   mysql_upgrade also adds --write-binlog or --skip-write-binlog to
+	   the mysqlcheck commands, depending on whether the --write-binlog
+	   option was specified on the mysql_upgrade command.
+
+       o   Because mysql_upgrade invokes mysqlcheck with the --all-databases
+	   option, it processes all tables in all databases, which might take
+	   a long time to complete. Each table is locked and therefore
+	   unavailable to other sessions while it is being processed. Check
+	   and repair operations can be time-consuming, particularly for large
+	   tables.
+
+       o   For details about what checks the --check-upgrade option entails,
+	   see the description of the FOR UPGRADE option of the CHECK TABLE
+	   statement (see Section 13.7.2.2, "CHECK TABLE Syntax").
+
+       o   fix_priv_tables represents a script generated internally by
+	   mysql_upgrade that contains SQL statements to upgrade the tables in
+	   the mysql database.
+
+       All checked and repaired tables are marked with the current MySQL
+       version number. This ensures that next time you run mysql_upgrade with
+       the same version of the server, it can tell whether there is any need
+       to check or repair the table again.
+
+       mysql_upgrade also saves the MySQL version number in a file named
+       mysql_upgrade_info in the data directory. This is used to quickly check
+       whether all tables have been checked for this release so that
+       table-checking can be skipped. To ignore this file and perform the
+       check regardless, use the --force option.
+
+       mysql_upgrade does not upgrade the contents of the help tables. For
+       upgrade instructions, see Section 5.1.10, "Server-Side Help".
+
+       By default, mysql_upgrade runs as the MySQL root user. If the root
+       password is expired when you run mysql_upgrade, you will see a message
+       that your password is expired and that mysql_upgrade failed as a
+       result. To correct this, reset the root password to unexpire it and run
+       mysql_upgrade again:
+
+	   shell> mysql -u root -p
+	   Enter password: ****  <- enter root password here
+	   mysql> SET PASSWORD = PASSWORD('root-password');
+	   mysql> quit
+	   shell> mysql_upgrade [options]
+
+       mysql_upgrade supports the following options, which can be specified on
+       the command line or in the [mysql_upgrade] and [client] groups of an
+       option file. Unrecognized options are passed to mysqlcheck. For
+       information about option files, see Section 4.2.6, "Using Option
+       Files".
+
+       o   --help
+
+	   Display a short help message and exit.
+
+       o   --basedir=dir_name
+
+	   The path to the MySQL installation directory. This option is
+	   accepted for backward compatibility but ignored. It is removed in
+	   MySQL 5.7.
+
+       o   --character-sets-dir=path
+
+	   The directory where character sets are installed. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --compress
+
+	   Compress all information sent between the client and the server if
+	   both support compression.
+
+       o   --datadir=dir_name
+
+	   The path to the data directory. This option is accepted for
+	   backward compatibility but ignored. It is removed in MySQL 5.7.
+
+       o   --debug[=debug_options], -# [debug_options]
+
+	   Write a debugging log. A typical debug_options string is
+	   d:t:o,file_name. The default is d:t:O,/tmp/mysql_upgrade.trace.
+
+       o   --debug-check
+
+	   Print some debugging information when the program exits.
+
+       o   --debug-info, -T
+
+	   Print debugging information and memory and CPU usage statistics
+	   when the program exits.
+
+       o   --default-auth=plugin
+
+	   A hint about the client-side authentication plugin to use. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --default-character-set=charset_name
+
+	   Use charset_name as the default character set. See Section 10.5,
+	   "Character Set Configuration".
+
+       o   --defaults-extra-file=file_name
+
+	   Read this option file after the global option file but (on Unix)
+	   before the user option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-file=file_name
+
+	   Use only the given option file. If the file does not exist or is
+	   otherwise inaccessible, an error occurs.  file_name is interpreted
+	   relative to the current directory if given as a relative path name
+	   rather than a full path name.
+
+       o   --defaults-group-suffix=str
+
+	   Read not only the usual option groups, but also groups with the
+	   usual names and a suffix of str. For example, mysql_upgrade
+	   normally reads the [client] and [mysql_upgrade] groups. If the
+	   --defaults-group-suffix=_other option is given, mysql_upgrade also
+	   reads the [client_other] and [mysql_upgrade_other] groups.
+
+       o   --force
+
+	   Ignore the mysql_upgrade_info file and force execution even if
+	   mysql_upgrade has already been executed for the current version of
+	   MySQL.
+
+       o   --host=host_name, -h host_name
+
+	   Connect to the MySQL server on the given host.
+
+       o   --login-path=name
+
+	   Read options from the named login path in the .mylogin.cnf login
+	   path file. A "login path" is an option group that permits only a
+	   limited set of options: host, user, and password. Think of a login
+	   path as a set of values that indicate the server host and the
+	   credentials for authenticating with the server. To create the login
+	   path file, use the mysql_config_editor utility. See
+	   mysql_config_editor(1). This option was added in MySQL 5.6.6.
+
+       o   --no-defaults
+
+	   Do not read any option files. If program startup fails due to
+	   reading unknown options from an option file, --no-defaults can be
+	   used to prevent them from being read.
+
+	   The exception is that the .mylogin.cnf file, if it exists, is read
+	   in all cases. This permits passwords to be specified in a safer way
+	   than on the command line even when --no-defaults is used.
+	   (.mylogin.cnf is created by the mysql_config_editor utility. See
+	   mysql_config_editor(1).)
+
+       o   --password[=password], -p[password]
+
+	   The password to use when connecting to the server. If you use the
+	   short option form (-p), you cannot have a space between the option
+	   and the password. If you omit the password value following the
+	   --password or -p option on the command line, mysql_upgrade prompts
+	   for one.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security". You can use an option file to avoid giving the password
+	   on the command line.
+
+       o   --pipe, -W
+
+	   On Windows, connect to the server using a named pipe. This option
+	   applies only if the server supports named-pipe connections.
+
+       o   --plugin-dir=path
+
+	   The directory in which to look for plugins. It may be necessary to
+	   specify this option if the --default-auth option is used to specify
+	   an authentication plugin but mysql_upgrade does not find it. See
+	   Section 6.3.7, "Pluggable Authentication".
+
+	   This option was added in MySQL 5.6.2.
+
+       o   --port=port_num, -P port_num
+
+	   The TCP/IP port number to use for the connection.
+
+       o   --print-defaults
+
+	   Print the program name and all options that it gets from option
+	   files.
+
+       o   --protocol={TCP|SOCKET|PIPE|MEMORY}
+
+	   The connection protocol to use for connecting to the server. It is
+	   useful when the other connection parameters normally would cause a
+	   protocol to be used other than the one you want. For details on the
+	   permissible values, see Section 4.2.2, "Connecting to the MySQL
+	   Server".
+
+       o   --shared-memory-base-name=name
+
+	   On Windows, the shared-memory name to use, for connections made
+	   using shared memory to a local server. The default value is MYSQL.
+	   The shared-memory name is case sensitive.
+
+	   The server must be started with the --shared-memory option to
+	   enable shared-memory connections.
+
+       o   --socket=path, -S path
+
+	   For connections to localhost, the Unix socket file to use, or, on
+	   Windows, the name of the named pipe to use.
+
+       o   --ssl*
+
+	   Options that begin with --ssl specify whether to connect to the
+	   server using SSL and indicate where to find SSL keys and
+	   certificates. See Section 6.3.10.4, "SSL Command Options".
+
+       o   --tmpdir=dir_name, -t path
+
+	   The path name of the directory to use for creating temporary files.
+
+       o   --upgrade-system-tables, -s
+
+	   Upgrade only the system tables, do not upgrade data.
+
+       o   --user=user_name, -u user_name
+
+	   The MySQL user name to use when connecting to the server. The
+	   default user name is root.
+
+       o   --verbose
+
+	   Verbose mode. Print more information about what the program does.
+
+       o   --version-check, -k
+
+	   Check the version of the server to which mysql_upgrade is
+	   connecting to verify that it is the same as the version for which
+	   mysql_upgrade was built. If not, mysql_upgrade exits. This option
+	   is enabled by default; to disable the check, use
+	   --skip-version-check. This option was added in MySQL 5.6.12.
+
+       o   --write-binlog
+
+	   Cause binary logging to be enabled while mysql_upgrade runs. In
+	   MySQL 5.6.6 and earlier, this was the default behavior. (To disable
+	   binary logging during the upgrade, it was necessary to use the
+	   inverse of this option, by starting the program with
+	   --skip-write-binlog.) Beginning with MySQL 5.6.7, binary logging by
+	   mysql_upgrade is disabled by default (Bug #14221043). Invoke the
+	   program explicitly with --write-binlog if you want its actions to
+	   be written to the binary log. (Also beginning with MySQL 5.6.7, the
+	   --skip-write-binlog option effectively does nothing.)
+
+	   Running mysql_upgrade is not recommended with a MySQL Server that
+	   is running with global transaction identifiers enabled (Bug
+	   #13833710). This is because enabling GTIDs means that any updates
+	   which mysql_upgrade might need to perform on system tables using a
+	   nontransactional storage engine such as MyISAM to fail. See
+	   Section 17.1.3.4, "Restrictions on Replication with GTIDs", for
+	   more information.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		      MYSQL_UPGRADE(1)

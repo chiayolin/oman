@@ -1,0 +1,56 @@
+NPM-HELP(1)							   NPM-HELP(1)
+
+
+
+NAME
+       npm-help - Get help on npm
+
+SYNOPSIS
+	 npm help <topic>
+	 npm help some search terms
+
+DESCRIPTION
+       If supplied a topic, then show the appropriate documentation page.
+
+       If  the	topic  does not exist, or if multiple terms are provided, then
+       run the help-search command to find a match.  Note that, if help-search
+       finds  a single subject, then it will run help on that topic, so unique
+       matches are equivalent to specifying a topic name.
+
+CONFIGURATION
+   viewer
+       o Default: "man" on Posix, "browser" on Windows
+
+       o Type: path
+
+
+       The program to use to view help content.
+
+       Set to "browser" to view html help content in the default web  browser.
+
+SEE ALSO
+       o npm help npm
+
+       o README
+
+       o npm help 7 faq
+
+       o npm help 5 folders
+
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+       o npm help 5 package.json
+
+       o npm help help-search
+
+       o npm help 7 index
+
+
+
+
+
+				   June 2015			   NPM-HELP(1)

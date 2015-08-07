@@ -1,0 +1,94 @@
+
+SETFILE(1)		  BSD General Commands Manual		    SETFILE(1)
+
+NAME
+     /usr/bin/SetFile -- set attributes of files and directories (DEPRECATED)
+
+SYNOPSIS
+     /usr/bin/SetFile [-P] [-a attributes] [-c creator] [-d date] [-m date]
+		      [-t type] file ...
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/SetFile, were
+     deprecated with Xcode 6.
+
+     /usr/bin/SetFile is a tool to set the file attributes on files in an HFS+
+     directory. It attempts to be similar to the setfile command in MPW. It
+     can apply rules to more than one file with the options applying to all
+     files listed.
+
+     Flags:
+
+     -P  Acts on a symlink file instead on the file the symlink resolves to.
+
+     -a attributes  Sets the file attributes bits where attributes is a string
+		    of case sensitive letters. Each letter corresponds to a
+		    file attribute: an uppercase letter indicates that the
+		    attribute bit is set (1), a lowercase letter indicates
+		    that it is not (0).  Note: attributes not specified remain
+		    unchanged.
+
+		    A | a    Alias file
+
+		    B | b    Has bundle
+
+		    C | c    Custom icon (allowed on folders)
+
+		    D | d    Located on the desktop (allowed on folders)
+
+		    E | e    Extension is hidden (allowed on folders)
+
+		    I | i    Inited - Finder is aware of this file and has
+			     given it a location in a window. (allowed on
+			     folders)
+
+		    L | l    Locked
+
+		    M | m    Shared (can run multiple times)
+
+		    N | n    File has no INIT resource
+
+		    S | s    System file (name locked)
+
+		    T | t    "Stationery Pad" file
+
+		    V | v    Invisible (allowed on folders)
+
+		    Z | z    Busy (allowed on folders)
+
+     -c creator     Specifies the file's creator, where creator can be a
+		    string of four MacRoman characters, an empty string ('')
+		    designating a null creator, or a binary, decimal, octal,
+		    or hexadecimal number in standard notation (e.g.
+		    0x52486368).
+
+     -d date	    Sets the creation date, where date is a string of the
+		    form: "mm/dd/[yy]yy [hh:mm:[:ss] [AM | PM]]" Notes:
+		    Enclose the string in quotation marks if it contains spa-
+		    ces. The date must be in the Unix epoch, that is, between
+		    1/1/1970 and 1/18/2038. If the year is provided as a two-
+		    digit year, it is assumed to be in the 21st century and
+		    must be from 00 (2000) through 38 (2038).
+
+     -m date	    Sets the modification date where date is a string of the
+		    form in -d above. (mm/dd/[yy]yy [hh:mm:[:ss] [AM | PM]])
+
+     -t type	    Sets the file type, where type can be a string of four
+		    MacRoman characters, an empty string ('') designating a
+		    null type, or a binary, decimal, octal, or hexadecimal
+		    number in standard notation (e.g. 0x55455955).
+
+RETURN VALUES
+     0	      attributes set
+     1	      syntax error
+     2	      any other error
+
+SEE ALSO
+     GetFileInfo(1)
+
+EXAMPLES
+     This command line sets the modification date of "myFile":
+
+     SetFile -m "8/4/2001 16:13" myFile
+
+Mac OS X			January 4, 2009 		      Mac OS X

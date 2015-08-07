@@ -1,0 +1,72 @@
+STRINGS(1)							    STRINGS(1)
+
+
+
+NAME
+       strings - find the printable strings in a object, or other binary, file
+
+SYNOPSIS
+       strings [ - ] [ -a ] [ -o ] [ -t format ] [ -number ]  [  -n  number  ]
+       [--] [file ...]
+
+DESCRIPTION
+       Strings	looks  for  ASCII  strings in a binary file or standard input.
+       Strings is useful for identifying random object files  and  many  other
+       things.	 A  string is any sequence of 4 (the default) or more printing
+       characters ending with a newline or a  null.   Unless  the  -  flag  is
+       given,  strings	looks  in  all sections of the object files except the
+       (__TEXT,__text) section.  If no files are specified standard  input  is
+       read.
+
+       The  file arguments may be of the form libx.a(foo.o), to request infor-
+       mation about only that object file and not the entire library.	(Typi-
+       cally  this  argument must be quoted, ``libx.a(foo.o)'', to get it past
+       the shell.)
+
+       The options to strings(1) are:
+
+       -a     This option causes strings to look for strings in  all  sections
+	      of the object file (including the (__TEXT,__text) section.
+
+       -      This  option  causes strings to look for strings in all bytes of
+	      the files (the default for non-object files).
+
+       --     This option causes strings to treat all the following  arguments
+	      as files.
+
+       -o     Preceded each string by its offset in the file (in decimal).
+
+       -t format
+	      Write  each string preceded by its byte offset from the start of
+	      the file.  The format shall be dependent on the single character
+	      used as the format option-argument:
+
+       d      The offset shall be written in decimal.
+
+       o      The offset shall be written in octal.
+
+       x      The offset shall be written in hexadecimal.
+
+       -number
+	      The  decimal  number is used as the minimum string length rather
+	      than the default of 4.
+
+       -n number
+	      Specify the minimum string length, where the number argument  is
+	      a positive decimal integer. The default shall be 4.
+
+       -arch arch_type
+	      Specifies   the	architecture,	arch_type,  of	the  file  for
+	      strings(1) to operate on when the  file  is  a  universal  file.
+	      (See  arch(3) for the currently know arch_types.)  The arch_type
+	      can be "all" to operate on all architectures in the file.
+
+SEE ALSO
+       od(1)
+
+BUGS
+       The algorithm for identifying strings is extremely primitive.
+
+
+
+Apple Computer, Inc.	      September 11, 2006		    STRINGS(1)

@@ -1,0 +1,42 @@
+
+SPLITFORKS(1)		  BSD General Commands Manual		 SPLITFORKS(1)
+
+NAME
+     /usr/bin/SplitForks -- Divide a two-fork HFS file into AppleDouble format
+     resource and data files. (DEPRECATED)
+
+SYNOPSIS
+     /usr/bin/SplitForks [-s] [-v] file
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/SplitForks, were
+     deprecated with Xcode 6.
+
+     SplitForks takes a Macintosh HFS or HFS Extended ("HFS+") two-fork file
+     and converts it into AppleDouble format, with the data fork in one file
+     and the resource fork and file system metadata in another.
+
+     /usr/bin/SplitForks takes the following flags and arguments:
+
+     [s]      Strip the resource fork from the original file.  The default is
+	      to leave the resource file in place after copying it to its
+	      AppleDouble metadata file.
+
+     [v]      Produce verbose diagnostics to standard output.
+
+     file     The file to split.
+
+FILES
+     foo     Data fork of file 'foo'
+
+NOTES
+     SplitForks will fail with error 2 if the designated file is not on an HFS
+     or Extended HFS file system volume.
+
+SEE ALSO
+     FixupResourceForks(1), MvMac(1), CpMac(1)
+
+STANDARDS
+     Consult RFC 1740 for details on AppleSingle/AppleDouble formats.
+
+Mac OS X			April 12, 2004			      Mac OS X

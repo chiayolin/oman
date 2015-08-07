@@ -1,0 +1,185 @@
+STRIP(1)							      STRIP(1)
+
+
+
+NAME
+       strip - remove symbols
+
+SYNOPSIS
+       strip [ option ] name ...
+
+DESCRIPTION
+       strip  removes  or  modifies the symbol table attached to the output of
+       the assembler and link editor.  This is useful to save  space  after  a
+       program has been debugged and to limit dynamically bound symbols.
+
+       strip  no  longer  removes  relocation  entries	under  any  condition.
+       Instead, it updates the external relocation entries (and indirect  sym-
+       bol table entries) to reflect the resulting symbol table.  strip prints
+       an error message for those symbols not in the  resulting  symbol  table
+       that  are  needed by an external relocation entry or an indirect symbol
+       table.  The link editor ld(1) is the only program that can strip  relo-
+       cation entries and know if it is safe to do so.
+
+       When  strip  is	used  with no options on an executable file, it checks
+       that file to see if it uses the dynamic link editor.  If it  does,  the
+       effect of the strip command is the same as using the -u and -r options.
+       If the file does not use the dynamic link editor, the effect  of  strip
+       without	any  options is the same as using the -s option of ld(1).  The
+       options -S, -x, and -X have the same effect as the ld(1) options.   The
+       options	to  strip(1)  can be combined to trim the symbol table to just
+       what is desired.
+
+       You should trim the symbol table of files used with dynamic linking  so
+       that  only  those symbols intended to be external interfaces are saved.
+       Files used with dynamic linking include executables, objects  that  are
+       loaded  (usually  bundles),  and dynamic shared libraries.  Only global
+       symbols are used by the dynamic linking process. You should  strip  all
+       non-global symbols.
+
+       When  an  executable  is  built	with  all its dependent dynamic shared
+       libraries, it is typically stripped with:
+	      % strip -u -r executable
+       which saves all undefined  symbols  (usually  defined  in  the  dynamic
+       shared libraries) and all global symbols defined in the executable ref-
+       erenced by the dynamic libraries (as marked by the static  link	editor
+       when  the executable was built).  This is the maximum level of striping
+       for an executable that will still allow the program  to	run  correctly
+       with its libraries.
+
+       If  the	executable loads objects, however, the global symbols that the
+       objects reference from the executable also must not  be	stripped.   In
+       this case, you should list the global symbols that the executable wants
+       to allow the objects to reference in a file, and those  global  symbols
+       are then saved when the executable is stripped. For example:
+	      % strip -u -r -s interface_symbols executable
+       where  the  file interface_symbols would contain only those global sym-
+       bols from the executable that the executable wants the  loaded  objects
+       to have access to.
+
+       For objects that will be loaded into an executable, you should trim the
+       symbol table to limit the global symbols the executable will see.  This
+       would be done with:
+	      % strip -s interface_symbols -u object
+       which  would leave only the undefined symbols and symbols listed in the
+       file interface_symbols in the object file.  In this case, strip(1)  has
+       updated the relocation entries and indirect symbol table to reflect the
+       new symbol table.
+
+       For dynamic shared libraries, the maximum level of stripping is usually
+       -x (to remove all non-global symbols).
+
+STRIPPING FILES FOR USE WITH RUNTIME LOADED CODE
+       Trimming the symbol table for programs that load code at runtime allows
+       you to control the interface that the executable wants  to  provide  to
+       the objects that it will load; it will not have to publish symbols that
+       are not part of its interface.  For example, an executable that	wishes
+       to  allow only a subset of its global symbols but all of the statically
+       linked shared library's globals to be used would be stripped with:
+	      % strip -s interface_symbols -A executable
+       where the file interface_symbols would contain only those symbols  from
+       the executable that it wishes the code loaded at runtime to have access
+       to.  Another example is an object that is made up of a number of  other
+       objects	that  will  be	loaded into an executable would built and then
+       stripped with:
+	      % ld -o relocatable.o -r a.o b.o c.o
+	      % strip -s interface_symbols -u relocatable.o
+       which would leave only the undefined symbols and symbols listed in  the
+       file  interface_symbols	in the object file.  In this case strip(1) has
+       updated the relocation entries to reflect the new symbol table.
+
+OPTIONS
+       The first set of options indicate symbols that are to be  save  in  the
+       resulting output file.
+
+       -u     Save all undefined symbols.  This is intended for use with relo-
+	      catable objects to save symbols referred to by external  reloca-
+	      tion  entries.  Note that common symbols are also referred to by
+	      external relocation entries and this flag does  not  save  those
+	      symbols.
+
+       -r     Save all symbols referenced dynamically.
+
+       -s filename
+	      Save  the  symbol table entries for the global symbols listed in
+	      filename.  The symbol names listed in filename must be  one  per
+	      line.  Leading and trailing white space are not part of the sym-
+	      bol name.  Lines starting with # are ignored, as are lines  with
+	      only white space.
+
+       -R filename
+	      Remove the symbol table entries for the global symbols listed in
+	      filename.  This file has the same  format  as  the  -s  filename
+	      option  above.   This option is usually used in combination with
+	      other options that save some symbols, -S, -x, etc.
+
+       -i     Ignore symbols listed in the -s filename or -R filename  options
+	      that  are  not  in the files to be stripped (this is normally an
+	      error).
+
+       -d filename
+	      Save the debugging symbol table entries  for  each  source  file
+	      name  listed in filename.  The source file names listed in file-
+	      name must be one per line with no other white space in the  file
+	      except  the  newlines on the end of each line.  And they must be
+	      just the base name of the source file without any leading direc-
+	      tories.
+
+       -A     Save  all  global  absolute symbols except those with a value of
+	      zero, and save Objective C class symbols.  This is intended  for
+	      use  of  programs  that load code at runtime and want the loaded
+	      code to use symbols from the shared libraries (this is only used
+	      with NEXTSTEP 3.3 and earlier releases).
+
+       -n     Save  all  N_SECT global symbols.  This is intended for use with
+	      executable programs in combination with -A to remove the symbols
+	      needed  for correct static link editing which are not needed for
+	      use with runtime loading interfaces where using the -s  filename
+	      would  be  too much trouble (this is only used with NEXTSTEP 3.3
+	      and earlier releases).
+
+       These options specify symbols to be removed from the  resulting	output
+       file.
+
+       -S     Remove  the debugging symbol table entries (those created by the
+	      -g option to cc(1) and other compilers).
+
+       -X     Remove the local symbols whose names begin with `L'.
+
+       -x     Remove all local symbols (saving only global symbols).
+
+       -c     Remove the section contents of a dynamic library creating a stub
+	      library output file.
+
+       And the last options:
+
+       -      Treat all remaining arguments as file names and not options.
+
+       -o output
+	      Write the result into the file output.
+
+       -no_uuid
+	      Remove any LC_UUID load commands.
+
+       -arch arch_type
+	      Specifies  the architecture, arch_type, of the file for strip(1)
+	      to operate on when the file is a universal file.	 (See  arch(3)
+	      for  the currently know arch_types.)  The arch_type can be "all"
+	      to operate on all  architectures	in  the  file,	which  is  the
+	      default.
+
+SEE ALSO
+       ld(1), cc(1)
+
+EXAMPLES
+       When creating a stub library the -c and -x are typically used:
+
+	      strip -x -c libfoo -o libfoo.stripped
+
+LIMITATIONS
+       Not every layout of a Mach-O file can be stripped by this program.  But
+       all layouts produced by the Apple compiler system can be stripped.
+
+
+
+Apple Computer, Inc.		August 4, 2006			      STRIP(1)

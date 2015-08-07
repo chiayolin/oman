@@ -1,0 +1,31 @@
+NPM-BIN(1)							    NPM-BIN(1)
+
+
+
+NAME
+       npm-bin - Display npm bin folder
+
+SYNOPSIS
+	 npm bin
+
+DESCRIPTION
+       Print the folder where npm will install executables.
+
+SEE ALSO
+       o npm help prefix
+
+       o npm help root
+
+       o npm help 5 folders
+
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+
+
+
+
+				   June 2015			    NPM-BIN(1)

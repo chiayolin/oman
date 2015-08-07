@@ -1,0 +1,70 @@
+NPM-OUTDATED(1) 					       NPM-OUTDATED(1)
+
+
+
+NAME
+       npm-outdated - Check for outdated packages
+
+SYNOPSIS
+	 npm outdated [<name> [<name> ...]]
+
+DESCRIPTION
+       This  command  will  check  the	registry  to see if any (or, specific)
+       installed packages are currently outdated.
+
+       The resulting field 'wanted' shows the latest version according to  the
+       version specified in the package.json, the field 'latest' the very lat-
+       est version of the package.
+
+CONFIGURATION
+   json
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show information in JSON format.
+
+   long
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show extended information.
+
+   parseable
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show parseable output instead of tree view.
+
+   global
+       o Default: false
+
+       o Type: Boolean
+
+
+       Check packages in the global install prefix instead of in  the  current
+       project.
+
+   depth
+       o Type: Int
+
+
+       Max depth for checking dependency tree.
+
+SEE ALSO
+       o npm help update
+
+       o npm help 7 registry
+
+       o npm help 5 folders
+
+
+
+
+
+				   June 2015		       NPM-OUTDATED(1)

@@ -1,0 +1,30 @@
+jiv(1)				 JasPer Manual				jiv(1)
+
+
+
+NAME
+       jiv - Image display utility
+
+
+SYNOPSIS
+       jiv [options] [file...]
+
+
+DESCRIPTION
+       The  jiv  command  displays  a JPEG-2000 image on an X display. Use the
+       arrow keys for scrolling and < and  >  for  zooming.   Please  use  the
+       --help command line switch and the JasPer Software Reference Manual for
+       more information.
+
+
+SEE ALSO
+       jasper(1)
+
+
+AUTHOR
+       Michael D. Adams <mdadams@ieee.org> This manpage was initially  written
+       by Roland Stigge <stigge@antcom.de> for the Debian Project.
+
+
+
+Version 1.701.0 		 20 June 2004				jiv(1)

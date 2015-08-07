@@ -1,0 +1,101 @@
+
+GETFILEINFO(1)		  BSD General Commands Manual		GETFILEINFO(1)
+
+NAME
+     /usr/bin/GetFileInfo -- get attributes of files and directories (DEPRE-
+     CATED)
+
+SYNOPSIS
+     /usr/bin/GetFileInfo [-P -a[<attribute-letter>] | -c | -d | -m | -t] file
+			  ...
+
+DESCRIPTION
+     Tools supporting Carbon development, including /usr/bin/GetFileInfo, were
+     deprecated with Xcode 6.
+
+     /usr/bin/GetFileInfo is a tool to get the file attributes.
+
+     With no flags, GetFileInfo retrieves all information about the file.  If
+     exactly one option is provided, GetFileInfo retrieves and displays just
+     that information; supplying more than one is an error.
+
+     Flags:
+
+     -P  Acts on a symlink file instead of the file the symlink resolves to.
+
+     -a[<attribute-letter>]
+		    Gets a file's attribute bits where <attribute-letter> is
+		    one of the following:
+
+		    a	     Alias file
+
+		    b	     Has bundle
+
+		    c	     Custom icon (allowed on folders)
+
+		    d	     Located on the desktop (allowed on folders)
+
+		    e	     Extension is hidden (allowed on folders)
+
+		    i	     Inited - Finder is aware of this file and has
+			     given it a location in a window. (allowed on
+			     folders)
+
+		    l	     Locked
+
+		    m	     Shared (can run multiple times)
+
+		    n	     File has no INIT resource
+
+		    s	     System file (name locked)
+
+		    t	     "Stationery Pad" file
+
+		    v	     Invisible (allowed on folders)
+
+		    z	     Busy (allowed on folders)
+
+		    The value of a single attribute is printed as 0 for off or
+		    false, 1 for on or true.  If no attribute letter is speci-
+		    fied, the value of all attributes is returned, with lower-
+		    case letters representing off or false, and uppercase rep-
+		    resenting on or true.
+
+     -t 	    Gets the file type, a string of exactly four characters.
+		    If the type is not set, these will display as an empty
+		    pair of quotation marks.  Directories do not have types,
+		    so the type will be skipped if all information is being
+		    displayed; specifying -t for a directory is an error.
+
+     -c 	    Gets the file's creator, a string of four characters
+		    enclosed in quotation marks.  If the creator is not set,
+		    these will display as an empty pair of quotation marks.
+		    Directories do not have creators, so the creator will be
+		    skipped if all information is being displayed; specifying
+		    -c for a directory is an error.
+
+     -d 	    Gets the creation date, a string of the form "mm/dd/yyyy
+		    hh:mm:ss" in 24-hour clock format.
+
+     -m 	    Gets the modification date, a string of the form
+		    "mm/dd/yyyy hh:mm:ss" in 24-hour clock format.
+
+RETURN VALUES
+     0	      success
+     1	      syntax error
+     2	      any other error
+
+SEE ALSO
+     SetFile(1)
+
+EXAMPLES
+     The following command line gets and prints the creator for the "Late
+     Breaking News" file:
+
+     /Developer/Tools/GetFileInfo -c "Late Breaking News"
+
+     This command line prints the modification date of "myFile":
+
+     /Developer/Tools/GetFileInfo -m myFile
+
+Mac OS X		      September 27, 2005		      Mac OS X

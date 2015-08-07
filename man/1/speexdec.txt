@@ -1,0 +1,80 @@
+SPEEXDEC(1)			 User Commands			   SPEEXDEC(1)
+
+
+
+NAME
+       speexdec - The reference implementation speex decoder.
+
+SYNOPSIS
+       speexdec [options] input_file.spx [output_file]
+
+DESCRIPTION
+       Decodes a Speex file and produce a WAV file or raw file
+
+   input_file can be:
+       filename.spx
+	      regular Speex file
+
+       -      stdin
+
+   output_file can be:
+       filename.wav
+	      Wav file
+
+       filename.*
+	      Raw PCM file (any extension other that .wav)
+
+       -      stdout
+
+       (nothing)
+	      Will be played to soundcard
+
+OPTIONS
+       --enh  Enable perceptual enhancement (default)
+
+       --no-enh
+	      Disable perceptual enhancement
+
+       --force-nb
+	      Force decoding in narrowband
+
+       --force-wb
+	      Force decoding in wideband
+
+       --force-uwb
+	      Force decoding in ultra-wideband
+
+       --mono Force decoding in mono
+
+       --stereo
+	      Force decoding in stereo
+
+       --rate n
+	      Force decoding at sampling rate n Hz
+
+       --packet-loss n
+	      Simulate n % random packet loss
+
+       -V     Verbose mode (show bit-rate)
+
+       -h, --help
+	      This help
+
+       -v, --version
+	      Version information
+
+       --pf   Deprecated, use --enh instead
+
+       --no-pf
+	      Deprecated, use --no-enh instead
+
+       More information is available from the Speex site: http://www.speex.org
+
+       Please report bugs to the mailing list `speex-dev@xiph.org'.
+
+COPYRIGHT
+       Copyright (C) 2002 Jean-Marc Valin
+
+
+
+speexdec version 1.1		September 2003			   SPEEXDEC(1)

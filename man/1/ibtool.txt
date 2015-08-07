@@ -1,0 +1,430 @@
+ibtool(1)							     ibtool(1)
+
+
+
+NAME
+       ibtool - compiles, prints, updates, and verifies Interface Builder doc-
+       uments.
+
+
+SYNOPSIS
+       ibtool [options] document
+
+DESCRIPTION
+       ibtool verifies, updates, and  prints  the  contents  of  an  Interface
+       Builder	document, generating its output in standard plist format.  The
+       tool follows a "read", "modify", "write", "print" order of  operations.
+
+
+OPTIONS
+   Specifying Output:
+       --write path
+	      Write  the resulting Interface Builder document to the specified
+	      path.
+
+
+       --output-format format
+	      By default, ibtool provides output in the form of an  XML  prop-
+	      erty  list.  Specifying binary1 will instruct ibtool to output a
+	      binary property list. Similarly, xml1 specifies an XML  property
+	      list, and human-readable-text specifies human readable text.
+
+
+
+   Compiling:
+       --compile path
+	      Compile  the  input file and write it to the specified path. The
+	      compile option instructs ibtool to convert an Interface  Builder
+	      document	to  a  file that can be loaded at runtime. The compile
+	      option can be combined with --flatten NO to  produce  an	output
+	      file  that is both runnable, and editable. Additionally, --warn-
+	      ings, --errors, and --output-format are three other options that
+	      are commonly combined with --compile.
+
+
+       --flatten boolean
+	      When  combined  with  the  --compile  option  and a value of NO,
+	      --flatten instructs ibtool to produce an	output	file  that  is
+	      both  runnable, and editable. This option is typically used when
+	      preparing a product for localization. If no value is  specified,
+	      the default flattening option is YES.
+
+
+       --module moduleName
+	      Specifies  the module name to include in applicable custom class
+	      names at runtime. The module name should match the  PRODUCT_MOD-
+	      ULE_NAME	build  setting	of  the target for which the Interface
+	      Builder document is being compiled. This option is required  for
+	      compiling  any  document	that  contains	an object whose custom
+	      class is a Swift class and whose customModuleProvider  attribute
+	      is set to target.
+
+
+
+   Postprocessing:
+       --strip path
+	      Remove  design-time content from the input Interface Builder NIB
+	      document and write the stripped output to path. Stripping a  NIB
+	      reduces its size and makes it uneditable.
+
+
+
+   Loading Bundles:
+       --bundle bundlePath
+	      Load the bundle located at bundlePath.
+
+
+
+   Localization:
+       --previous-file previousFile
+	      Specifies  the  Interface  Builder  document  from  the previous
+	      development iteration for the purpose of	incremental  localiza-
+	      tions.
+
+       --incremental-file incrementalFile
+	      Specifies  the  Interface  Builder  document  from which to take
+	      prior   localizations    during	 incremental	localizations.
+	      incrementalFile will often be the translated version of the doc-
+	      ument specified with --previous-file.
+
+       --localize-incremental
+	      Consolidate the structural and localization changes between  the
+	      input  document, the document specified by previousFile, and the
+	      document specified by  incrementalFile,  writing	the  resulting
+	      document to the path specified by --write.  When specifying this
+	      option, one MUST provide a --previous-file and an --incremental-
+	      file.
+
+       --reference-external-strings-file
+	      When  combined  with  the  --compile option, this flag indicates
+	      that the files in the Base.lproj locale folder  should  be  com-
+	      piled  to reference the matching external strings files found in
+	      the other locales when loaded. Available on 10.8 and later.
+
+       --companion-strings-file locale:stringsFile
+	      When combined with the  --compile  option,  --companion-strings-
+	      file specifies the locale and input path of a strings file asso-
+	      ciated with the compiled document. ibtool will copy the  strings
+	      file into the lproj directory for that locale. If ibtool renames
+	      the output compiled document, it will rename the output  strings
+	      file  as well. This option implies --reference-external-strings-
+	      file and should be repeated once	for  each  associated  strings
+	      file. The output path provided with --compile must be located in
+	      a directory named "Base.lproj".
+
+
+
+   Importing:
+       --import plist
+	      Apply the property values specified in plist to  the  object  in
+	      the  Interface  Builder  document  with  the matching object ID.
+	      plist should be a plist in the format produced by --export, only
+	      with  the  dictionary  containing the key com.apple.ibtool.docu-
+	      ment.export removed from surrounding the object IDs.  Note  that
+	      setting  a  property  in this manner may not actually modify the
+	      value of the property, or conversely may alter additional  prop-
+	      erties.	Often,	the input to this option is a modified version
+	      of the output from --export. Combine this option with --write in
+	      order to produce an Interface Builder document with the modified
+	      property values.
+
+       --import-strings-file stringsFile
+	      Replace the document's localizable strings with the translations
+	      specified  by  stringsFile.   stringsFile  must be in the format
+	      generated by --generate-strings-file.
+
+       --import-xliff XLIFFDocument
+	      Replace the document's localizable strings with the translations
+	      specified by XLIFFDocument.  XLIFFDocument must be in the format
+	      generated by --export-xliff.
+
+
+
+   Exporting:
+       --export plist
+	      For each object in the Interface Builder	document,  export  the
+	      union of the properties specified in plist for each class listed
+	      in plist of which the object is either a member, or a member  of
+	      a  descending class.  plist should be a plist composed of a dic-
+	      tionary with class names for keys, and arrays  of  property  key
+	      paths  for  values.  The output is a plist composed of a dictio-
+	      nary under the key com.apple.ibtool.document.export, where  each
+	      key  is an object ID, and each value is a dictionary of property
+	      key paths to their corresponding value.  If a key in the	second
+	      level  dictionary  begins with a '.', it isn't a key path.  Cur-
+	      rently, the only special key is ".nilKeypaths", which identifies
+	      an array of key paths whose value was nil.
+
+	      An example of the plist format expected for the --export command
+	      follows; this sample will export the  'title'  property  of  any
+	      NSCell in the given document.
+
+	      <?xml version="1.0" encoding="UTF-8"?>
+	      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+	      <plist version="1.0">
+		  <dict>
+		      <key>NSCell</key>
+			  <array>
+			      <string>title</string>
+			  </array>
+		  </dict>
+	      </plist>
+
+
+
+   Refactoring:
+       --convert old-new
+	      Rename  the  class  named  'old' to 'new'. If 'old' ends with an
+	      '*', then rename all classes beginning  with  'old'  to  instead
+	      begin  with  'new'.  This Updates all outlet types, class names,
+	      custom classes, as well as actual instances.
+
+       --upgrade
+	      Upgrade the input  Interface  Builder  document  to  the	latest
+	      document	type.  If the output path is not specified by --write,
+	      the upgraded document will be written to the input path.
+
+       --remove-plugin-dependencies
+	      Remove any dependencies on Interface Builder 3 plug-ins so  that
+	      the  document  may  be  used  in	Xcode, and write the resulting
+	      document to the path specified by --write. Instances of  objects
+	      integrated  by  plug-ins	are replaced with instances of classes
+	      integrated by system frameworks and the custom class is  set  to
+	      correspond  to  the  old	class.	For  each attribute set on the
+	      object, a corresponding User Defined Runtime Attribute is set on
+	      the  resulting  object where possible. Any unconverted key paths
+	      are reported. Conversion may result in changes to runtime behav-
+	      ior, thus converted files must be verified.
+
+
+
+   Working with Auto Layout:
+       --enable-auto-layout
+	      Enables Auto Layout in the given document and writes the result-
+	      ing document to the path specified by --write.
+
+       --update-frames
+	      Adjust the frames of misplaced or  ambiguous  objects  to  match
+	      their  constraints.  All	misplaced and ambiguous objects in the
+	      output document  specified  by  --write  are  affected  by  this
+	      option.  Frames  can only be updated in Xcode 5.0 documents that
+	      use Auto Layout.
+
+       --update-constraints
+	      Adjust the constraint constants of misplaced objects so that the
+	      objects  match their frames. All misplaced objects in the output
+	      document specified by --write are affected by this option.  Con-
+	      straints	can  only  be  updated in Xcode 5.0 documents that use
+	      Auto Layout.
+
+
+
+   Printing File Contents:
+       --export-strings-file stringsfile
+	      Extract the  localizable	strings  from  the  Interface  Builder
+	      document	into  stringsfile  in the format expected by --import-
+	      strings-file.
+
+       --export-xliff XLIFFDocument
+	      Extract the  localizable	strings  from  the  Interface  Builder
+	      document into XLIFFDocument as an XLIFF XML document in the for-
+	      mat expected by --import-xliff.  This argument can  be  combined
+	      with  the  --source-language  and --target-language arguments in
+	      order to specify the resultant XLIFF document's source and  tar-
+	      get languages.
+
+       --source-language sourceLanguage
+	      Specifies  the  source language of the resultant XLIFF document.
+	      This argument MUST be used in  conjunction  with	the  --export-
+	      xliff argument.  If the --source-language argument is not speci-
+	      fied, the language "en" is used by default.
+
+       --target-language targetLanguage
+	      Specifies the target language of the resultant  XLIFF  document.
+	      This  argument  MUST  be	used in conjunction with the --export-
+	      xliff argument.  If the --target-language argument is not speci-
+	      fied, no target language is used.
+
+       --warnings
+	      Include  document  warning  messages  in	ibtool's plist output.
+	      Warnings	     will	appear	     under	 the	   key
+	      com.apple.ibtool.document.warnings,  with  messages listed under
+	      the subkey message and warning types under the subkey type.
+
+       --errors
+	      Include  document  error	messages  in  ibtool's	plist  output.
+	      Errors	    will	appear	     under	 the	   key
+	      com.apple.ibtool.document.errors, with messages listed under the
+	      subkey message and error types under the subkey type.
+
+       --notices
+	      Include  document  notice  messages  in  ibtool's  plist output.
+	      Notices	    will       appear	    under	the	   key
+	      com.apple.ibtool.document.notices,  with	messages  listed under
+	      the subkey message and error types under the subkey type.
+
+       --localizable-strings
+	      Include the document's non-empty localizable strings in ibtool's
+	      plist  output.   The localizable strings are output as a dictio-
+	      nary  under   the   key	com.apple.ibtool.document.localizable-
+	      strings,	where  the  keys  are  the object ids for objects with
+	      localizable strings, and the values are dictionaries of property
+	      names  and  their associated localizable strings.  Empty strings
+	      are ignored.
+
+       --localizable-stringarrays
+	      Include the document's localizable strings that  are  values  of
+	      to-many  relationships  in  ibtool's  plist output.  The to-many
+	      localizable strings are output as a  dictionary  under  the  key
+	      com.apple.ibtool.document.localizable-stringarrays,   where  the
+	      keys are the object ids for  objects  with  to-many  localizable
+	      strings,	and  the values are dictionaries of property names and
+	      their associated array of localizable strings.
+
+       --localizable-geometry
+	      Include the document's localizable geometry  in  ibtool's  plist
+	      output.	The  localizable  geometry  is	output as a dictionary
+	      under  the  key  com.apple.ibtool.document.localizable-geometry,
+	      where  the  keys are the object ids for objects with localizable
+	      geometry, and the values are dictionaries of property names  and
+	      a plist representation of that geometry.
+
+       --localizable-other
+	      Include	the  document's  localizable  attributes,  other  than
+	      strings  and  geometry,  in  ibtool's   plist   output.	 These
+	      attributes   are	 output   as   a   dictionary  under  the  key
+	      com.apple.ibtool.document.localizable-other, where the keys  are
+	      the  object ids for objects with the localizable attributes, and
+	      the values are dictionaries of localizable  property  names  and
+	      their associated values.
+
+       --localizable-to-many-relationships
+	      Include  the  document's	localizable  to-many  relationships in
+	      ibtool's plist output.  These attributes are output as a dictio-
+	      nary  under  the	key  com.apple.ibtool.document.localizable-to-
+	      many-relationships, where  the  keys  are  the  object  ids  for
+	      objects with the localizable attributes, and the values are dic-
+	      tionaries of localizable property  names	and  their  associated
+	      values.
+
+       --localizable-all
+	      Include  all  the  document's localizable attributes in ibtool's
+	      plist output.  The localizable attributes are output as  a  dic-
+	      tionary under the key com.apple.ibtool.document.localizable-all,
+	      where the keys are the objects ids of the objects with  localiz-
+	      able  properties, and the values are the union of the properties
+	      returned by  --localizable-strings,  --localizable-stringarrays,
+	      --localizable-geometry, and --localizable-other.	--localizable-
+	      to-many-relationships.
+
+       --objects
+	      Include the document's objects in ibtool's  plist  output.   The
+	      objects	are   output   as   a	dictionary   under   the   key
+	      com.apple.ibtool.document.objects, where the keys are the object
+	      ids, and the values are the associated object's properties.
+
+       --hierarchy
+	      Include  the document's hierarchy in ibtool's plist output.  The
+	      hierarchy is output as a nested array of dictionaries under  the
+	      key   com.apple.ibtool.document.hierarchy   with	 the   subkeys
+	      objectID, label, name, children, and customClass.
+
+       --connections
+	      Include the document's connections  in  ibtool's	plist  output.
+	      The  connections	are  output  as  a  dictionary	under  the key
+	      com.apple.ibtool.document.connections, where the	keys  are  the
+	      object  ids,  and the values are dictionaries including the sub-
+	      keys type, label, source-id, source-label,  destination-id,  and
+	      destination-label.
+
+       --classes
+	      Include  the  document's	classes in ibtool's plist output.  The
+	      classes	are   output   as   a	dictionary   under   the   key
+	      com.apple.ibtool.document.classes,  where the keys are the class
+	      names, and the values are  dictionaries  including  the  subkeys
+	      actions, outlets, superclass, and class.
+
+       --version-history
+	      Print  the version of IB/System Version used when this Interface
+	      Builder document was last saved.	The version  history  informa-
+	      tion  is output under the key com.apple.ibtool.document.version-
+	      history with the subkey interface-builder-version.
+
+       --all  Include all the information listed above in ibtool's plist  out-
+	      put.
+
+
+
+   Version Information:
+       --version
+	      Print  the version of ibtool.  The version information is output
+	      under the key com.apple.ibtool.version with the subkeys  bundle-
+	      version and short-bundle-version.
+
+
+EXAMPLES
+       ibtool --export-strings-file file.strings file.nib
+	      ibtool  will  output a strings file containing all of file.nib's
+	      localizable strings.
+
+       ibtool --previous-file orig.nib --incremental-file  trans.nib  --local-
+       ize-incremental --write newTrans.nib mod.nib
+	      ibtool will leverage orig.nib against  changes  in  mod.nib  and
+	      localizations  from trans.nib, and write the new translated nib.
+
+       ibtool --previous-file orig.nib --incremental-file trans.nib  --import-
+       strings-file  str.strings  --localize-incremental  mod.nib --write new-
+       Trans.nib
+	      ibtool will execute in the same manner as above, but will  apply
+	      the strings from str.strings before writing the document.
+
+       ibtool --warnings --errors --notices file.nib > alerts.plist
+	      alerts.plist  will  contain  all warning, error, and notice mes-
+	      sages from file.nib.
+
+       ibtool --plugin path/to/some.plugin --localizable-geometry file.nib
+	      ibtool will load some.plugin and output a plist of all  localiz-
+	      able geometry in file.nib.
+
+       ibtool --convert oldName-newName file.nib
+	      ibtool  will change all classes with the exact name "oldName" to
+	      be named "newName" instead.
+
+       ibtool --convert Old'*'-New file
+	      ibtool will change all classes with names beginning with	"Old",
+	      such  as	"OldName",  "OldClassName", and "OldClass", to instead
+	      begin with "New".  For example, the previously mentioned classes
+	      would  be  changed to "NewName", "NewClassName", and "NewClass",
+	      respectively.
+
+       ibtool --export export.plist file.nib
+	      ibtool will export properties specified in the export.plist, and
+	      output a plist mapping Object IDs to property values.
+
+       ibtool --export-xliff generated.xlf inputDocument.xib
+	      ibtool will create an XLIFF document, "generated.xlf", that con-
+	      tains all of the localizable strings  from  the  input  document
+	      "inputDocument.xib".   As  the  source and target languages were
+	      not specified, English will be used as the source language,  and
+	      the target language will not be included.
+
+       ibtool  --export-xliff generated.xlf --source-language es --target-lan-
+       guage fr inputDocument.xib
+	      ibtool will create an XLIFF document, "generated.xlf", that con-
+	      tains all of the localizable strings  from  the  input  document
+	      "inputDocument.xib".   The source language of "generated.xlf" is
+	      marked as Spanish, and the target language is marked as  French.
+
+       ibtool --import-xliff translation.xlf --write translated.xib inputDocu-
+       ment.xib
+	      ibtool  will  apply the translations found in the XLIFF document
+	      "translation.xlf" to the input document "inputDocument.xib", and
+	      write the resulting translated document to "translated.xib".
+
+
+SEE ALSO
+       plist(1)
+
+
+
+Apple Inc.			  Jun 23 2014			     ibtool(1)

@@ -1,0 +1,690 @@
+XCSSECURITY(1)							XCSSECURITY(1)
+
+
+
+NAME
+       xcssecurity  -  command-line  tool for performing Xcode Server security
+       operations
+
+SYNOPSIS
+       xcssecurity command [options...]
+
+DESCRIPTION
+       xcssecurity is a command-line tool for performing  security  operations
+       needed by Xcode Server. It was originally designed as a replacement for
+       the keychain functionality in security(1), but now also provides  tasks
+       required for SSL and client-side certificate authentication.
+
+       Note  that many of xcssecurity's options can be provided either through
+       command-line switches, or through environmental variables. When	sensi-
+       tive  data  is  concerned (e.g., user passwords), it is best to use the
+       environmental variables so that the data  is  not  exposed  in  process
+       lists.
+
+COMMON OPTIONS
+       A number of options are supported by multiple commands.
+
+       -u, -a, XCS_USERNAME
+	      The username used when creating user accounts or adding users to
+	      the Keychain. xcssecurity will also check the XCS_USERNAME envi-
+	      ronmental variable.
+
+       -p, -w, XCS_PASSWORD
+	      The  password  used when creating user accounts, adding users to
+	      the Keychain, or creating new Keychains. If the  password  is  a
+	      valid  path  to  a file on the filesystem, xcssecurity will read
+	      the contents of that file and use it as the  password;  you  may
+	      also  pass  "-"  to read a password from STDIN. xcssecurity will
+	      also check the XCS_PASSWORD environmental variable.
+
+	      If a password is required and no password is provided,  xcssecu-
+	      rity will prompt you to enter one.
+
+       -k, XCS_KEYCHAIN
+	      The path to the Keychain to use when creating Keychains, or when
+	      adding, removing, or finding users in the Keychain.  xcssecurity
+	      will also check the XCS_KEYCHAIN environmental variable.
+
+       -m, XCS_KEYCHAIN_PASSWORD
+	      The master password for the Keychain provided via the -k parame-
+	      ter. Like -p (and friends), this can be a path to a file. xcsse-
+	      curity  will  also check the XCS_KEYCHAIN_PASSWORD environmental
+	      variable.
+
+       -n, XCS_OD_NODE
+	      The Open Directory node to use when creating and deleting  users
+	      and groups. xcssecurity will also check the XCS_OD_NODE environ-
+	      mental variable. To use the local system	Open  Directory  data-
+	      base, pass "/Local/Default".
+
+       -T     The  path  to  an application trusted to access this Keychain or
+	      account in a Keychain. This flag may be passed multiple times to
+	      provide access to multiple applications.
+
+	      Under normal circumstances, if no trusted applications are spec-
+	      ified, xcssecurity will automatically become a trusted  applica-
+	      tion.  If,  however,  at	least  one -T flag is passed, you must
+	      explicitly list xcssecurity if you want it to have access to the
+	      Keychain item in question.
+
+       Note  that  the	commands  described below are shown with the canonical
+       form of their parameters, but the alternatives listed  above  (and  the
+       corresponding environmental variables) can also be used.
+
+DATA GENERATION COMMANDS
+   generate-random-data
+       generate-random-data -c length [-t]
+
+       Generates  length of cryptographically-secure random data and prints it
+       to STDOUT.
+
+       -c     The amount of random data to generate. The meaning of this prop-
+	      erty  is	dependent  on what type of data is being generated; if
+	      you do not specify a type (via -t), then the default  is	number
+	      of raw bytes.
+
+       -t (raw|base64|ascii)
+	      Optionally,  the type of random data to produce. "raw" will pro-
+	      duce length bytes  of  random  data,  and  output  it  directly.
+	      "base64" will also produce length bytes of random data, but will
+	      output the base 64-encoded version of that data (so  the	actual
+	      output  will be longer than length bytes). "ascii" will generate
+	      a string composed of length printable characters.
+
+   generate-shared-secret
+       generate-shared-secret -c length -o filename [-t]
+
+       Generates a shared secret file filled with length  of  random  data  at
+       filename,  and locks down its permissions so that only the file's owner
+       (read: the user invoking xcssecurity) is allowed to read it.
+
+       -c     The amount of random data to generate. The meaning of this prop-
+	      erty  is	dependent  on what type of data is being generated; if
+	      you do not specify a type (via -t), then the default  is	number
+	      of raw bytes.
+
+       -t (raw|base64|ascii)
+	      Optionally,  the type of random data to produce. "raw" will pro-
+	      duce length bytes  of  random  data,  and  output  it  directly.
+	      "base64" will also produce length bytes of random data, but will
+	      output the base 64-encoded version of that data (so  the	actual
+	      output  will be longer than length bytes). "ascii" will generate
+	      a string composed of length printable characters.
+
+       -o     The filename of the new shared secret file.
+
+MESSAGE SIGNING AND VERIFYING COMMANDS
+   message-sign
+       message-sign -i filename [-cn common_name] [-e email] [-km]
+
+       Produces a DER-encoded CSM Signed Data message from the input  data  in
+       filename,  and  outputs the result to STDOUT. The signing identity used
+       when signing the message will be located using the  strategy  described
+       in  identify-find,  and will behave as though the --first and --require
+       options are set. Note that you may pass "-" to -i  to  have  the  input
+       data read from STDIN.
+
+   message-verify
+       message-verify -i filename [--strict]
+
+       Verifies  the  signature  attached  to  the  data in filename, which is
+       expected to be a DER-encoded CSM Signed Data message. If the  signature
+       is  valid, xcssecurity will exit with a 0 status, but may emit warnings
+       to STDERR if certificate validation fails. If the signature is invalid,
+       xcssecurity  will exit with non-zero status, and emit errors to STDERR.
+       Note that you may pass "-" to -i to  have  the  input  data  read  from
+       STDIN.
+
+       You  may  optionally  pass  the --strict flag to have xcssecurity treat
+       certificate validation failure as a hard error rather than just a warn-
+       ing.
+
+   message-unwrap
+       message-unwrap -i filename [--verify [--strict]]
+
+       Reads the message content of the signed message in filename and outputs
+       it to STDOUT. filename is expected to be a DER-encoded CSM Signed  Data
+       message.  Note  that you may pass "-" to -i to have the input data read
+       from STDIN.
+
+       By default, this command does not perform any signature verification or
+       certificate  validation	on  the  message data. You may optionally pass
+       --verify to engage the same behavior  as  described  in	message-verify
+       (failure  on  invalid  signature,  success  but	warnings  to STDERR on
+       invalid certificate chain), and additionally  pass  --strict  to  cause
+       failure on an invalid signature or certificate chain.
+
+KEYCHAIN COMMANDS
+   keychain-add
+       keychain-add -u username -p password -s service [-kmT]
+
+       Adds  a generic password item to the Keychain. You must provide a user-
+       name, password, and service name, and you may optionally provide a list
+       of  trusted  applications, and the path to a specific Keychain (and its
+       master password). If no	Keychain  file	is  specified,	the  currently
+       active Keychain will be used.
+
+       -s, XCS_SERVICE_NAME
+	      The name of the service as it should appear in the Keychain.
+
+   keychain-remove
+       keychain-remove -u username -s service [-km]
+
+       Finds a generic password item in the Keychain, and removes it. You must
+       specify at least the username and service name of  the  Keychain  item,
+       and you may optionally provide the path to a specific Keychain (and its
+       master password). If no	Keychain  file	is  specified,	the  currently
+       active Keychain will be used.
+
+       -s, XCS_SERVICE_NAME
+	      The name of the service as it appears in the Keychain.
+
+   keychain-find
+       keychain-find -u username -s service [-km]
+
+       Finds a generic password item in the Keychain, and outputs its password
+       data to STDOUT. You must specify at least the username and service name
+       of the Keychain item, and you may optionally provide the path to a spe-
+       cific Keychain (and its master password). If no Keychain file is speci-
+       fied, the currently active Keychain will be used.
+
+       -s, XCS_SERVICE_NAME
+	      The name of the service as it appears in the Keychain.
+
+   keychain-create
+       keychain-create -k keychain_path -m|-p master_password [-T]
+
+       Creates	a  new	Keychain file at the specified location, locked by the
+       specified master password. You may optionally specify a list of trusted
+       applications that can have access to the Keychain file.
+
+   keychain-delete
+       keychain-delete -k keychain_path -m|-p master_password
+
+       Deletes	the  Keychain  file  at  the specified location, locked by the
+       specified master password. This both  removes  the  Keychain  from  the
+       active search path, and deletes the file from disk.
+
+   keychain-status
+       keychain-status [-k]
+
+       Checks  whether	the  specified	Keychain (or if none is specified, the
+       login Keychain) is currently locked, and prints the result.
+
+   keychain-autolock
+       keychain-autolock [--set [--interval seconds --sleep]] [-km]
+
+       Gets or sets the Keychain's automatic locking settings. If --set is not
+       specified,  this  command  prints  out  a  JSON	representation	of the
+       auto-locking settings for the specified keychain. If --set  is  passed,
+       new auto-locking settings will be configured.
+
+       --set  If  passed,  looks  for  the  --interval	and --sleep flags, and
+	      writes the new automatic locking settings to the Keychain.  Oth-
+	      erwise,  those  arguments are ignored, and the current automatic
+	      locking settings for the Keychain are displayed.
+
+       --interval
+	      The duration, in seconds, after which the Keychain should  auto-
+	      matically  lock. Simply omit this flag to indicate that the Key-
+	      chain should not lock automatically after a time interval.
+
+       --sleep
+	      Indicates that the Keychain should lock automatically  when  the
+	      system goes to sleep. Omit this flag to disable this behavior.
+
+CERTIFICATE COMMANDS
+   certificate-create
+       certificate-create -cn common_name -e email -t type [-km --randomizeSN]
+
+       Creates a new self-signed certificate with the  given  parameters,  and
+       outputs	it  to STDOUT. The certificate will also be stored in the Key-
+       chain specified by the -k flag, or else the currently  active  Keychain
+       if  one	is  not provided. This will also be the Keychain used to store
+       the certificate's corresponding public/private keypair.
+
+       -cn, XCS_COMMON_NAME
+	      The Common Name to be used on the generated certificate.
+
+       -e, XCS_EMAIL
+	      The email address to be used on the generated certificate.
+
+       -t	 (smime|client-ssl|server-ssl|client-vpn|server-vpn|codesign),
+       XCS_CERTIFICATE_TYPE
+	      The type of certificate to produce, from the list shown above.
+
+       --randomizeSN
+	      If passed, a cryptographically-secure random serial number  will
+	      be   chosen  for	the  certificate,  and	any  value  passed  as
+	      XCS_SERIAL_NUMBER will be ignored.
+
+       The certificate-create command also checks a  number  of  environmental
+       variables  when	building the request, which you may optionally provide
+       to fill in additional details.
+
+       XCS_ORGANIZATION
+	      The "Organization" (O) field of the certificate.
+
+       XCS_ORGANIZATIONAL_UNIT
+	      The "Organizational Unit" (OU) field of the certificate.
+
+       XCS_LOCALITY
+	      The "Locality" field of the certificate, which should  represent
+	      the city, town, principality, etc.
+
+       XCS_STATE
+	      The "State/Province" field of the certificate.
+
+       XCS_COUNTRY
+	      The "Country" field of the certificate.
+
+       XCS_VALIDITY_PERIOD
+	      The  duration  over  which the certificate will be valid, repre-
+	      sented in days.
+
+       XCS_SERIAL_NUMBER
+	      The serial number of the certificate. See also the --randomizeSN
+	      flag.
+
+   certificate-find
+       certificate-find [-cn common_name] [-e email] [-km --first --require]
+
+       Locates	a  certificate	(or certificates) matching the provided common
+       name and/or email address, and outputs PEM-encoded data to  STDOUT.  If
+       multiple  certificates  are  found,  all of them will be written out in
+       sequence. You may optionally specify a Keychain to search with  the  -k
+       flag; if one is not provided, the currently active keychain search list
+       will be searched.
+
+       If no search criteria are provided (i.e., neither a common name nor  an
+       email address is specified), all certificates in the specified keychain
+       will be returned.
+
+       By default, all certificates found will	be  written  out,  and	if  no
+       matching  certificates  are  found,  nothing  will  be written out, but
+       xcssecurity will exit with a successful status  (0).  You  can  control
+       these behaviors with the --first and --require flags.
+
+       -cn, XCS_COMMON_NAME
+	      The Common Name to search for.
+
+       -e, XCS_EMAIL
+	      The  email  address to search for. If an email address is speci-
+	      fied, the certificates returned will either  a)  have  an  email
+	      address  set  that  matches the provided address; or b) will not
+	      have an email address set.
+
+       --first
+	      If specified, only the first matching certificate will be  writ-
+	      ten to STDOUT, rather than all matching certificates.
+
+       --require
+	      By  default,  xcssecurity will exit with a status code of 0 even
+	      if no certificates are located. Passing this flag will  indicate
+	      that  xcssecurity should consider an empty result set a failure,
+	      which means it will emit an error message to  STDERR,  and  exit
+	      with a status code of 3.
+
+   certificate-request
+       certificate-request -cn common_name -e email [-km]
+
+       Creates	a new Certificate Signing Request (CSR) with the given parame-
+       ters, and outputs it to STDOUT. You can then use this CSR  in  Keychain
+       Access  to create a signed certificate from a CA, or you can use xcsse-
+       curity authority-fulfill-request ... to do so programmatically. You may
+       optionally  specify  a  path to a Keychain (and its master password) to
+       choose where the CSR's corresponding keypair is stored.
+
+       -cn, XCS_COMMON_NAME
+	      The Common Name to be used on the generated certificate.
+
+       -e, XCS_EMAIL
+	      The email address to be used on the generated certificate.
+
+       The certificate-request command also checks a number  of  environmental
+       variables  when	building  the  request.  These	variables are the same
+       checked by certificate-create, described  above.  Note  well,  however,
+       that XCS_VALIDITY_PERIOD and XCS_SERIAL_NUMBER are ignored for certifi-
+       cate signing requests.
+
+   certificate-import
+       certificate-import -c filename [-km --identity]
+
+       Imports the certificate at filename into the Keychain specified by  the
+       -k  flag (or else into the currently active Keychain). Optionally, this
+       command can also pair the certificate with a corresponding keypair  (if
+       one exists) to create a Signing Identity.
+
+       -c, XCS_CERTIFICATE_PATH
+	      The  path  to the certificate file. This should be a DER-encoded
+	      certificate, optionally with PEM armor, and usually exists in  a
+	      file ending in .crt, .der, or .pem.
+
+       --identity
+	      If  passed, xcssecurity will search the specified Keychain for a
+	      keypair that matches the certificate, and will import  the  cer-
+	      tificate	as part of a Signing Identity. Note that this does not
+	      change the mechanics of the actual import,  but  will  raise  an
+	      error  if  the  corresponding keypair can't be found (which is a
+	      useful check to have).
+
+IDENTITY COMMANDS
+   identity-find
+       identity-find [-cn common_name] [-e email] -p passphrase  [-km  --first
+       --require]
+
+       Locates a signing identity (or identities) matching the provided common
+       name and/or email address, and outputs PKCS12-encoded data  to  STDOUT.
+       If   multiple  identities  are  found,  each  of  them  will  first  be
+       PEM-encoded, and then all of them will be written out in sequence.  You
+       may optionally specify a Keychain to search with the -k flag; if one is
+       not provided,  the  currently  active  keychain	search	list  will  be
+       searched.
+
+       If  no search criteria are provided (i.e., neither a common name nor an
+       email address is specified), all identities in the  specified  keychain
+       will be returned.
+
+       By  default, all identities found will be written out, and if no match-
+       ing identities are found, nothing will be written out, but  xcssecurity
+       will exit with a successful status (0). You can control these behaviors
+       with the --first and --require flags.
+
+       Note that a passphrase is required when exporting identities,  as  pri-
+       vate keys are included, and are considered sensitive information.
+
+       -cn, XCS_COMMON_NAME
+	      The Common Name to search for.
+
+       -e, XCS_EMAIL
+	      The  email  address to search for. If an email address is speci-
+	      fied, the certificates of the identities returned will either a)
+	      have  an email address set that matches the provided address; or
+	      b) will not have an email address set.
+
+       --first
+	      If specified, only the first matching identity will  be  written
+	      to STDOUT, rather than all matching identities.
+
+       --require
+	      By  default,  xcssecurity will exit with a status code of 0 even
+	      if no identities are located. Passing this  flag	will  indicate
+	      that  xcssecurity should consider an empty result set a failure,
+	      which means it will emit an error message to  STDERR,  and  exit
+	      with a status code of 3.
+
+   identity-export
+       identity-export	[-cn  common_name] [-e email] -co certificate_filename
+       -ko key_filename [-km]
+
+       Locates a signing identity (or identities) matching the provided common
+       name  and/or  email address, and exports the certificate and associated
+       private key to certificate_filename and key_filename, respectively.  If
+       multiple identities are found, only the first will be exported. You may
+       optionally specify a Keychain to search with the -k flag; if one is not
+       provided, the currently active keychain search list will be searched.
+
+       This behaves similarly to identity-find with both --first and --require
+       set, except that the data will be exported into separate  files	rather
+       than into a single PKCS12 stream. This command is useful for provision-
+       ing server-side SSL certificates.
+
+       -cn, XCS_COMMON_NAME
+	      The Common Name to search for.
+
+       -e, XCS_EMAIL
+	      The email address to search for. If an email address  is	speci-
+	      fied, the certificates of the identities returned will either a)
+	      have an email address set that matches the provided address;  or
+	      b) will not have an email address set.
+
+       -co, XCS_CERTIFICATE_PATH
+	      The  path  to which the certificate file should be exported. The
+	      certificate will be PEM-encoded, and typically this path	should
+	      end with .crt.
+
+       -ko, XCS_KEY_PATH
+	      The  path  to  which the private key should be exported. The key
+	      will be PEM-encoded, and typically this  path  should  end  with
+	      .key.
+
+CERTIFICATE AUTHORITY COMMANDS
+   authority-create
+       authority-create -cn common_name -e email -t type [-okm --trust]
+
+       Creates a new Certificate Authority with the given parameters. Specifi-
+       cally, you must provide a Common Name and email address	for  the  cer-
+       tificate  authority,  and also a type parameter indicating which flavor
+       of certificates this authority will be responsible for generating.  The
+       authority will be (optionally) stored at the filename passed to -o, and
+       its identity (certificate and keypair) will be stored in the  specified
+       Keychain, or else the currently active Keychain if one is not provided.
+       If you use a custom Keychain, don't forget to specify its master  pass-
+       word with the -m flag.
+
+       -cn, XCS_COMMON_NAME
+	      The  name  of  the Certificate Authority. This name will be used
+	      both as the display name in Keychain Access, and as  the	Common
+	      Name (CN) field for the CA's root certificate.
+
+       -e, XCS_EMAIL
+	      The  email  address of the Certificate Authority. This name will
+	      be used in the CA's root certificate, and can also  be  used  in
+	      signed  certificate request invitations when inviting clients to
+	      request certificates.
+
+       -t	 (smime|client-ssl|server-ssl|client-vpn|server-vpn|codesign),
+       XCS_CERTIFICATE_TYPE
+	      The type of certificates this Certificate  Authority  should  be
+	      capable of producing, from the list shown above.
+
+       -o     The  location  at which to create the new Certificate Authority.
+	      This should be a (nonexistent) directory which will be  created,
+	      and  will  contain the certificate and public key as a PEM file.
+	      If  a  path  is  not  provided,  it  will  be  created  in   the
+	      ~/Library/Application Support/Certificate Authority directory.
+
+	      Note well: this functionality currently presents a warning about
+	      not being able to create an invitation. This is  erroneous,  and
+	      Certificate Authority creation succeeds as expected.
+
+       --trust
+	      If  passed, the system will be configured to automatically trust
+	      any certificates signed by your new Certificate  Authority.  You
+	      must  run  xcssecurity  as  root for this to take effect without
+	      user interaction; otherwise, a dialog  asking  for  confirmation
+	      will be displayed.
+
+       The  authority-create  command  also  checks  a number of environmental
+       variables when building the authority's	certificate.  These  variables
+       are the same checked by certificate-create, described above. Of partic-
+       ular note is that all CAs must have a country, so  if  the  XCS_COUNTRY
+       variable is not specified, it will automatically be determined from the
+       user's current locale.
+
+   authority-fulfill-request
+       authority-fulfill-request -cn|-p name_or_path -r request [-km  -dk  -dm
+       --pem]
+
+       Takes  a Certificate Signing Request (CSR) generated with either xcsse-
+       curity or Keychain Access (or similar), and for the specified  Certifi-
+       cate Authority, generates a signed certificate, and exports the data to
+       STDOUT. To locate the Certificate Authority, you must pass  either  -cn
+       and  the authority's name, or -p and the path to its directory on disk,
+       but not both. Don't forget to pass the appropriate Keychain path/master
+       password  if your CA's certificate and keypair are not in the currently
+       active Keychain.
+
+       Currently, the certificate will be stored in some Keychain, in addition
+       to  being echoed to STDOUT. If you do not inform xcssecurity which Key-
+       chain to use, the login Keychain will be used. You can use the -dk  and
+       -dm  to	specify  the  destination Keychain's path and master password,
+       respectively.
+
+       -cn, XCS_COMMON_NAME
+	      The name of the  Certificate  Authority  as  provided  when  the
+	      authority  was created. This flag is mutually exclusive with -p.
+
+       -p, XCS_AUTHORITY_PATH
+	      The path to the directory containing the Certificate Authority's
+	      certificate. This flag is mutually exclusive with -cn.
+
+       -r     The  path  to the Certificate Signing Request file. You may pass
+	      "-" to read the CSR from STDIN.
+
+       -dk, XCS_DESTINATION_KEYCHAIN
+	      The path to the Keychain into which the signed certificate  will
+	      be inserted.
+
+       -dm, XCS_DESTINATION_KEYCHAIN_PASSWORD
+	      The  master  password  for  the  Keychain  passed  via  -dk,  if
+	      required.
+
+       --pem  If passed, the resulting certificate will be output PEM-encoded.
+
+       The   authority-fulfill-request	command  also  checks  the  XCS_VALID-
+       ITY_PERIOD and XCS_SERIAL_NUMBER environmental variables  when  issuing
+       the requested certificate. These variables are the same checked by cer-
+       tificate-create, described above.
+
+OPEN DIRECTORY COMMANDS
+   user-create
+       user-create -u username -p password -n OD_node_name
+
+       Creates a new user in the specified Open Directory node.
+
+       The user-create command also respects a number of  environmental  vari-
+       ables that you may wish to set.
+
+       XCS_LAST_NAME
+	      The user's last name.
+
+       XCS_REAL_NAME
+	      The user's real name.
+
+       XCS_OD_UNIQUE_ID
+	      A unique identifier for the Open Directory user. This is used as
+	      the user's UID when the user logs in to the system.
+
+       XCS_OD_GROUP_ID
+	      The group identifier (GID) of the primary  group	for  the  Open
+	      Directory user.
+
+       XCS_NFS_HOME_DIRECTORY
+	      The NFS (or local) home directory of the user.
+
+       XCS_SHELL
+	      The  login  shell  to  be used for the user. Pass "/dev/null" to
+	      prevent login to an interactive console.
+
+   user-delete
+       user-delete -u username -n OD_node_name
+
+       Deletes a user from the specified Open Directory node.
+
+   user-authenticate
+       user-authenticate -u username -p password
+
+       Attempts to authenticate a user with the provided  username  and  pass-
+       word.  On success, xcssecurity will print nothing and quit. On failure,
+       xcssecurity will echo the relevant error to STDERR,  and  exit  with  a
+       nonzero status.
+
+       Remember  that  both  the  username  and password can also be passed as
+       environmental variables.
+
+   user-is-admin
+       user-is-admin -u username
+
+       Checks to see whether username is a member of the "admin"  (Administra-
+       tors)  group.  On  success, xcssecurity will print nothing and quit. On
+       failure, xcssecurity will echo the relevant error to STDERR,  and  exit
+       with a nonzero status.
+
+   group-create
+       group-create -g group_name -n OD_node_name
+
+       Creates a new group in the specified Open Directory node.
+
+       -g, XCS_GROUP_NAME
+	      The name of the Open Directory (or local) group to be created.
+
+       The  group-create  command  also respects a few environmental variables
+       that you may wish to set.
+
+       XCS_REAL_NAME
+	      The real, descriptive name of the group.
+
+       XCS_OD_GROUP_ID
+	      The group identifier (GID) of the Open Directory group.
+
+   group-delete
+       group-delete -g group_name -n OD_node_name
+
+       Deletes a group from the specified Open Directory node.
+
+   group-expand
+       group-expand -g group_name [-g g2  [-g  g3...]]	[--deduplicate	--pre-
+       serve-nonexistent --warn-unavailable]
+
+       Produces the user list for each provided group, and returns the results
+       as JSON to STDOUT. You may pass any number of groups  via  separate  -g
+       flags, each of which can be represented as a record name or a UUID; the
+       results will be aggregated into a single list. By default,  if  a  user
+       appears in multiple groups, their username will appear in the list mul-
+       tiple times; you can change this behavior by passing the  --deduplicate
+       flag.
+
+       By default, if a username is passed instead of a group name, it will be
+       passed through into the final list. In this way, you can easily	expand
+       access  control	lists  by  providing  a  mix  of users and groups, and
+       receiving back a flattened list of users only.
+
+       If any of the groups (or users) you pass via -g arguments do not exist,
+       by default, they will silently be omitted from the output. You may pass
+       the --preserve-nonexistent flag to ask that they be passed through into
+       the result unmodified.
+
+       Because	of the nature of network services, it is possible that some of
+       the Open Directory nodes in your search path may be unavailable	during
+       group  expansion.  In  this case, by default, the groups that reside on
+       those Open Directory nodes will be silently  omitted  from  the	output
+       (or,  if  using --preserve-nonexistent, will appear in the output unex-
+       panded). If you'd like a "heads up" that this may be happening, you can
+       pass  the  --warn-unavailable flag, which will first check each of your
+       configured Open Directory nodes for their availability. If any  of  the
+       nodes  are discovered to be unreachable, warnings will be generated and
+       output to STDERR. They will always be prefixed with "xcssecurity: warn-
+       ing: ", so they should be easy enough to parse.
+
+       Note  that  there  is also a special mode for this command: if you pass
+       "-" (hyphen) as a group name, xcssecurity  will	instead  read  a  JSON
+       object from STDIN, and expand the group names contained there. The JSON
+       object can either be an array (in which case it works  as  though  each
+       entry  were  passed  as	a -g flag), or an object with keys that map to
+       arrays, in which case an object with the same structure will be	output
+       when  the  command  completes  (i.e.,  each array in the object will be
+       expanded independently).
+
+EXIT CODES
+       On success, xcssecurity will exit with a status code of 0. On  failure,
+       it  will exit with a status code greater than 0, and report information
+       about the failure to STDERR.
+
+       A status code of 1 means that xcssecurity was invoked incorrectly, pos-
+       sibly with an unrecognized command.
+
+       A status code of 2 means that a required parameter was missing.
+
+       A  status  code	of  3 means that the underlying operation failed. More
+       information on why this happened will be output to STDERR.
+
+COPYRIGHT
+       xcssecurity is Copyright (C) 2013-14 Apple, Inc. All rights reserved.
+
+SEE ALSO
+       security(1)
+
+
+
+				  August 2014			XCSSECURITY(1)

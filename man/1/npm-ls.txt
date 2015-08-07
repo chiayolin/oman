@@ -1,0 +1,114 @@
+NPM-LS(1)							     NPM-LS(1)
+
+
+
+NAME
+       npm-ls - List installed packages
+
+SYNOPSIS
+	 npm list [[@<scope>/]<pkg> ...]
+	 npm ls [[@<scope>/]<pkg> ...]
+	 npm la [[@<scope>/]<pkg> ...]
+	 npm ll [[@<scope>/]<pkg> ...]
+
+DESCRIPTION
+       This command will print to stdout all the versions of packages that are
+       installed, as well as their dependencies, in a tree-structure.
+
+       Positional arguments are  name@version-range  identifiers,  which  will
+       limit  the  results to only the paths to the packages named.  Note that
+       nested packages will also show the paths  to  the  specified  packages.
+       For example, running npm ls promzard in npm's source tree will show:
+
+	 npm@2.12.1 /path/to/npm
+	 aaa~ init-package-json@0.0.4
+	   aaa promzard@0.1.5
+
+       It will print out extraneous, missing, and invalid packages.
+
+       If  a  project  specifies  git urls for dependencies these are shown in
+       parentheses after the name@version to make it easier for users to  rec-
+       ognize potential forks of a project.
+
+       When run as ll or la, it shows extended information by default.
+
+CONFIGURATION
+   json
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show information in JSON format.
+
+   long
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show extended information.
+
+   parseable
+       o Default: false
+
+       o Type: Boolean
+
+
+       Show parseable output instead of tree view.
+
+   global
+       o Default: false
+
+       o Type: Boolean
+
+
+       List  packages  in  the global install prefix instead of in the current
+       project.
+
+   depth
+       o Type: Int
+
+
+       Max display depth of the dependency tree.
+
+   prod / production
+       o Type: Boolean
+
+       o Default: false
+
+
+       Display only the dependency tree for packages in dependencies.
+
+   dev
+       o Type: Boolean
+
+       o Default: false
+
+
+       Display only the dependency tree for packages in devDependencies.
+
+SEE ALSO
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+       o npm help 5 folders
+
+       o npm help install
+
+       o npm help link
+
+       o npm help prune
+
+       o npm help outdated
+
+       o npm help update
+
+
+
+
+
+				   June 2015			     NPM-LS(1)

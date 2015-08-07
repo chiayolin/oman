@@ -1,0 +1,115 @@
+WMC(1)			    Wine Developers Manual			WMC(1)
+
+
+
+NAME
+       wmc - Wine Message Compiler
+
+SYNOPSIS
+       wmc [options] [inputfile]
+
+DESCRIPTION
+       wmc  compiles messages from inputfile into FormatMessage[AW] compatible
+       format encapsulated in a resourcescript format.	wmc outputs  the  data
+       either  in  a  standard	.bin  formatted  binary file, or can generated
+       inline resource data.
+
+       wmc takes only one inputfile as argument (see BUGS). The inputfile nor-
+       mally  has  extension .mc. The messages are read from standard input if
+       no inputfile is given. If the outputfile is not specified with -o, then
+       wmc will write the output to inputfile.{rc,h}.  The outputfile is named
+       wmc.tab.{rc,h} if no inputfile was given.
+
+OPTIONS
+       -B x   Set output byte-order x={n[ative], l[ittle], b[ig]}. Default  is
+	      n[ative].
+
+       -c     Set 'custom-bit' in message-code values.
+
+       -d     NON-FUNCTIONAL; Use decimal values in output
+
+       -D     Set  debug  flag.  This  results	is a parser trace and a lot of
+	      extra messages.
+
+       -h, --help
+	      Print an informative usage message and exits.
+
+       -H file
+	      Write headerfile to file. Default is inputfile.h.
+
+       -i     Inline messagetable(s). This option skips the generation of  all
+	      .bin  files and writes all output into the .rc file. This encod-
+	      ing is parsable with wrc(1).
+
+       -o, --output=file
+	      Output to file. Default is inputfile.rc.
+
+       -O, --output-format=format
+	      Set the output format. Supported formats are rc  (the  default),
+	      res, and pot.
+
+       -P, --po-dir=directory
+	      Enable the generation of resource translations based on po files
+	      loaded from the specified directory. That directory must	follow
+	      the  gettext  convention,  in particular in must contain one .po
+	      file for each language, and a LINGUAS file listing the available
+	      languages.
+
+       -u     Assume that the inputfile is in unicode.
+
+       -U     Write resource output in unicode formatted messagetable(s).
+
+       -v     Show all supported codepages and languages.
+
+       -V, --version
+	      Print version end exit.
+
+       -W, --pedantic
+	      Enable pedantic warnings.
+
+EXTENSIONS
+       The  original  syntax  is  extended to support codepages more smoothly.
+       Normally, codepages are based on the DOS  codepage  from  the  language
+       setting. The original syntax only allows the destination codepage to be
+       set. However, this is not enough for non-DOS systems which do  not  use
+       unicode source-files.
+
+       A  new  keyword	Codepages  is  introduced to set both input and output
+       codepages to anything one wants for each language. The syntax is  simi-
+       lar to the other constructs:
+
+       Codepages '=' '(' language '=' cpin ':' cpout ... ')'
+
+       The language is the numerical language-ID or the alias set with Langua-
+       geNames. The input codepage cpin and  output  codepage  cpout  are  the
+       numerical codepage IDs. There can be multiple mappings within the defi-
+       nition and the definition may occur more than once.
+
+AUTHORS
+       wmc was written by Bertho A. Stultiens.
+
+BUGS
+       The message compiler should be able to have multiple  input  files  and
+       combine	them  into one output file. This would enable the splitting of
+       languages into separate files.
+
+       Unicode detection of the input is suboptimal,  to  say  the  least.  It
+       should recognize byte order marks (BOM) and decide what to do.
+
+       Decimal	output	is completely lacking. Don't know whether it should be
+       implemented because it is a, well, non-informative format change. It is
+       recognized on the commandline for some form of compatibility.
+
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       wmc  is	part  of  the  Wine  distribution,  which is available through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1), wrc(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 October 2005				WMC(1)

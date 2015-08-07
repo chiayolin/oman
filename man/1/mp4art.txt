@@ -1,0 +1,96 @@
+MP4ART(1)			MP4v2 Utilities 		     MP4ART(1)
+
+
+
+NAME
+       mp4art - manual page for mp4art - MP4v2 2.0.0
+
+SYNOPSIS
+       mp4art [OPTION]... ACTION file...
+
+DESCRIPTION
+       For  each  mp4  (m4a)  file specified, perform the specified ACTION. An
+       action must be specified. Some options  are  not  applicable  for  some
+       actions.
+
+       ACTIONS
+
+       --list list all covr-boxes
+
+       --add IMG
+	      add covr-box from IMG file
+
+       --replace IMG
+	      replace covr-box with IMG file
+
+       --remove
+	      remove covr-box
+
+       --extract
+	      extract covr-box
+
+       ACTION PARAMETERS
+
+       --art-any
+	      act on all covr-boxes (default)
+
+       --art-index IDX
+	      act on covr-box index IDX
+
+       OPTIONS
+
+       -z, --optimize
+	      optimize mp4 file after modification
+
+       -y, --dryrun
+	      do not actually create or modify any files
+
+       -k, --keepgoing
+	      continue batch processing even after errors
+
+       -o, --overwrite
+	      overwrite existing files when creating
+
+       -f, --force
+	      force overwrite even if file is read-only
+
+       -q, --quiet
+	      equivalent to --verbose 0
+
+       -d, --debug NUM
+	      increase debug or long-option to set NUM
+
+       -v, --verbose NUM
+	      increase verbosity or long-option to set NUM
+
+       -h, --help
+	      print brief help or long-option for extended help
+
+       --version
+	      print version information and exit
+
+       DEBUG LEVELS (for raw mp4 file I/O)
+
+       0      supressed
+
+       1      add warnings and errors (default)
+
+       2      add table details
+
+       3      add implicits
+
+       4      everything
+
+       VERBOSE LEVELS
+
+       0      warnings and errors
+
+       1      normal informative messages (default)
+
+       2      more informative messages
+
+       3      everything
+
+
+
+mp4art - MP4v2 2.0.0		   May 2012			     MP4ART(1)

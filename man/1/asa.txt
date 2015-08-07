@@ -1,0 +1,52 @@
+
+ASA(1)			  BSD General Commands Manual			ASA(1)
+
+NAME
+     asa -- interpret carriage-control characters.
+
+SYNOPSIS
+     asa [file ...]
+
+DESCRIPTION
+     The asa utility reads files sequentially, mapping FORTRAN carriage-con-
+     trol characters to line-printer control sequences, and writes them to the
+     standard output.
+
+     The first character of each line is interpreted as a carriage-control
+     character.  The following characters are interpreted as follows:
+
+     <space>  Output the rest of the line without change.
+
+     0	      Output a <newline> character before printing the rest of the
+	      line.
+
+     1	      Output a <formfeed> character before printing the rest of the
+	      line.
+
+     +	      The trailing <newline> of the previous line is replaced by a
+	      <carriage-return> before printing the rest of the line.
+
+     Lines beginning with characters other than the above are treated as if
+     they begin with <space>.
+
+EXAMPLES
+     To view a file containing the output of a FORTRAN program:
+	   asa file
+
+     To format the output of a FORTRAN program and redirect it to a line-
+     printer.
+	   a.out | asa | lpr
+
+DIAGNOSTICS
+     The asa utility exit 0 on success, and >0 if an error occurs.
+
+SEE ALSO
+     f77(1)
+
+STANDARDS
+     The asa utility conforms to IEEE Std 1003.2-1992 (``POSIX.2'').
+
+AUTHORS
+     J.T. Conklin, Winning Strategies, Inc.
+
+BSD			      September 23, 1993			   BSD

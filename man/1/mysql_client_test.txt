@@ -1,0 +1,137 @@
+MYSQL_CLIENT_TEST(1)	     MySQL Database System	  MYSQL_CLIENT_TEST(1)
+
+
+
+NAME
+       mysql_client_test - test client API
+       mysql_client_test_embedded - test client API for embedded server
+
+SYNOPSIS
+       mysql_client_test [options] [test_name] ...
+
+       mysql_client_test_embedded [options] [test_name] ...
+
+DESCRIPTION
+       The mysql_client_test program is used for testing aspects of the MySQL
+       client API that cannot be tested using mysqltest and its test language.
+       mysql_client_test_embedded is similar but used for testing the embedded
+       server. Both programs are run as part of the test suite.
+
+       The source code for the programs can be found in in
+       tests/mysql_client_test.c in a source distribution. The program serves
+       as a good source of examples illustrating how to use various features
+       of the client API.
+
+       mysql_client_test is used in a test by the same name in the main tests
+       suite of mysql-test-run.pl but may also be run directly. Unlike the
+       other programs listed here, it does not read an external description of
+       what tests to run. Instead, all tests are coded into the program, which
+       is written to cover all aspects of the C language API.
+
+       mysql_client_test supports the following options:
+
+       o   --help, -?
+
+	   Display a help message and exit.
+
+       o   --basedir=dir_name, -b dir_name
+
+	   The base directory for the tests.
+
+       o   --count=count, -t count
+
+	   The number of times to execute the tests.
+
+       o   --database=db_name, -D db_name
+
+	   The database to use.
+
+       o   --debug[=debug_options], -#[debug_options]
+
+	   Write a debugging log if MySQL is built with debugging support. The
+	   default debug_options value is
+	   'd:t:o,/tmp/mysql_client_test.trace'.
+
+       o   --getopt-ll-test=option, -g option
+
+	   Option to use for testing bugs in the getopt library.
+
+       o   --host=host_name, -h host_name
+
+	   Connect to the MySQL server on the given host.
+
+       o   --password[=password], -p[password]
+
+	   The password to use when connecting to the server. If you use the
+	   short option form (-p), you cannot have a space between the option
+	   and the password. If you omit the password value following the
+	   --password or -p option on the command line, you are prompted for
+	   one.
+
+       o   --port=port_num, -P port_num
+
+	   The TCP/IP port number to use for the connection.
+
+       o   --server-arg=arg, -A arg
+
+	   Argument to send to the embedded server.
+
+       o   --show-tests, -T
+
+	   Show all test names.
+
+       o   --silent, -s
+
+	   Be more silent.
+
+       o   --socket=path, -S path
+
+	   The socket file to use when connecting to localhost (which is the
+	   default host).
+
+       o   --testcase, -c
+
+	   The option is used when called from mysql-test-run.pl, so that
+	   mysql_client_test may optionally behave in a different way than if
+	   called manually, for example by skipping some tests. Currently,
+	   there is no difference in behavior but the option is included to
+	   make this possible.
+
+       o   --user=user_name, -u user_name
+
+	   The MySQL user name to use when connecting to the server.
+
+       o   -v dir_name, --vardir=dir_name
+
+	   The data directory for tests. The default is mysql-test/var.
+
+COPYRIGHT
+       Copyright (C) 2006, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL				  07/14/2015		  MYSQL_CLIENT_TEST(1)

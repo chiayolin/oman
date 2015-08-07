@@ -1,0 +1,29 @@
+NPM-REBUILD(1)							NPM-REBUILD(1)
+
+
+
+NAME
+       npm-rebuild - Rebuild a package
+
+SYNOPSIS
+	 npm rebuild [<name> [<name> ...]]
+	 npm rb [<name> [<name> ...]]
+
+       o <name>: The package to rebuild
+
+
+DESCRIPTION
+       This  command  runs the npm build command on the matched folders.  This
+       is useful when you install a new version of node,  and  must  recompile
+       all your C++ addons with the new binary.
+
+SEE ALSO
+       o npm help build
+
+       o npm help install
+
+
+
+
+
+				   June 2015			NPM-REBUILD(1)

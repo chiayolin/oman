@@ -1,0 +1,50 @@
+
+MKDEP(1)		  BSD General Commands Manual		      MKDEP(1)
+
+NAME
+     mkdep -- construct Makefile dependency list
+
+SYNOPSIS
+     mkdep [-ap] [-f file] [flags] file ...
+
+DESCRIPTION
+     mkdep takes a set of flags for the C compiler and a list of C source
+     files as arguments and constructs a set of include file dependencies
+     which are written into the file ``.depend''.  An example of its use in a
+     Makefile might be:
+
+	   CFLAGS= -O -I../include
+	   SRCS= file1.c file2.c
+
+	   depend:
+		   mkdep ${CFLAGS} ${SRCS}
+
+     where the macro SRCS is the list of C source files and the macro CFLAGS
+     is the list of flags for the C compiler.
+
+     The options are as follows:
+
+     -a      Append to the output file, so that multiple mkdep's may be run
+	     from a single Makefile.
+
+     -f      Write the include file dependencies to file, instead of the
+	     default ``.depend''.
+
+     -p      Cause mkdep to produce dependencies of the form:
+
+		   program: program.c
+
+	     so that subsequent makes will produce program directly from its C
+	     module rather than using an intermediate .o module.  This is use-
+	     ful for programs whose source is contained in a single module.
+
+SEE ALSO
+     cc(1), cpp(1), make(1)
+
+FILES
+     .depend  File containing list of dependencies.
+
+HISTORY
+     The mkdep command appeared in 4.3BSD-Tahoe.
+
+4.2 Berkeley Distribution	 June 6, 1993	     4.2 Berkeley Distribution

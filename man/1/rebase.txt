@@ -1,0 +1,42 @@
+
+rebase(1)		  BSD General Commands Manual		     rebase(1)
+
+NAME
+     rebase -- Changes base address of dylibs and bundles
+
+SYNOPSIS
+     rebase [-low_address addr] [-high_address addr] [-arch arch] [-v] file(s)
+
+DESCRIPTION
+     The base address of an image (dylib or bundle) is the preferred address
+     for it to be loaded.  By default all images are built with a base address
+     of zero.  At runtime, if the preferred memory range is already occupied,
+     dyld will "slide" the image to a new address range.  There is a small
+     cost to the slide, as dyld must do some fix ups.  The rebase tool takes a
+     list of images and adjust their base address to be non-overlapping. If no
+     low or high address is specified, the a suitable address range is choosen
+     for the architecture.
+
+     The options are as follows:
+
+     -low_address addr
+	     Force the base address for the first image to be addr (specified
+	     in hex). Each subsequent file gets the next available base
+	     address.
+
+     -high_address addr
+	     Force the base address for the last image to be such that when
+	     that image is loaded it occupies memory up to addr (specified in
+	     hex). Each preceeding file gets the previous available base
+	     address.
+
+     -arch arch
+	     Only rebase the specified architecture.  Other architectures in a
+	     universal image are left as is.
+
+     -v      Verbose. Print information about rebasing done.
+
+SEE ALSO
+     ld(1)
+
+Darwin				 June 6, 2006				Darwin

@@ -1,0 +1,29 @@
+imginfo(1)			 JasPer Manual			    imginfo(1)
+
+
+
+NAME
+       imginfo - Image information utility
+
+
+SYNOPSIS
+       imginfo [options]
+
+
+DESCRIPTION
+       The  imginfo  command  displays information about an image.  Please use
+       the --help command line switch and the JasPer Software Reference Manual
+       for more information.
+
+
+SEE ALSO
+       jasper(1)
+
+
+AUTHOR
+       Michael	D. Adams <mdadams@ieee.org> This manpage was initially written
+       by Roland Stigge <stigge@antcom.de> for the Debian Project.
+
+
+
+Version 1.701.0 		 20 June 2004			    imginfo(1)

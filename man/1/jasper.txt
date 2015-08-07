@@ -1,0 +1,25 @@
+jasper(1)			 JasPer Manual			     jasper(1)
+
+
+
+NAME
+       jasper - File format converter specialized in JPEG-2000 encoding
+
+
+SYNOPSIS
+       jasper [options]
+
+
+DESCRIPTION
+       The jasper command converts to and from JPEG-2000 files. Please use the
+       --help command line switch and the JasPer Software Reference Manual for
+       more information.
+
+
+AUTHOR
+       Michael	D. Adams <mdadams@ieee.org> This manpage was initially written
+       by Roland Stigge <stigge@antcom.de> for the Debian Project.
+
+
+
+Version 1.701.0 		 20 June 2004			     jasper(1)

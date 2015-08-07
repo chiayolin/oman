@@ -1,0 +1,27 @@
+NPM-WHOAMI(1)							 NPM-WHOAMI(1)
+
+
+
+NAME
+       npm-whoami - Display npm username
+
+SYNOPSIS
+	 npm whoami
+
+DESCRIPTION
+       Print the username config to standard output.
+
+SEE ALSO
+       o npm help config
+
+       o npm help 7 config
+
+       o npm help 5 npmrc
+
+       o npm help adduser
+
+
+
+
+
+				   June 2015			 NPM-WHOAMI(1)

@@ -1,0 +1,120 @@
+FAAC(1) 		   Free Advanced Audio Coder		       FAAC(1)
+
+
+
+NAME
+       faac - open source MPEG-4 and MPEG-2 AAC encoder
+
+
+SYNOPSIS
+       faac [options] [-o outfile] infiles ...
+
+       <infiles> and/or <outfile> can be "-", which means stdin/stdout.
+
+
+DESCRIPTION
+       FAAC  is  an  open source MPEG-4 and MPEG-2 AAC encoder, it is licensed
+       under the LGPL license.	Note that the quality of FAAC is not up to par
+       with the currently best AAC encoders available.
+
+
+FEATURES
+       * Portable
+
+       * Reasonably fast
+
+       * LC, Main, LTP support
+
+       * DRM support through DreaM (optional)
+
+
+OPTIONS
+       -q <quality>
+	      Set  default variable bitrate (VBR) quantizer quality in percent
+	      (default: 100).
+
+       -b <bitrate>
+	      Set average bitrate (ABR, lower quality mode)  to  approximately
+	      bitrate kbps.
+
+       -c <freq>
+	      Set the bandwidth in Hz (default: automatic).
+
+       -o X   Set output file to X (only for one input file).
+
+       -r     Use RAW AAC output file.
+
+       -P     Raw PCM input mode (default: 44100Hz 16bit stereo).
+
+       -R     Raw PCM input rate.
+
+       -B     Raw PCM input sample size (8, 16 [default], 24 or 32bits).
+
+       -C     Raw PCM input channels.
+
+       -X     Raw PCM swap input bytes
+
+       -I <C,LF>
+	      Input  channel config (default: 3,4 [which means Center is third
+	      and LFE is fourth]).
+
+
+MP4-SPECIFIC OPTIONS (if built with MP4V2)
+       -w     Wrap AAC data in MP4 container (default for *.mp4 and *.m4a).
+
+       -s     Optimize MP4 container layout after encoding.
+
+       --artist X
+	      Set artist to X
+
+       --writer X
+	      Set writer to X
+
+       --title X
+	      Set title to X
+
+       --genre X
+	      Set genre to X
+
+       --album X
+	      Set album to X
+
+       --compilation
+	      Set compilation
+
+       --track X
+	      Set track to X (number/total)
+
+       --disc X
+	      Set disc to X (number/total)
+
+       --year X
+	      Set year to X
+
+       --cover-art X
+	      Read cover art from file X
+
+       --comment X
+	      Set comment to X
+
+
+DOCUMENTATION
+       --help for short help on using FAAC.
+
+       --long-help
+	      for a description of all options for FAAC.
+
+       --license
+	      for the license terms for FAAC.
+
+
+AUTHORS
+       FAAC was written by M. Bakker <menno@audiocoding.com>.
+
+       This manpage was written  by  Fabian  Greffrath	<fabian@debian-unoffi-
+       cial.org> for the Debian Unofficial project (but may be used by others,
+       of course).
+
+
+
+1.26				  2007-10-11			       FAAC(1)

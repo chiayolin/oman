@@ -1,0 +1,33 @@
+NPM-TEST(1)							   NPM-TEST(1)
+
+
+
+NAME
+       npm-test - Test a package
+
+SYNOPSIS
+	   npm test [-- <args>]
+	   npm tst [-- <args>]
+
+DESCRIPTION
+       This runs a package's "test" script, if one was provided.
+
+       To  run	tests  as  a condition of installation, set the npat config to
+       true.
+
+SEE ALSO
+       o npm help run-script
+
+       o npm help 7 scripts
+
+       o npm help start
+
+       o npm help restart
+
+       o npm help stop
+
+
+
+
+
+				   June 2015			   NPM-TEST(1)

@@ -1,0 +1,39 @@
+REGSVR32(1)			 Wine Programs			   REGSVR32(1)
+
+
+
+NAME
+       regsvr32 - Wine DLL Registration Server
+
+SYNOPSIS
+       regsvr32 [/u] [/s] [/n] [/i[:cmdline]] dllname
+
+DESCRIPTION
+       regsvr32 is the Wine dll registration server, designed to be compatible
+       with its Microsoft Windows counterpart.	By default, it	will  register
+       the given dll.
+
+COMMANDS
+       /u     Unregister the specified dll.
+
+       /s     Run regsvr32 silently (will not show any GUI dialogs).
+
+       /i     Call  DllInstall	passing it an optional cmdline. When used with
+	      /u calls DllUninstall.
+
+       /n     Do not call DllRegisterServer; this option must be used with /i.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       regsvr32  is  part of the Wine distribution, which is available through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			   REGSVR32(1)

@@ -1,0 +1,53 @@
+
+AMLINT(1)		  BSD General Commands Manual		     AMLINT(1)
+
+NAME
+     amlint -- check Automator actions for problems
+
+SYNOPSIS
+     amlint [-HhSs] [-d definition-bundle] [-x exception-file] action ...
+
+DESCRIPTION
+     amlint checks the given Automator actions for various problems and inter-
+     face inconsistencies.  action is the path of a built action bundle.  The
+     options are as follows:
+
+     -H    Print the filename for each error or warning.
+
+     -h    Suppress the prefixing of filenames when multiple actions are
+	   checked.
+
+     -S    For each action, write a summary line indicating how many errors
+	   and warnings there were.
+
+     -s    As -S, but skips the summary line for actions with no errors or
+	   warnings.
+
+     -d definition-bundle
+	   Specify a definition bundle, which specifies custom action input
+	   and output types.  This option may be repeated if you need to spec-
+	   ify more than one bundle.
+
+     -x exception-file
+	   Specify a list of errors and warnings to ignore.  The file should
+	   be plain text, with one line per error: the action filename, a
+	   colon, space, and the text of the error.  For example:
+
+		 My Action.action: error: NSButton "OK" should not use the metal style.
+
+	   You can simply copy an output line from amlint -H.
+
+RETURN VALUES
+     amlint exits with one of the following values:
+
+     0	   no serious errors were found.
+
+     1	   an error was found in one of the checked actions.
+
+     >1    an internal error occurred.
+
+BUGS
+     Because of a bug in nibtool(1), amlint will fail to work on some nibs.
+     You will see errors about the ``old-style plist parser'' if this happens.
+
+Mac OS X		       December 9, 2005 		      Mac OS X

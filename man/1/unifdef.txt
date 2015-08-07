@@ -1,0 +1,181 @@
+
+UNIFDEF(1)		  BSD General Commands Manual		    UNIFDEF(1)
+
+NAME
+     unifdef, unifdefall -- remove preprocessor conditionals from code
+
+SYNOPSIS
+     unifdef [-bBcdeKknsStV] [-Ipath] [-Dsym[=val]] [-Usym] [-iDsym[=val]]
+	     [-iUsym] ... [-o outfile] [infile]
+     unifdefall [-Ipath] ... file
+
+DESCRIPTION
+     The unifdef utility selectively processes conditional cpp(1) directives.
+     It removes from a file both the directives and any additional text that
+     they specify should be removed, while otherwise leaving the file alone.
+
+     The unifdef utility acts on #if, #ifdef, #ifndef, #elif, #else, and
+     #endif lines.  A directive is only processed if the symbols specified on
+     the command line are sufficient to allow unifdef to get a definite value
+     for its control expression.  If the result is false, the directive and
+     the following lines under its control are removed.  If the result is
+     true, only the directive is removed.  An #ifdef or #ifndef directive is
+     passed through unchanged if its controlling symbol is not specified on
+     the command line.	Any #if or #elif control expression that has an
+     unknown value or that unifdef cannot parse is passed through unchanged.
+     By default, unifdef ignores #if and #elif lines with constant expres-
+     sions; it can be told to process them by specifying the -k flag on the
+     command line.
+
+     It understands a commonly-used subset of the expression syntax for #if
+     and #elif lines: integer constants, integer values of symbols defined on
+     the command line, the defined() operator, the operators !, <, >, <=, >=,
+     ==, !=, &&, ||, and parenthesized expressions.  A kind of ``short
+     circuit'' evaluation is used for the && operator: if either operand is
+     definitely false then the result is false, even if the value of the other
+     operand is unknown.  Similarly, if either operand of || is definitely
+     true then the result is true.
+
+     In most cases, the unifdef utility does not distinguish between object-
+     like macros (without arguments) and function-like arguments (with argu-
+     ments).  If a macro is not explicitly defined, or is defined with the -D
+     flag on the command-line, its arguments are ignored.  If a macro is
+     explicitly undefined on the command line with the -U flag, it may not
+     have any arguments since this leads to a syntax error.
+
+     The unifdef utility understands just enough about C to know when one of
+     the directives is inactive because it is inside a comment, or affected by
+     a backslash-continued line.  It spots unusually-formatted preprocessor
+     directives and knows when the layout is too odd for it to handle.
+
+     A script called unifdefall can be used to remove all conditional cpp(1)
+     directives from a file.  It uses unifdef -s and cpp -dM to get lists of
+     all the controlling symbols and their definitions (or lack thereof), then
+     invokes unifdef with appropriate arguments to process the file.
+
+OPTIONS
+     -Dsym=val
+	     Specify that a symbol is defined to a given value which is used
+	     when evaluating #if and #elif control expressions.
+
+     -Dsym   Specify that a symbol is defined to the value 1.
+
+     -Usym   Specify that a symbol is undefined.  If the same symbol appears
+	     in more than one argument, the last occurrence dominates.
+
+     -b      Replace removed lines with blank lines instead of deleting them.
+	     Mutually exclusive with the -B option.
+
+     -B      Compress blank lines around a deleted section.  Mutually exclu-
+	     sive with the -b option.
+
+     -c      If the -c flag is specified, then the operation of unifdef is
+	     complemented, i.e., the lines that would have been removed or
+	     blanked are retained and vice versa.
+
+     -d      Turn on printing of debugging messages.
+
+     -e      Because unifdef processes its input one line at a time, it cannot
+	     remove preprocessor directives that span more than one line.  The
+	     most common example of this is a directive with a multi-line com-
+	     ment hanging off its right hand end.  By default, if unifdef has
+	     to process such a directive, it will complain that the line is
+	     too obfuscated.  The -e option changes the behaviour so that,
+	     where possible, such lines are left unprocessed instead of
+	     reporting an error.
+
+     -K      Always treat the result of && and || operators as unknown if
+	     either operand is unknown, instead of short-circuiting when
+	     unknown operands can't affect the result.	This option is for
+	     compatibility with older versions of unifdef.
+
+     -k      Process #if and #elif lines with constant expressions.  By
+	     default, sections controlled by such lines are passed through
+	     unchanged because they typically start ``#if 0'' and are used as
+	     a kind of comment to sketch out future or past development.  It
+	     would be rude to strip them out, just as it would be for normal
+	     comments.
+
+     -n      Add #line directives to the output following any deleted lines,
+	     so that errors produced when compiling the output file correspond
+	     to line numbers in the input file.
+
+     -o outfile
+	     Write output to the file outfile instead of the standard output.
+	     If outfile is the same as the input file, the output is written
+	     to a temporary file which is renamed into place when unifdef com-
+	     pletes successfully.
+
+     -s      Instead of processing the input file as usual, this option causes
+	     unifdef to produce a list of symbols that appear in expressions
+	     that unifdef understands.	It is useful in conjunction with the
+	     -dM option of cpp(1) for creating unifdef command lines.
+
+     -S      Like the -s option, but the nesting depth of each symbol is also
+	     printed.  This is useful for working out the number of possible
+	     combinations of interdependent defined/undefined symbols.
+
+     -t      Disables parsing for C comments and line continuations, which is
+	     useful for plain text.
+
+     -iDsym[=val]
+     -iUsym  Ignore #ifdefs.  If your C code uses #ifdefs to delimit non-C
+	     lines, such as comments or code which is under construction, then
+	     you must tell unifdef which symbols are used for that purpose so
+	     that it will not try to parse comments and line continuations
+	     inside those #ifdefs.  You can specify ignored symbols with
+	     -iDsym[=val] and -iUsym similar to -Dsym[=val] and -Usym above.
+
+     -Ipath  Specifies to unifdefall an additional place to look for #include
+	     files.  This option is ignored by unifdef for compatibility with
+	     cpp(1) and to simplify the implementation of unifdefall.
+
+     -V      Print version details.
+
+     The unifdef utility copies its output to stdout and will take its input
+     from stdin if no file argument is given.
+
+     The unifdef utility works nicely with the -Dsym option of diff(1).
+
+EXIT STATUS
+     The unifdef utility exits 0 if the output is an exact copy of the input,
+     1 if not, and 2 if in trouble.
+
+DIAGNOSTICS
+     Too many levels of nesting.
+
+     Inappropriate #elif, #else or #endif.
+
+     Obfuscated preprocessor control line.
+
+     Premature EOF (with the line number of the most recent unterminated #if).
+
+     EOF in comment.
+
+SEE ALSO
+     cpp(1), diff(1)
+
+HISTORY
+     The unifdef command appeared in 2.9BSD.  ANSI C support was added in
+     FreeBSD 4.7.
+
+AUTHORS
+     The original implementation was written by Dave Yost <Dave@Yost.com>.
+     Tony Finch <dot@dotat.at> rewrote it to support ANSI C.
+
+BUGS
+     Expression evaluation is very limited.
+
+     Preprocessor control lines split across more than one physical line
+     (because of comments or backslash-newline) cannot be handled in every
+     situation.
+
+     Trigraphs are not recognized.
+
+     There is no support for symbols with different definitions at different
+     points in the source file.
+
+     The text-mode and ignore functionality does not correspond to modern
+     cpp(1) behaviour.
+
+BSD				March 11, 2010				   BSD

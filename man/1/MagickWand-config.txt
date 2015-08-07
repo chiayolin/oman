@@ -1,0 +1,60 @@
+MagickWand-Config(1)					  MagickWand-Config(1)
+
+
+
+NAME
+       MagickWand-config - get information about the installed version of the
+       Magick Wand
+
+SYNOPSIS
+       MagickWand-config [--cflags] [--cppflags] [--exec-prefix] [--ldflags]
+       [--libs] [--prefix] [--version]
+
+DESCRIPTION
+       MagickWand-config prints the compiler and linker flags required to com-
+       pile and link programs that use the Wand Application Programmer Inter-
+       face.
+
+EXAMPLES
+       To print the version of the installed distribution of Wand, use:
+
+	 MagickWand-config --version
+
+       To compile a program that calls the Wand Application Programmer Inter-
+       face, use:
+
+	 cc `MagickWand-config --cflags --cppflags --ldflags --libs` program.c
+
+
+OPTIONS
+       --cflags
+	      Print the compiler flags that were used to compile libWand.
+
+       --cppflags
+	      Print the preprocessor flags that are needed to find the Wand C
+	      include files and defines to ensure that the Wand data struc-
+	      tures match between your program and the installed libraries.
+
+       --exec-prefix
+	      Print the directory under which target specific binaries and
+	      executables are installed.
+
+       --ldflags
+	      Print the linker flags that are needed to link with the Wand
+	      library.
+
+       --libs Print the linker flags that are needed to link a program with
+	      libWand.
+
+       --version
+	      Print the version of the Wand distribution to standard output.
+
+COPYRIGHT
+       See http://www.imagemagick.org/script/license.php
+
+AUTHORS
+       Cristy, ImageMagick Studio LLC
+
+
+
+Wand				  2 May 2002		  MagickWand-Config(1)

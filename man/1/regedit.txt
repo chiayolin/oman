@@ -1,0 +1,59 @@
+REGEDIT(1)			 Wine Programs			    REGEDIT(1)
+
+
+
+NAME
+       regedit - Wine registry editor
+
+SYNOPSIS
+       regedit [text file]
+
+DESCRIPTION
+       regedit is the Wine registry editor, designed to be compatible with its
+       Microsoft Windows counterpart.  If called without any options, it  will
+       start the full GUI editor.
+
+       The  switches are case-insensitive and can be prefixed either by '-' or
+       '/'.
+
+OPTIONS
+       -E file [regpath]
+	      Exports the content of the specified registry key to the	speci-
+	      fied file. It exports the whole registry if no key is specified.
+
+       -D regpath
+	      Deletes the specified registry key.
+
+       -S     Run regedit silently (ignored, CLI mode is always silent).  This
+	      exists for compatibility with Windows regedit.
+
+       -V     Run regedit in advanced mode (ignored). This exists for compati-
+	      bility with Windows regedit.
+
+       -L location
+	      Specifies  the  location	of  the   system.dat   registry   file
+	      (ignored). This exists for compatibility with Windows regedit.
+
+       -R location
+	      Specifies  the location of the user.dat registry file (ignored).
+	      This exists for compatibility with Windows regedit.
+
+       -?     Prints a help message. Any other options are ignored.
+
+       -C file.reg
+	      Create registry from file.reg (unimplemented).
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       regedit is part of the Wine distribution, which	is  available  through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			    REGEDIT(1)

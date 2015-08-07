@@ -1,0 +1,165 @@
+MYSQLACCESS(1)		     MySQL Database System		MYSQLACCESS(1)
+
+
+
+NAME
+       mysqlaccess - client for checking access privileges
+
+SYNOPSIS
+       mysqlaccess [host_name [user_name [db_name]]] [options]
+
+DESCRIPTION
+	   Note
+	   This utility is deprecated in MySQL 5.6.17 and removed in MySQL 5.7
+
+       mysqlaccess is a diagnostic tool that Yves Carlier has provided for the
+       MySQL distribution. It checks the access privileges for a host name,
+       user name, and database combination. Note that mysqlaccess checks
+       access using only the user and db tables. It does not check table,
+       column, or routine privileges specified in the tables_priv,
+       columns_priv, or procs_priv tables.
+
+       Invoke mysqlaccess like this:
+
+	   shell> mysqlaccess [host_name [user_name [db_name]]] [options]
+
+       mysqlaccess supports the following options.
+
+       o   --help, -?
+
+	   Display a help message and exit.
+
+       o   --brief, -b
+
+	   Generate reports in single-line tabular format.
+
+       o   --commit
+
+	   Copy the new access privileges from the temporary tables to the
+	   original grant tables. The grant tables must be flushed for the new
+	   privileges to take effect. (For example, execute a mysqladmin
+	   reload command.)
+
+       o   --copy
+
+	   Reload the temporary grant tables from original ones.
+
+       o   --db=db_name, -d db_name
+
+	   Specify the database name.
+
+       o   --debug=N
+
+	   Specify the debug level.  N can be an integer from 0 to 3.
+
+       o   --host=host_name, -h host_name
+
+	   The host name to use in the access privileges.
+
+       o   --howto
+
+	   Display some examples that show how to use mysqlaccess.
+
+       o   --old_server
+
+	   Assume that the server is an old MySQL server (before MySQL 3.21)
+	   that does not yet know how to handle full WHERE clauses.
+
+       o   --password[=password], -p[password]
+
+	   The password to use when connecting to the server. If you omit the
+	   password value following the --password or -p option on the command
+	   line, mysqlaccess prompts for one.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security".
+
+       o   --plan
+
+	   Display suggestions and ideas for future releases.
+
+       o   --preview
+
+	   Show the privilege differences after making changes to the
+	   temporary grant tables.
+
+       o   --relnotes
+
+	   Display the release notes.
+
+       o   --rhost=host_name, -H host_name
+
+	   Connect to the MySQL server on the given host.
+
+       o   --rollback
+
+	   Undo the most recent changes to the temporary grant tables.
+
+       o   --spassword[=password], -P[password]
+
+	   The password to use when connecting to the server as the superuser.
+	   If you omit the password value following the --spassword or -p
+	   option on the command line, mysqlaccess prompts for one.
+
+	   Specifying a password on the command line should be considered
+	   insecure. See Section 6.1.2.1, "End-User Guidelines for Password
+	   Security".
+
+       o   --superuser=user_name, -U user_name
+
+	   Specify the user name for connecting as the superuser.
+
+       o   --table, -t
+
+	   Generate reports in table format.
+
+       o   --user=user_name, -u user_name
+
+	   The user name to use in the access privileges.
+
+       o   --version, -v
+
+	   Display version information and exit.
+
+       If your MySQL distribution is installed in some nonstandard location,
+       you must change the location where mysqlaccess expects to find the
+       mysql client. Edit the mysqlaccess script at approximately line 18.
+       Search for a line that looks like this:
+
+	   $MYSQL     = '/usr/local/bin/mysql';    # path to mysql executable
+
+       Change the path to reflect the location where mysql actually is stored
+       on your system. If you do not do this, a Broken pipe error will occur
+       when you run mysqlaccess.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			MYSQLACCESS(1)

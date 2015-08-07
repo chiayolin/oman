@@ -1,0 +1,66 @@
+MYSQL_SECURE_INST(1)	     MySQL Database System	  MYSQL_SECURE_INST(1)
+
+
+
+NAME
+       mysql_secure_installation - improve MySQL installation security
+
+SYNOPSIS
+       mysql_secure_installation
+
+DESCRIPTION
+       This program enables you to improve the security of your MySQL
+       installation in the following ways:
+
+       o   You can set a password for root accounts.
+
+       o   You can remove root accounts that are accessible from outside the
+	   local host.
+
+       o   You can remove anonymous-user accounts.
+
+       o   You can remove the test database (which by default can be accessed
+	   by all users, even anonymous users), and privileges that permit
+	   anyone to access databases with names that start with test_.
+
+       mysql_secure_installation helps you implement security recommendations
+       similar to those described at Section 2.10.4, "Securing the Initial
+       MySQL Accounts".
+
+       Invoke mysql_secure_installation without arguments:
+
+	   shell> mysql_secure_installation
+
+       When executed, the script prompts you to determine which actions to
+       perform.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		  MYSQL_SECURE_INST(1)

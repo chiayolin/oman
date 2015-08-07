@@ -1,0 +1,103 @@
+
+C89(1)			  BSD General Commands Manual			C89(1)
+
+NAME
+     c89 -- standard C language compiler
+
+SYNOPSIS
+     c89 [-cEgs] [-D name[=value]] ... [-I directory ...] [-L directory ...]
+	 [-o outfile] [-O optlevel] [-U name ...] [-W 32|64] operand ...
+
+DESCRIPTION
+     This is the name of the C language compiler as required by the IEEE Std
+     1003.1-2001 (``POSIX.1'') standard.
+
+     The c89 compiler accepts the following options:
+
+     -c      Suppress the link-edit phase of the compilation, and do not
+	     remove any object files that are produced.
+
+     -D name[=value]
+	     Define name as if by a C-language #define directive.  If no
+	     ``=value'' is given, a value of 1 will be used.  Note that in
+	     order to request a translation as specified by IEEE Std
+	     1003.1-2001 (``POSIX.1''), you need to define
+	     _POSIX_C_SOURCE=200112L either in the source or using this
+	     option.  The -D option has lower precedence than the -U option.
+	     That is, if name is used in both a -U and a -D option, name will
+	     be undefined regardless of the order of the options.  The -D
+	     option may be specified more than once.
+
+     -E      Copy C-language source files to the standard output, expanding
+	     all preprocessor directives; no compilation will be performed.
+
+     -g      Produce symbolic information in the object or executable files.
+
+     -I directory
+	     Change the algorithm for searching for headers whose names are
+	     not absolute pathnames to look in the directory named by the
+	     directory pathname before looking in the usual places.  Thus,
+	     headers whose names are enclosed in double-quotes ("") will be
+	     searched for first in the directory of the file with the #include
+	     line, then in directories named in -I options, and last in the
+	     usual places.  For headers whose names are enclosed in angle
+	     brackets (<>), the header will be searched for only in directo-
+	     ries named in -I options and then in the usual places.  Directo-
+	     ries named in -I options shall be searched in the order speci-
+	     fied.  The -I option may be specified more than once.
+
+     -L directory
+	     Change the algorithm of searching for the libraries named in the
+	     -l objects to look in the directory named by the directory path-
+	     name before looking in the usual places.  Directories named in -L
+	     options will be searched in the order specified.  The -L option
+	     may be specified more than once.
+
+     -o outfile
+	     Use the pathname outfile, instead of the default a.out, for the
+	     executable file produced.
+
+     -O optlevel
+	     If optlevel is zero, disable all optimizations.  Otherwise,
+	     enable optimizations at the specified level.
+
+     -s      Produce object and/or executable files from which symbolic and
+	     other information not required for proper execution has been
+	     removed (stripped).
+
+     -U name
+	     Remove any initial definition of name.  The -U option may be
+	     specified more than once.
+
+     -W 32|64
+	     Set the pointer size for the compiled code to either 32 or 64
+	     bits.  If not specified, the pointer size matches the current
+	     host architecture.
+
+     An operand is either in the form of a pathname or the form -l library.
+     At least one operand of the pathname form needs to be specified.  Sup-
+     ported operands are of the form:
+
+	   file.c      A C-language source file to be compiled and optionally
+		       linked.	The operand must be of this form if the -c
+		       option is used.
+
+	   file.a      A library of object files, as produced by ar(1), passed
+		       directly to the link editor.
+
+	   file.o      An object file produced by c89 -c, and passed directly
+		       to the link editor.
+
+	   -l library  Search the library named liblibrary.a.  A library will
+		       be searched when its name is encountered, so the place-
+		       ment of a -l operand is significant.
+
+SEE ALSO
+     ar(1), c89(1), cc(1)
+
+STANDARDS
+     The c89 utility interface conforms to IEEE Std 1003.1-2001 (``POSIX.1'').
+     Since it is a wrapper around GCC, it is limited to the C89 features that
+     GCC actually implements.
+
+BSD				October 7, 2002 			   BSD

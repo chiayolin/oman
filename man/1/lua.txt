@@ -1,0 +1,67 @@
+LUA(1)									LUA(1)
+
+
+
+NAME
+       lua - Lua interpreter
+
+SYNOPSIS
+       lua [ options ] [ script [ args ] ]
+
+DESCRIPTION
+       lua  is the standalone Lua interpreter.	It loads and executes Lua pro-
+       grams, either in textual source form or	in  precompiled  binary  form.
+       (Precompiled  binaries  are output by luac, the Lua compiler.)  lua can
+       be used as a batch interpreter and also interactively.
+
+       The given options are handled in order and then the Lua program in file
+       script  is loaded and executed.	The given args are available to script
+       as strings in a global table named arg.	If no options or arguments are
+       given,  then  -v  -i  is assumed when the standard input is a terminal;
+       otherwise, - is assumed.
+
+       In interactive mode, lua prompts the user, reads lines from  the  stan-
+       dard  input,  and  executes  them as they are read.  If a line does not
+       contain a complete statement, then a secondary prompt is displayed  and
+       lines  are  read until a complete statement is formed or a syntax error
+       is found.  If a line starts with '=', then lua evaluates  and  displays
+       the values of the expressions in the remainder of the line.
+
+       At  the	very  start, before even handling the command line, lua checks
+       the contents of the environment variables LUA_INIT_5_2 or LUA_INIT,  in
+       that  order.  If the contents is of the form '@filename', then filename
+       is executed.  Otherwise, the string is assumed to be  a	Lua  statement
+       and is executed.
+
+OPTIONS
+       -e stat
+	      execute statement stat.
+
+       -i     enter interactive mode after executing script.
+
+       -l name
+	      execute  the equivalent of name=require('name') before executing
+	      script.
+
+       -v     show version information.
+
+       -E     ignore environment variables.
+
+       --     stop handling options.
+
+       -      stop handling options and execute the standard input as a  file.
+
+SEE ALSO
+       luac(1)
+       The  documentation  at  lua.org,  especially section 7 of the reference
+       manual.
+
+DIAGNOSTICS
+       Error messages should be self explanatory.
+
+AUTHORS
+       R. Ierusalimschy, L. H. de Figueiredo, W. Celes
+
+
+
+			 $Date: 2011/11/16 17:16:53 $			LUA(1)

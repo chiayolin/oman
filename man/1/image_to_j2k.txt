@@ -1,0 +1,182 @@
+image_to_j2k(1) 	  converts to jpeg2000 files	       image_to_j2k(1)
+
+
+
+NAME
+       image_to_j2k  -	This  program  reads in an image of a certain type and
+       converts it to a jpeg2000 file. It is part of the OpenJPEG library.
+
+       Valid input image extensions are .bmp, .pgm, .pgx,  .png,  .pnm,  .ppm,
+       .raw, .tga, .tif . For PNG resp. TIF it needs libpng resp. libtiff .
+
+       Valid output image extensions are .j2k, .jp2
+
+SYNOPSIS
+       image_to_j2k -i infile.bmp -o outfile.j2k
+
+       image_to_j2k -ImgDir directory_name -OutFor jp2
+
+       image_to_j2k -h Print a help message and exit.
+
+       See JPWL OPTIONS for special options
+
+OPTIONS
+       -b  n,n
+	      (Size of code block (e.g. -b 32,32). Default: 64 x 64)
+
+       -c  n  (Size of precinct (e.g. -c 128,128). Default: 2^15 x 2^15)
+
+       -cinema2K  fps
+	      Digital Cinema 2K profile compliant codestream. Valid fps values
+	      are 24 or 48.
+
+       -cinema4K
+	      Digital Cinema 4K profile compliant codestream. Does not need an
+	      fps: default is 24 fps.
+
+       -d  X,Y
+	      (Offset of image origin (e.g. -d 150,300))
+
+       -h     Print a help message and exit.
+
+       -i  name
+	      (input file name)
+
+       -n  n  (Number of resolutions. Default: 6)
+
+       -o  name
+	      (output file name)
+
+       -p  name
+	      Progression  order.  name  can  be  one out of:LRCP, RLCP, RPCL,
+	      PCRL, CPRL. Default: LRCP.
+
+       -q  n  different psnr for successive layers
+	      Note: (options -r and -q cannot be used together)
+
+       -r  n  different compression ratio(s) for successive layers.  The  rate
+	      specified for each quality level is the desired compression fac-
+	      tor.
+	      Note: (options -r and -q cannot be used together)
+
+       -s  X,Y
+	      sub-sampling factor (e.g. -s 2,2). Default: No sub-sampling in x
+	      or y direction.
+	      Remark: sub-sampling bigger than 2 can produce errors.
+
+       -t  W,H
+	      (Size of tile (e.g. -t 512,512) )
+
+       -x  name
+	      (Create index file and fill it. Default: no index file)
+
+       -EPH   (Write EPH marker after each header packet. Default:no EPH)
+
+       -F  rawWidth,rawHeight,rawComp,rawBitDepth,s_or_u
+	      characteristics of the raw input image
+
+       -I     (Use the irreversible DWT 9-7. Default: Reversible DWT 5-3)
+
+       -ImgDir	directory_name
+	      (directory containing input files)
+
+       -M  n  mode  switch  with  values:  1, 2, 4, 8, 16, 32. Default:No mode
+	      switch activated.
+	      Meaning:
+	      BYPASS(1)
+	      RESET(2)
+	      RESTART(4)
+	      VSC(8)
+	      ERTERM(16)
+	      SEGMARK(32)
+	      Values can be added: RESTART(4) + RESET(2) + SEGMARK(32) = -M 38
+
+       -OutFor ext
+	      (extension for output files)
+
+       -POC  TtileNr=resolutionStart, componentStart, layerEnd, resolutionEnd,
+       componentEnd, progressionOrder
+	      (see Examples)
+
+       -ROI c=n,U=n
+	      quantization  indices  upshifted	for  component c (0 or 1 or 2)
+	      with a value of U (>= 0 and <= 37)
+	      e.g. -ROI c=0,U=25
+
+       -SOP   (Write SOP marker before each packet. Default: No SOP marker  in
+	      the codestream.)
+
+       -T X,Y (Offset of the origin of the tiles (e.g. -T 100,75) )
+
+       -W     (see JPWL OPTIONS)
+
+
+JPWL OPTIONS
+       Options usable only if the library has been compiled with -DUSE_JPWL
+
+       -W   h<tilepart><=type>,   s<tilepart><=method>,   a=<addr>,  z=<size>,
+       g=<range>, p<tilepart:pack><=type>
+
+       h selects the header error protection (EPB): type can be
+	  [0=none 1,absent=predefined 16=CRC-16 32=CRC-32 37-128=RS]
+	  if tilepart is absent, it is for main and tile headers
+	  if tilepart is present, it applies from that tile
+	    onwards, up to the next h<> spec, or to the last tilepart
+	    in the codestream (max. 16 specs)
+
+       p selects the packet error protection (EEP/UEP with EPBs)
+	 to be applied to raw data: type can be
+	  [0=none 1,absent=predefined 16=CRC-16 32=CRC-32 37-128=RS]
+	  if tilepart:pack is absent, it is from tile 0, packet 0
+	  if tilepart:pack is present, it applies from that tile
+	    and that packet onwards, up to the next packet spec
+	    or to the last packet in the last tilepart in the stream
+	    (max. 16 specs)
+
+       s enables sensitivity data insertion (ESD): method can be
+	  [-1=NO ESD 0=RELATIVE ERROR 1=MSE 2=MSE REDUCTION 3=PSNR
+	   4=PSNR INCREMENT 5=MAXERR 6=TSE 7=RESERVED]
+	  if tilepart is absent, it is for main header only
+	  if tilepart is present, it applies from that tile
+	    onwards, up to the next s<> spec, or to the last tilepart
+	    in the codestream (max. 16 specs)
+
+       g determines the addressing mode: range can be
+	  [0=PACKET 1=BYTE RANGE 2=PACKET RANGE]
+
+       a determines the size of data addressing: addr can be
+	  2/4 bytes (small/large codestreams). If not set, auto-mode
+
+       z determines the size of sensitivity values: size can be
+	  1/2 bytes, for the transformed pseudo-floating point value
+
+
+EXAMPLES
+       image_to_j2k -i file.bmp -o file.j2k -r	20,10,1  (compress  20x,  then
+       10x, then lossless).
+
+       image_to_j2k -i file.ppm -o file.j2k -q 30,40,50
+
+       image_to_j2k -i file.pgx -o file.j2k -POC T1=0,0,1,5,3,CPRL
+
+       image_to_j2k -i lena.raw -o lena.j2k -F 512,512,3,8,u
+
+
+AUTHORS
+       Copyright  (c) 2002-2007, Communications and Remote Sensing Laboratory,
+       Universite catholique de Louvain (UCL), Belgium
+       Copyright (c) 2002-2007, Professor Benoit Macq
+       Copyright (c) 2001-2003, David Janssens
+       Copyright (c) 2002-2003, Yannick Verschueren
+       Copyright (c) 2003-2007, Francois-Olivier Devaux and Antonin Descampe
+       Copyright (c) 2005, Herve Drolon, FreeImage Team
+       Copyright (c) 2006-2007, Parvatha Elangovan
+
+
+SEE ALSO
+       j2k_to_image(1) j2k_dump(1)
+
+
+
+
+image_to_j2k			 Version 1.4.0		       image_to_j2k(1)

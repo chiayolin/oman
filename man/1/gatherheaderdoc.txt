@@ -1,0 +1,25 @@
+
+GATHERHEADERDOC(1)	  BSD General Commands Manual	    GATHERHEADERDOC(1)
+
+NAME
+     gatherheaderdoc -- header documentation processor
+
+SYNOPSIS
+     gatherheaderdoc [options] directory
+
+DESCRIPTION
+     Gatherheaderdoc processes the headerdoc output in directory and creates
+     an index page that links to each header's documentation.
+
+FILES
+     /$HOME/Library/Preferences/com.apple.headerDoc2HTML.config
+
+SEE ALSO
+     headerdoc2html(1)
+
+     For more information, see the HeaderDoc User Guide.  It can be found in
+     /Developer/Documentation/ if you have the Xcode Tools package installed,
+     or at <http://developer.apple.com/documentation/DeveloperTools/Concep-
+     tual/HeaderDoc> in the reference library.
+
+Darwin				 June 13, 2003				Darwin

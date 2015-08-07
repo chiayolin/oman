@@ -1,0 +1,27 @@
+PFBTOPFA(1)			  Ghostscript			   PFBTOPFA(1)
+
+
+
+NAME
+       pfbtopfa   -  Convert  Postscript  .pfb	fonts  to  .pfa  format  using
+       ghostscript
+
+SYNOPSIS
+       pfbtopfa input.pfb [output.pfa]
+
+DESCRIPTION
+       This script invokes gs(1) to convert a .pfb file into a .pfa file.
+
+SEE ALSO
+       gs(1)
+
+VERSION
+       This document was last revised for Ghostscript version 8.71.
+
+AUTHOR
+       Artifex Software, Inc. are  the	primary  maintainers  of  Ghostscript.
+       This manpage by George Ferguson.
+
+
+
+8.71			       10 February 2010 		   PFBTOPFA(1)

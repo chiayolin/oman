@@ -1,0 +1,62 @@
+GDBM_DUMP(1)		      GDBM User Reference		  GDBM_DUMP(1)
+
+
+
+NAME
+       gdbm_dump - dump a GDBM database to a file
+
+SYNOPSIS
+       gdbm_dump [-H FMT] [--format=FMT] DB_FILE [FILE]
+
+       gdbm_dump [-Vh] [--help] [--usage] [--version]
+
+DESCRIPTION
+       The  gdbm_dump utility creates a dump of the specified gdbm(3) database
+       file.  The name for the output dump file  is  supplied  by  the	second
+       argument  (FILE).   If  not  specified, the output goes to the standard
+       error.
+
+       The created dump can be given as argument to the  gdbm_load(1)  utility
+       in order to re-create an exact copy of the DB_FILE.
+
+OPTIONS
+       -H, --format=FMT
+	      Select dump format.  The value binary (or 0) instructs gdbm_dump
+	      to produce a binary dump, compatible with earlier gdbm  versions
+	      (up  to  version	1.9).	The value ascii (or 1) instructs it to
+	      create an ASCII dump (this is the default).  The latter is  pre-
+	      ferred  because,	apart  from  the actual data, it also contains
+	      meta-information which will allow gdbm_load(1)  to  recreate  an
+	      exact copy of the file.
+
+       -h, --help
+	      Print a short usage summary.
+
+       --usage
+	      Print a list of available options.
+
+       -V, --version
+	      Print program version
+
+SEE ALSO
+       gdbm_load(1), gdbmtool(1), gdbm(3).
+
+       For a detailed description of gdbm_dump and other gdbm utilities, refer
+       to the GDBM Manual available in Texinfo format.	To access it, run:
+
+	 info gdbm
+
+
+REPORTING BUGS
+       Report bugs to <bug-gdbm@gnu.org>.
+
+COPYRIGHT
+       Copyright (C) 2013 Free Software Foundation, Inc
+       License GPLv3+: GNU GPL version 3 or later
+       <http://gnu.org/licenses/gpl.html>
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+
+
+GDBM				  May 8, 2013			  GDBM_DUMP(1)

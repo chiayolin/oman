@@ -1,0 +1,29 @@
+NOTEPAD(1)			 Wine Programs			    NOTEPAD(1)
+
+
+
+NAME
+       notepad - Wine text editor
+
+SYNOPSIS
+       notepad [text file]
+
+DESCRIPTION
+       notepad	is  the  Wine  text editor, designed to be compatible with its
+       Microsoft Windows counterpart.  It  supports  ANSI,  UTF-8  and	UTF-16
+       files, and can read (but not write) files with Unix line endings.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       notepad	is  part  of the Wine distribution, which is available through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			    NOTEPAD(1)

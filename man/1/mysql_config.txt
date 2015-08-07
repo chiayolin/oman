@@ -1,0 +1,138 @@
+MYSQL_CONFIG(1) 	     MySQL Database System	       MYSQL_CONFIG(1)
+
+
+
+NAME
+       mysql_config - display options for compiling clients
+
+SYNOPSIS
+       mysql_config options
+
+DESCRIPTION
+       mysql_config provides you with useful information for compiling your
+       MySQL client and connecting it to MySQL. It is a shell script, so it is
+       available only on Unix and Unix-like systems.
+
+       mysql_config supports the following options.
+
+       o   --cflags
+
+	   C Compiler flags to find include files and critical compiler flags
+	   and defines used when compiling the libmysqlclient library. The
+	   options returned are tied to the specific compiler that was used
+	   when the library was created and might clash with the settings for
+	   your own compiler. Use --include for more portable options that
+	   contain only include paths.
+
+       o   --cxxflags
+
+	   Like --cflags, but for C++ compiler flags. This option was added in
+	   MySQL 5.6.4.
+
+       o   --include
+
+	   Compiler options to find MySQL include files.
+
+       o   --libmysqld-libs, --embedded
+
+	   Libraries and options required to link with the MySQL embedded
+	   server.
+
+       o   --libs
+
+	   Libraries and options required to link with the MySQL client
+	   library.
+
+       o   --libs_r
+
+	   Libraries and options required to link with the thread-safe MySQL
+	   client library. In MySQL 5.6, all client libraries are thread-safe,
+	   so this option need not be used. The --libs option can be used in
+	   all cases.
+
+       o   --plugindir
+
+	   The default plugin directory path name, defined when configuring
+	   MySQL.
+
+       o   --port
+
+	   The default TCP/IP port number, defined when configuring MySQL.
+
+       o   --socket
+
+	   The default Unix socket file, defined when configuring MySQL.
+
+       o   --variable=var_name
+
+	   Display the value of the named configuration variable. Permitted
+	   var_name values are pkgincludedir (the header file directory),
+	   pkglibdir (the library directory), and plugindir (the plugin
+	   directory).
+
+       o   --version
+
+	   Version number for the MySQL distribution.
+
+       If you invoke mysql_config with no options, it displays a list of all
+       options that it supports, and their values:
+
+	   shell> mysql_config
+	   Usage: /usr/local/mysql/bin/mysql_config [options]
+	   Options:
+	     --cflags	      [-I/usr/local/mysql/include/mysql -mcpu=pentiumpro]
+	     --cxxflags       [-I/usr/local/mysql/include/mysql -mcpu=pentiumpro]
+	     --include	      [-I/usr/local/mysql/include/mysql]
+	     --libs	      [-L/usr/local/mysql/lib/mysql -lmysqlclient
+			       -lpthread -lm -lrt -lssl -lcrypto -ldl]
+	     --libs_r	      [-L/usr/local/mysql/lib/mysql -lmysqlclient_r
+			       -lpthread -lm -lrt -lssl -lcrypto -ldl]
+	     --plugindir      [/usr/local/mysql/lib/plugin]
+	     --socket	      [/tmp/mysql.sock]
+	     --port	      [3306]
+	     --version	      [5.6.11]
+	     --libmysqld-libs [-L/usr/local/mysql/lib/mysql -lmysqld
+			       -lpthread -lm -lrt -lssl -lcrypto -ldl -lcrypt]
+	     --variable=VAR   VAR is one of:
+		     pkgincludedir [/usr/local/mysql/include]
+		     pkglibdir	   [/usr/local/mysql/lib]
+		     plugindir	   [/usr/local/mysql/lib/plugin]
+
+       You can use mysql_config within a command line using backticks to
+       include the output that it produces for a particular option. For
+       example, to compile and link a MySQL client program, use mysql_config
+       as follows:
+
+	   shell> gcc -c `mysql_config --cflags` progname.c
+	   shell> gcc -o progname progname.o `mysql_config --libs`
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		       MYSQL_CONFIG(1)

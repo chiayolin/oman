@@ -1,0 +1,105 @@
+MYISAMLOG(1)		     MySQL Database System		  MYISAMLOG(1)
+
+
+
+NAME
+       myisamlog - display MyISAM log file contents
+
+SYNOPSIS
+       myisamlog [options] [log_file [tbl_name] ...]
+
+DESCRIPTION
+       myisamlog processes the contents of a MyISAM log file. To create such a
+       file, start the server with a --log-isam=log_file option.
+
+       Invoke myisamlog like this:
+
+	   shell> myisamlog [options] [file_name [tbl_name] ...]
+
+       The default operation is update (-u). If a recovery is done (-r), all
+       writes and possibly updates and deletes are done and errors are only
+       counted. The default log file name is myisam.log if no log_file
+       argument is given. If tables are named on the command line, only those
+       tables are updated.
+
+       myisamlog supports the following options:
+
+       o   -?, -I
+
+	   Display a help message and exit.
+
+       o   -c N
+
+	   Execute only N commands.
+
+       o   -f N
+
+	   Specify the maximum number of open files.
+
+       o   -i
+
+	   Display extra information before exiting.
+
+       o   -o offset
+
+	   Specify the starting offset.
+
+       o   -p N
+
+	   Remove N components from path.
+
+       o   -r
+
+	   Perform a recovery operation.
+
+       o   -R record_pos_file record_pos
+
+	   Specify record position file and record position.
+
+       o   -u
+
+	   Perform an update operation.
+
+       o   -v
+
+	   Verbose mode. Print more output about what the program does. This
+	   option can be given multiple times to produce more and more output.
+
+       o   -w write_file
+
+	   Specify the write file.
+
+       o   -V
+
+	   Display version information.
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015			  MYISAMLOG(1)

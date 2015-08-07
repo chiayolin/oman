@@ -1,0 +1,21 @@
+1360 man pages found.
+mdoc warning: Empty input line #54
+mdoc warning: Empty input line #60
+/usr/local/share/man/man1/faad.1:27: expected `;' after scale-indicator (got `o')
+/usr/local/share/man/man1/faad.1:29: expected `;' after scale-indicator (got `o')
+mdoc warning: Empty input line #112
+mdoc warning: Empty input line #7
+mdoc error: .It without preceding .Bl (#23)
+mdoc error: .It without preceding .Bl (#24)
+mdoc warning: Empty input line #14
+mdoc warning: Empty input line #16
+mdoc warning: Empty input line #22
+mdoc warning: Empty input line #24
+mdoc warning: Empty input line #26
+mdoc warning: Empty input line #34
+mdoc warning: Empty input line #41
+mdoc warning: Empty input line #48
+mdoc warning: Empty input line #51
+mdoc warning: Empty input line #55
+mdoc warning: Empty input line #60
+done in 176 seconds.

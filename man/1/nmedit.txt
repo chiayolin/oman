@@ -1,0 +1,96 @@
+NMEDIT(1)							     NMEDIT(1)
+
+
+
+NAME
+       nmedit - change global symbols to local symbols
+
+SYNOPSIS
+       nmedit  -s  list_file  [-R  list_file] [-p] [-A] [-] [[-arch arch_type]
+       ...] object_file ... [-o output]
+
+DESCRIPTION
+       Nmedit changes the global symbols not listed in the list_file  file  of
+       the  -s list_file option to static symbols.  Undefined symbols and com-
+       mon symbols are not affected and shouldn't be listed in list_file.  For
+       dynamic	libraries  symbols are turned into private extern symbols that
+       are no longer external (rather than static symbols).  This is  done  so
+       that  the  references between modules of a dynamic library are resolved
+       to the symbols in the dynamic library.  Nmedit differs from strip(1) in
+       that it also changes the symbolic debugging information (produce by the
+       -g option to cc(1)) for the global symbols it changes to static symbols
+       so that the resulting object can still be used with the debugger.
+
+       Nmedit  like strip(1) is useful to limit the symbols for use with later
+       linking.  This allows control of  the  interface  that  the  executable
+       wants  to  provide to the objects that it will dynamically load, and it
+       will not have to publish symbols that are not part  of  its  interface.
+       For  example  an  executable  that wishes to allow only a subset of its
+       global symbols but all of the shared libraries globals to be used would
+       have its symbol table edited with:
+	      % nmedit -s interface_symbols -A executable
+       where  the file interface_symbols would contain only those symbols from
+       the executable that it wishes the objects loaded  at  runtime  to  have
+       access to.  Another example is an object that is made up of a number of
+       other objects that will be loaded into an executable  would  built  and
+       then have its symbol table edited with:
+	      % ld -o relocatable.o -r a.o b.o c.o
+	      % nmedit -s interface_symbols relocatable.o
+       which would leave only the symbols listed in the file interface_symbols
+       (and the undefined and common symbols) as global symbols in the	object
+       file.
+
+       The one or more of the following options is required to nmedit(1) is:
+
+       -s filename
+	      Leave  the symbol table entries for the global symbols listed in
+	      filename global but turn all other global symbols (except  unde-
+	      fined and common symbols) into static symbols.  The symbol names
+	      listed in filename must be one per line.	Leading  and  trailing
+	      white  space  are  not  part of the symbol name.	Lines starting
+	      with # are ignored, as are lines with only white space.
+
+       -R filename
+	      Change the symbol table entries for the global symbols listed in
+	      filename	into static symbols.  This file has the same format as
+	      the -s filename option above.  If  the  -R  filename  option  is
+	      specified  without  the -s filename option, then all symbols not
+	      listed in the -R filename option's filename are left as globals.
+	      If  both	a  -R filename and a -s filename are given the symbols
+	      listed in the -R filename are basically ignored and  only  those
+	      symbols listed in the -s filename are saved.
+
+       -p     Change  symbols  to  private externs instead of static.  This is
+	      allowed as the only option to change all defined global  symbols
+	      to private externs.
+
+       The options to nmedit(1) are:
+
+       -A     Leave  all  global absolute symbols except those with a value of
+	      zero, and save objective-C class symbols as  globals.   This  is
+	      intended	for use of programs that load code at runtime and want
+	      the loaded code to use symbols from the shared libraries.
+
+       -      Treat all remaining arguments as file names and not options.
+
+       -arch arch_type
+	      Specifies the architecture, arch_type, of the file for nmedit(1)
+	      to  process  when  the file is a universal file (see arch(3) for
+	      the currently know arch_types).  The arch_type  can  be  all  to
+	      process  all  architectures  in  the  file.   The  default is to
+	      process all architectures that are contained in the file.
+
+       -o output
+	      Write the result into the file output.
+
+SEE ALSO
+       strip(1), ld(1), arch(3)
+
+BUGS
+       The changing of the symbolic debugging information  by  nmedit  is  not
+       known  to be totally correct and could cause the debugger to crash, get
+       confused or produce incorrect information.
+
+
+
+Apple Inc.			 May 29, 2007			     NMEDIT(1)

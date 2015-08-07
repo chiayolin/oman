@@ -1,0 +1,23 @@
+
+RunUnitTests(1) 	  BSD General Commands Manual	       RunUnitTests(1)
+
+NAME
+     RunUnitTests -- run unit tests for the current target (obsolete)
+
+SYNOPSIS
+     RunUnitTests
+
+DESCRIPTION
+     RunUnitTests is obsolete and should not be used.
+
+     Use the "Test" scheme action in the Product menu to run unit tests within
+     the Xcode IDE, and use xcodebuild(1) with the "test" action to run unit
+     tests from the command line.
+
+FILES
+     /Developer/Tools/RunUnitTests
+
+SEE ALSO
+     otest(1), xcodebuild(1)
+
+Mac OS X			August 4, 2015			      Mac OS X

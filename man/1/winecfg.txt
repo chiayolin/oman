@@ -1,0 +1,32 @@
+WINECFG(1)			 Wine Programs			    WINECFG(1)
+
+
+
+NAME
+       winecfg - Wine Configuration Editor
+
+SYNOPSIS
+       winecfg
+
+DESCRIPTION
+       winecfg	is the Wine configuration editor. It allows you to change sev-
+       eral settings, such as DLL load order (native versus builtin), enable a
+       virtual	desktop,  setup disk drives, and change the Wine audio driver,
+       among others. Many of these settings can be made on a  per  application
+       basis, for example, preferring native riched20.dll for wordpad.exe, but
+       not for notepad.exe.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       winecfg is part of the Wine distribution, which	is  available  through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 November 2010			    WINECFG(1)

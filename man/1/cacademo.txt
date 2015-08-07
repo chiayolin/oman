@@ -1,0 +1,52 @@
+libcaca(1)							    libcaca(1)
+
+
+
+NAME
+       cacademo, cacafire - libcaca's demonstration applications
+
+SYNOPSIS
+       cacademo
+
+       cacafire
+
+DESCRIPTION
+       This  manual page documents briefly the cacademo and cacafire programs.
+
+       cacademo displays ASCII art effects with  animated  transitions:  meta-
+       balls,  moire pattern of concentric circles, old school plasma, Matrix-
+       like scrolling.
+
+       cacafire displays burning ASCII art flames.
+
+KEYS
+       Enter  forces an effect transition to happen
+
+       Space  pauses and resumes the program
+
+       Esc    exits the program
+
+BUGS
+       Please report any bugs you find to <libcaca@lists.zoy.org>.
+
+LICENSE
+       cacademo is covered by the Do What the Fuck You Want to Public  License
+       (WTFPL).  cacafire  is covered by the GNU Lesser General Public License
+       (LGPL).
+
+AUTHORS
+       cacademo's moire and matrix effects and this manual page  were  written
+       by Sam Hocevar <sam@hocevar.net>.
+
+       cacademo's   metaball   effect	was  written  by  Jean-Yves  Lamoureux
+       <jylam@lnxscene.org>, cacafire is a port of AAlib's aafire  written  by
+       Jan  Hubicka  <hubicka@freesoft.cz>  and  cacademo's plasma effect is a
+       port of an SDL plasma effect written and put in the  public  domain  by
+       Michele Bini <mibin@tin.it>.
+
+SEE ALSO
+       cacaview(1), aafire(1)
+
+
+
+libcaca 			   2006-9-23			    libcaca(1)

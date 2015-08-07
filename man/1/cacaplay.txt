@@ -1,0 +1,32 @@
+cacaplay(1)							   cacaplay(1)
+
+
+
+NAME
+       cacaplay - play libcaca files
+
+SYNOPSIS
+       cacaplay [FILE]
+
+DESCRIPTION
+       cacaplay  plays	libcaca animation files. These files can be created by
+       any libcaca program by setting the CACA_DRIVER environment variable  to
+       raw and storing the program's standard output.
+
+       If  no file argument is provided or '-' is used, cacaplay will read its
+       data from the standard input.
+
+EXAMPLES
+       cacaplay file.caca
+
+       CACA_DRIVER=raw CACA_GEOMETRY=80x32 cacademo | cacaplay
+
+SEE ALSO
+       cacaserver(1)
+
+AUTHOR
+       This manual page was written by Sam Hocevar <sam@hocevar.net>.
+
+
+
+libcaca 			  2006-11-10			   cacaplay(1)

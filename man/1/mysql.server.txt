@@ -1,0 +1,179 @@
+MYSQL.SERVER(1) 	     MySQL Database System	       MYSQL.SERVER(1)
+
+
+
+NAME
+       mysql.server - MySQL server startup script
+
+SYNOPSIS
+       mysql {start|stop}
+
+DESCRIPTION
+       MySQL distributions on Unix include a script named mysql.server, which
+       starts the server using mysqld_safe. It can be used on systems such as
+       Linux and Solaris that use System V-style run directories to start and
+       stop system services. It is also used by the OS X Startup Item for
+       MySQL.
+
+       To start or stop the server manually using the mysql.server script,
+       invoke it with start or stop arguments:
+
+	   shell> mysql.server start
+	   shell> mysql.server stop
+
+       Before mysql.server starts the server, it changes location to the MySQL
+       installation directory, and then invokes mysqld_safe. To run the server
+       as some specific user, add an appropriate user option to the [mysqld]
+       group of the /etc/my.cnf option file, as shown later in this section.
+       (It is possible that you must edit mysql.server if you've installed a
+       binary distribution of MySQL in a nonstandard location. Modify it to
+       change location into the proper directory before it runs mysqld_safe.
+       If you do this, your modified version of mysql.server may be
+       overwritten if you upgrade MySQL in the future, so you should make a
+       copy of your edited version that you can reinstall.)
+
+       mysql.server stop stops the server by sending a signal to it. You can
+       also stop the server manually by executing mysqladmin shutdown.
+
+       To start and stop MySQL automatically on your server, you must add
+       start and stop commands to the appropriate places in your /etc/rc*
+       files.
+
+       If you use the Linux server RPM package (MySQL-server-VERSION.rpm), or
+       a native Linux package installation, the mysql.server script may be
+       installed in the /etc/init.d directory with the name mysql. See
+       Section 2.5.5, "Installing MySQL on Linux Using RPM Packages", for more
+       information on the Linux RPM packages.
+
+       Some vendors provide RPM packages that install a startup script under a
+       different name such as mysqld.
+
+       If you install MySQL from a source distribution or using a binary
+       distribution format that does not install mysql.server automatically,
+       you can install it manually. The script can be found in the
+       support-files directory under the MySQL installation directory or in a
+       MySQL source tree. Copy it to the /etc/init.d directory with the name
+       mysql, and then make it executable:
+
+	   shell> cp mysql.server /etc/init.d/mysql
+	   shell> chmod +x /etc/init.d/mysql
+
+
+	   Note
+	   Older Red Hat systems use the /etc/rc.d/init.d directory rather
+	   than /etc/init.d. Adjust the preceding commands accordingly.
+	   Alternatively, first create /etc/init.d as a symbolic link that
+	   points to /etc/rc.d/init.d:
+
+	   shell> cd /etc
+	   shell> ln -s rc.d/init.d .
+
+       After installing the script, the commands needed to activate it to run
+       at system startup depend on your operating system. On Linux, you can
+       use chkconfig:
+
+	   shell> chkconfig --add mysql
+
+       On some Linux systems, the following command also seems to be necessary
+       to fully enable the mysql script:
+
+	   shell> chkconfig --level 345 mysql on
+
+       On FreeBSD, startup scripts generally should go in
+       /usr/local/etc/rc.d/. The rc(8) manual page states that scripts in this
+       directory are executed only if their basename matches the *.sh shell
+       file name pattern. Any other files or directories present within the
+       directory are silently ignored. In other words, on FreeBSD, you should
+       install the mysql.server script as /usr/local/etc/rc.d/mysql.server.sh
+       to enable automatic startup.
+
+       As an alternative to the preceding setup, some operating systems also
+       use /etc/rc.local or /etc/init.d/boot.local to start additional
+       services on startup. To start up MySQL using this method, append a
+       command like the one following to the appropriate startup file:
+
+	   /bin/sh -c 'cd /usr/local/mysql; ./bin/mysqld_safe --user=mysql &'
+
+       For other systems, consult your operating system documentation to see
+       how to install startup scripts.
+
+       mysql.server reads options from the [mysql.server] and [mysqld]
+       sections of option files. For backward compatibility, it also reads
+       [mysql_server] sections, but to be current you should rename such
+       sections to [mysql.server].
+
+       You can add options for mysql.server in a global /etc/my.cnf file. A
+       typical /etc/my.cnf file might look like this:
+
+	   [mysqld]
+	   datadir=/usr/local/mysql/var
+	   socket=/var/tmp/mysql.sock
+	   port=3306
+	   user=mysql
+	   [mysql.server]
+	   basedir=/usr/local/mysql
+
+       The mysql.server script supports the following options. If specified,
+       they must be placed in an option file, not on the command line.
+       mysql.server supports only start and stop as command-line arguments.
+
+       o   --basedir=path
+
+	   The path to the MySQL installation directory.
+
+       o   --datadir=path
+
+	   The path to the MySQL data directory.
+
+       o   --pid-file=file_name
+
+	   The path name of the file in which the server should write its
+	   process ID.
+
+	   If this option is not given, mysql.server uses a default value of
+	   host_name.pid. The PID file value passed to mysqld_safe overrides
+	   any value specified in the [mysqld_safe] option file group. Because
+	   mysql.server reads the [mysqld] option file group but not the
+	   [mysqld_safe] group, you can ensure that mysqld_safe gets the same
+	   value when invoke using mysql.server as when invoked manually by
+	   putting the same pid-file setting in both the [mysqld_safe] and
+	   [mysqld] groups.
+
+       o   --service-startup-timeout=seconds
+
+	   How long in seconds to wait for confirmation of server startup. If
+	   the server does not start within this time, mysql.server exits with
+	   an error. The default value is 900. A value of 0 means not to wait
+	   at all for startup. Negative values mean to wait forever (no
+	   timeout).
+
+COPYRIGHT
+       Copyright (C) 1997, 2015, Oracle and/or its affiliates. All rights
+       reserved.
+
+       This documentation is free software; you can redistribute it and/or
+       modify it only under the terms of the GNU General Public License as
+       published by the Free Software Foundation; version 2 of the License.
+
+       This documentation is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+       General Public License for more details.
+
+       You should have received a copy of the GNU General Public License along
+       with the program; if not, write to the Free Software Foundation, Inc.,
+       51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or see
+       http://www.gnu.org/licenses/.
+
+
+SEE ALSO
+       For more information, please refer to the MySQL Reference Manual, which
+       may already be installed locally and which is also available online at
+       http://dev.mysql.com/doc/.
+
+AUTHOR
+       Oracle Corporation (http://dev.mysql.com/).
+
+
+
+MySQL 5.6			  07/14/2015		       MYSQL.SERVER(1)

@@ -1,0 +1,100 @@
+WINESERVER(1)			Windows on Unix 		 WINESERVER(1)
+
+
+
+NAME
+       wineserver - the Wine server
+
+SYNOPSIS
+       wineserver [options]
+
+DESCRIPTION
+       wineserver  is  a daemon process that provides to Wine roughly the same
+       services that the Windows kernel provides on Windows.
+
+       wineserver is normally launched automatically when starting wine(1), so
+       you  shouldn't have to worry about it. In some cases however, it can be
+       useful to  start  wineserver  explicitly  with  different  options,  as
+       explained below.
+
+OPTIONS
+       -d[n], --debug[=n]
+	      Set  the	debug level to n.  0 means no debugging information, 1
+	      is the normal level, and 2 is for extra verbose debugging. If  n
+	      is  not  specified,  the	default is 1. The debug output will be
+	      sent to stderr. wine(1) will automatically enable  normal  level
+	      debugging  when starting wineserver if the +server option is set
+	      in the WINEDEBUG variable.
+
+       -f, --foreground
+	      Make the server remain in the foreground for  easier  debugging,
+	      for instance when running it under a debugger.
+
+       -h, --help
+	      Display a help message.
+
+       -k[n], --kill[=n]
+	      Kill  the  currently  running  wineserver, optionally by sending
+	      signal n. If no signal is specified, sends a  SIGINT  first  and
+	      then  a  SIGKILL.   The instance of wineserver that is killed is
+	      selected based on the WINEPREFIX environment variable.
+
+       -p[n], --persistent[=n]
+	      Specify the wineserver persistence delay,  i.e.  the  amount  of
+	      time that the server will keep running when all client processes
+	      have terminated. This avoids  the  cost  of  shutting  down  and
+	      starting	again  when programs are launched in quick succession.
+	      The timeout n is in seconds, the default value is 3 seconds.  If
+	      n is not specified, the server stays around forever.
+
+       -v, --version
+	      Display version information and exit.
+
+       -w, --wait
+	      Wait until the currently running wineserver terminates.
+
+ENVIRONMENT
+       WINEPREFIX
+	      If set, the content of this variable is taken as the name of the
+	      directory where wineserver  stores  its  data  (the  default  is
+	      $HOME/.wine).  All  wine	processes  using  the  same wineserver
+	      (i.e.: same user) share certain  things  like  registry,	shared
+	      memory  and  kernel objects.  By setting WINEPREFIX to different
+	      values for different Wine processes, it is  possible  to	run  a
+	      number of truly independent Wine sessions.
+
+       WINESERVER
+	      Specifies  the  path and name of the wineserver binary that will
+	      be launched automatically by wine. If not set, wine will try  to
+	      load  /usr/local/Cellar/wine/1.6.2/bin/wineserver,  and  if this
+	      doesn't exist it will then look for a file named	wineserver  in
+	      the path and in a few other likely locations.
+
+FILES
+       ~/.wine
+	      Directory containing user specific data managed by wine.
+
+       /tmp/.wine-uid
+	      Directory  containing  the server Unix socket and the lock file.
+	      These files are created in a  subdirectory  generated  from  the
+	      WINEPREFIX directory device and inode numbers.
+
+AUTHORS
+       The  original  author  of  wineserver is Alexandre Julliard. Many other
+       people have contributed new features and  bug  fixes.  For  a  complete
+       list, see the git commit logs.
+
+BUGS
+       Bugs can be reported on the Wine bug tracker
+
+AVAILABILITY
+       wineserver is part of the Wine distribution, which is available through
+       WineHQ, the Wine development headquarters
+
+SEE ALSO
+       wine(1),
+       Wine documentation and support
+
+
+
+Wine 1.6.2			 October 2005			 WINESERVER(1)
