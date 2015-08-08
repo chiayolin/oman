@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 ID=$(date +%s)
 LOG="../em-$ID.log"
 

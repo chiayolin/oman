@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 def scan_info(man_path)
   key_words = [ "SUMMARY", "DESCRIPTION", 
                 "INTRODUCTION", "ENVIRONMENT"]
