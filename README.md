@@ -1,4 +1,4 @@
 oman
 ----
 
-oman is the  **O**S X **O**line **M**anual **Page**
+oman is the  **O**S X **O**nline **M**anual **Page**
