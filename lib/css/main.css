@@ -1,0 +1,61 @@
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0; 
+}
+
+body {
+	font-family: arial, sans-serif;
+	margin: auto;
+    width: 40em;
+    background-color: #ffffff;
+
+}
+
+a:link, a:visited { 
+    color: #07c;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+div.main {
+	width: 40em;
+} 
+
+pre {
+	padding: .5em;
+}
+
+div.header {
+	font-family: monospace;
+	font-size: 20px;
+	padding: 0.5em;
+	padding-bottom: .5em;
+	padding-top: .5em;
+	/* color: #fb6363; */
+	color: #000;
+	background-color: #cee3f8;
+	border: 1px solid #5f99cf;
+	border-top: 0px;
+}
+
+div.section {
+	padding: 0.5em;
+	padding-bottom: .4em;
+}
+
+div.title {
+	font-size: 18px;
+	padding-bottom: .1em;
+}
+
+.name {
+	color: green;
+	font-size: 13px;
+}
+
+div.discription {
+	font-size: 13px;
+}
